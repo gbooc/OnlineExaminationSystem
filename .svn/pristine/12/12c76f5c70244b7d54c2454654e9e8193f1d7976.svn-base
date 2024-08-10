@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OQSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="tbl_answerSheet">
+    <Key>
+      <PropertyRef Name="as_id" />
+    </Key>
+    <Property Name="as_id" Type="Int32" Nullable="false" />
+    <Property Name="q_id" Type="Int32" />
+    <Property Name="title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbl_questionaire" Relationship="Self.FK_tbl_answerSheet_tbl_questionaire" FromRole="tbl_answerSheet" ToRole="tbl_questionaire" />
+    <NavigationProperty Name="tbl_choices" Relationship="OQSModel.FK_tbl_choices_tbl_answerSheet" FromRole="tbl_answerSheet" ToRole="tbl_choices" />
+  </EntityType>
+  <EntityType Name="tbl_category">
+    <Key>
+      <PropertyRef Name="c_id" />
+    </Key>
+    <Property Name="c_id" Type="Int32" Nullable="false" />
+    <Property Name="q_id" Type="Int32" />
+    <Property Name="category_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbl_questionaire" Relationship="Self.FK_tbl_category_tbl_questionaire" FromRole="tbl_category" ToRole="tbl_questionaire" />
+  </EntityType>
+  <EntityType Name="tbl_Employee">
+    <Key>
+      <PropertyRef Name="e_id" />
+    </Key>
+    <Property Name="e_id" Type="Int32" Nullable="false" />
+    <Property Name="exam_id" Type="Int32" />
+    <Property Name="emp_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="fullname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="department" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="user_rights" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbl_examinations" Relationship="Self.FK_tbl_Employee_tbl_examinations" FromRole="tbl_Employee" ToRole="tbl_examinations" />
+  </EntityType>
+  <EntityType Name="tbl_examinations">
+    <Key>
+      <PropertyRef Name="exam_id" />
+    </Key>
+    <Property Name="exam_id" Type="Int32" Nullable="false" />
+    <Property Name="emp_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="q_id" Type="Int32" />
+    <Property Name="score" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="date_answered" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbl_Employee" Relationship="Self.FK_tbl_Employee_tbl_examinations" FromRole="tbl_examinations" ToRole="tbl_Employee" />
+    <NavigationProperty Name="tbl_questionaire" Relationship="Self.FK_tbl_examinations_tbl_questionaire" FromRole="tbl_examinations" ToRole="tbl_questionaire" />
+    <Property Name="answer2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tbl_questionaire">
+    <Key>
+      <PropertyRef Name="q_id" />
+    </Key>
+    <Property Name="q_id" Type="Int32" Nullable="false" />
+    <Property Name="as_id" Type="Int32" />
+    <Property Name="category_id" Type="Int32" />
+    <Property Name="title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="question" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbl_answerSheet" Relationship="Self.FK_tbl_answerSheet_tbl_questionaire" FromRole="tbl_questionaire" ToRole="tbl_answerSheet" />
+    <NavigationProperty Name="tbl_category" Relationship="Self.FK_tbl_category_tbl_questionaire" FromRole="tbl_questionaire" ToRole="tbl_category" />
+    <NavigationProperty Name="tbl_examinations" Relationship="Self.FK_tbl_examinations_tbl_questionaire" FromRole="tbl_questionaire" ToRole="tbl_examinations" />
+    <Property Name="test_type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="general_instruction" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_tbl_answerSheet_tbl_questionaire">
+    <End Role="tbl_questionaire" Type="Self.tbl_questionaire" Multiplicity="0..1" />
+    <End Role="tbl_answerSheet" Type="Self.tbl_answerSheet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_questionaire">
+        <PropertyRef Name="q_id" />
+      </Principal>
+      <Dependent Role="tbl_answerSheet">
+        <PropertyRef Name="q_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_category_tbl_questionaire">
+    <End Role="tbl_questionaire" Type="Self.tbl_questionaire" Multiplicity="0..1" />
+    <End Role="tbl_category" Type="Self.tbl_category" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_questionaire">
+        <PropertyRef Name="q_id" />
+      </Principal>
+      <Dependent Role="tbl_category">
+        <PropertyRef Name="q_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_Employee_tbl_examinations">
+    <End Role="tbl_examinations" Type="Self.tbl_examinations" Multiplicity="0..1" />
+    <End Role="tbl_Employee" Type="Self.tbl_Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_examinations">
+        <PropertyRef Name="exam_id" />
+      </Principal>
+      <Dependent Role="tbl_Employee">
+        <PropertyRef Name="exam_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_examinations_tbl_questionaire">
+    <End Role="tbl_questionaire" Type="Self.tbl_questionaire" Multiplicity="0..1" />
+    <End Role="tbl_examinations" Type="Self.tbl_examinations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_questionaire">
+        <PropertyRef Name="q_id" />
+      </Principal>
+      <Dependent Role="tbl_examinations">
+        <PropertyRef Name="q_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OQSEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="tbl_answerSheet" EntityType="Self.tbl_answerSheet" />
+    <EntitySet Name="tbl_category" EntityType="Self.tbl_category" />
+    <EntitySet Name="tbl_Employee" EntityType="Self.tbl_Employee" />
+    <EntitySet Name="tbl_examinations" EntityType="Self.tbl_examinations" />
+    <EntitySet Name="tbl_questionaire" EntityType="Self.tbl_questionaire" />
+    <AssociationSet Name="FK_tbl_answerSheet_tbl_questionaire" Association="Self.FK_tbl_answerSheet_tbl_questionaire">
+      <End Role="tbl_questionaire" EntitySet="tbl_questionaire" />
+      <End Role="tbl_answerSheet" EntitySet="tbl_answerSheet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_category_tbl_questionaire" Association="Self.FK_tbl_category_tbl_questionaire">
+      <End Role="tbl_questionaire" EntitySet="tbl_questionaire" />
+      <End Role="tbl_category" EntitySet="tbl_category" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_Employee_tbl_examinations" Association="Self.FK_tbl_Employee_tbl_examinations">
+      <End Role="tbl_examinations" EntitySet="tbl_examinations" />
+      <End Role="tbl_Employee" EntitySet="tbl_Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_examinations_tbl_questionaire" Association="Self.FK_tbl_examinations_tbl_questionaire">
+      <End Role="tbl_questionaire" EntitySet="tbl_questionaire" />
+      <End Role="tbl_examinations" EntitySet="tbl_examinations" />
+    </AssociationSet>
+    <EntitySet Name="tbl_choices" EntityType="OQSModel.tbl_choices" />
+    <AssociationSet Name="FK_tbl_choices_tbl_answerSheet" Association="OQSModel.FK_tbl_choices_tbl_answerSheet">
+      <End Role="tbl_answerSheet" EntitySet="tbl_answerSheet" />
+      <End Role="tbl_choices" EntitySet="tbl_choices" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="tbl_choices">
+    <Key>
+      <PropertyRef Name="ch_id" />
+    </Key>
+    <Property Name="ch_id" Type="Int32" Nullable="false" />
+    <Property Name="as_id" Type="Int32" />
+    <Property Name="choice" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbl_answerSheet" Relationship="OQSModel.FK_tbl_choices_tbl_answerSheet" FromRole="tbl_choices" ToRole="tbl_answerSheet" />
+  </EntityType>
+  <Association Name="FK_tbl_choices_tbl_answerSheet">
+    <End Type="OQSModel.tbl_answerSheet" Role="tbl_answerSheet" Multiplicity="0..1" />
+    <End Type="OQSModel.tbl_choices" Role="tbl_choices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_answerSheet">
+        <PropertyRef Name="as_id" />
+      </Principal>
+      <Dependent Role="tbl_choices">
+        <PropertyRef Name="as_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -1,0 +1,358 @@
+﻿@*@model IEnumerable<webproject.Models.MaintenanceViewModel>*@
+
+@using PagedList.Mvc;
+@model PagedList.IPagedList<webproject.Models.MaintenanceViewModel>
+
+@{
+    ViewBag.Title = "Maintenance";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+    var number = 0;
+    var counter = 1;
+}
+
+<link rel="stylesheet" href="~/Content/Homepage/css/jquery-ui.css">
+<script src="~/Content/Homepage/js/jquery-ui.js"></script>
+
+<script type="text/javascript">
+    (function ($) {
+        setTimeout(function () {
+            $("#tblverlay").fadeOut("slow");
+        }, 2000);
+
+    }(jQuery));
+
+    function OpenColumn(examinee,col) {
+        $(".bs-example-modal-new2").modal("show");
+        if (col == '1')
+        { // examinee
+            $("#lblCol1").show();
+            $("#lblCol2").hide();
+           $("#accessIDs").val(examinee);
+        }else{ // access
+            $("#lblCol2").show();
+            $("#lblCol1").hide();
+           $("#accessIDs").val(examinee);
+        }
+
+    }
+
+</script>
+<style>
+    .ui-front {
+        z-index: 2000 !important;
+    }
+</style>
+<input type="hidden" id="idRemove" />
+<input type="hidden" id="rowRemove" />
+
+<div class="modal fade bs-example-modal-new" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <!-- Modal Content: begins -->
+        <div class=" modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: #5a6169; ">
+                <div class="avatar-img" style="margin-top:-45px;bottom:15px;">
+                    <img src="~/Images/delete.gif" style="width: 100px;height:100px;border-color:white;" />
+                </div>
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="body-message">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            This will be deleted permanently. Do you want to proceed?
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Content: ends -->
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer" style="background-color:#e9ebec;">
+                <input type="submit" value="Yes" class="btn btn-danger btn-lg" data-dismiss="modal" onclick="proceedRemoval()">
+                <input type="submit" value="No" class="btn btn-primary btn-lg" data-dismiss="modal">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*--- A c c e s s ---*@
+
+<div class="modal fade bs-example-modal-new1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-dialog-centered">
+        <!-- Modal Content: begins -->
+        <div class=" modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: #5a6169; ">
+                <div class="avatar-img" style="margin-top:-45px;bottom:15px;">
+                    <img src="~/Images/folder.jpg" style="width: 100px;height:100px;border-color:white;" />
+                </div>
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="body-message">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <font style="float:left;">Add access rights.</font>
+                            <div>
+                                <div>
+                                    <input type="text" class="form-control is-valid" id="titlesID" placeholder="Questionnaire Title" />
+                                    <input type="text" class="form-control is-valid" id="accessID" placeholder="Employee ID" style="margin-top:10px;" />
+                                </div>
+                                <div style="margin-top:20px;">
+                                    <font style="float:left;">Selected ID(s):</font>
+                                    <textarea class="form-control is-valid" id="empIDs"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Content: ends -->
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer" style="background-color:#e9ebec;">
+                <input type="submit" value="Submit" class="btn btn-danger" data-dismiss="modal" onclick="SubmitAccess()">
+                <input type="submit" value="Cancel" class="btn btn-primary" data-dismiss="modal">
+            </div>
+        </div>
+    </div>
+</div>
+@*--- E N D ----------*@
+
+@*--- Has Access / Examinee ---*@
+
+<div class="modal fade bs-example-modal-new2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <!-- Modal Content: begins -->
+        <div class=" modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: #5a6169; ">
+                <div class="avatar-img" style="margin-top:-45px;bottom:15px;">
+                    <img src="~/Images/avatar-img.jpg" style="width: 100px;height:100px;border-color:white;" />
+                </div>
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="body-message">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <font style="float:left;display:none;" id="lblCol1">Examinee for this questionnaire.</font>
+                            <font style="float:left;display:none;" id="lblCol2">Has access for this questionnaire.</font>
+                            <div>
+                                <div style="margin-top:20px;">
+                                    <textarea class="form-control" id="accessIDs" readonly></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Content: ends -->
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer" style="background-color:#e9ebec;">
+                <input type="submit" value="Close" class="btn btn-primary" data-dismiss="modal">
+            </div>
+        </div>
+    </div>
+</div>
+@*--- E N D ----------*@
+
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle" id="secondaryColor">Maintenance Dashboard</span>
+        <h3 class="page-title" id="titleName">Maintenance</h3>
+    </div>
+</div>
+
+<div class="row" style="opacity:.9;">
+    <div class="col">
+        <div class="card card-small mb-4">
+            <div id="divHeader" class="custom-table">
+                <div>
+                    &nbsp;
+                    <i class="fa fa-bullhorn" style="display:inline-block; color:white;font-size:30px;"></i>
+                    <font style="display:inline-block;color:white;font-family:Candara;"> All questionnaires from your department</font>
+                    <a href="#" onclick="giveAccess()" type="submit" class="mb-2 btn btn-sm btn-outline-black mr-1" style="float:right;margin-top:3px;">
+                        <i class="fa fa-file"></i> Add Access
+                    </a>
+
+                    <a href="@Url.Action("NewQuestionaire", "Maintenance")#maintenance_q"
+                       type="submit" class="mb-2 btn btn-sm btn-outline-white mr-1" style="float:right;margin-top:3px;">
+                        <i class="fa fa-pencil"></i> Create new
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body p-0 pb-3 text-center" style="font-family:'Californian FB', Times, serif;font-size:15px;">
+                <div class="card-body p-0 pb-3 text-center" id="tblverlay" style="position:absolute;">
+                    <img src="~/Images/tbl-loader1.gif" style="width:200px;margin-top:100px;" />
+                    <p style="font-family:Cambria, Cochin, Georgia, Times, Times New Roman, serif;">Loading, please wait. . .</p>
+                </div>
+                <table class="table-bordered table-hover" style="width:100%;position:relative;" id="ques_table">
+                    <thead style="color:red;font-size:18px;">
+                        <tr>
+
+                            <th scope="col" class="border-0">Title</th>
+                            <th scope="col" class="border-0">Category</th>
+                            <th scope="col" class="border-0">Schedule</th>
+                            <th scope="col" class="border-0">Examinee</th>
+                            <th scope="col" class="border-0">Has Access</th>
+                            <th scope="col" class="border-0">Added By</th>
+                            <th scope="col" class="border-0">Date Added</th>
+                            <th scope="col" class="border-0">Updated By</th>
+                            <th scope="col" class="border-0">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var model in Model)
+                        {
+                            var id = @model.exam_id;
+                            var ctgry = @model.Category;
+                            number++;
+                            var btnIds = "btns" + number;
+                            var userTxt = "Idusr" + number;
+                            var examID = model.exam_id;
+                            var access = model.HasAccess;
+                            var modalClass = "bs-example-modal-new-a" + examID;
+                            var userIDs = "accessID" + counter;
+                            var accessIDs = "accessIDs" + counter;
+                            var Hasaccess = model.HasAccess;
+                            var examinee = model.Examinee;
+                            <tr class="w3-hover-pale-red" id="q_row">
+
+                                <td>@Html.DisplayFor(modelItem => model.QuestionaireTitle)</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => model.Category)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => model.Schedule)
+                                </td>
+                                <td style="max-width:190px;">
+                                    @*@Html.DisplayFor(modelItem => model.Examinee)*@
+                                    <a href="#" id="openID" class="mb-2 btn btn-sm btn-outline-success mr-1" onclick="OpenColumn('@examinee','1')">
+                                        <i class="fa fa-folder-open-o" style="font-size:17px;"></i> View
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="#" id="openID" class="mb-2 btn btn-sm btn-outline-success mr-1" onclick="OpenColumn('@Hasaccess','2')">
+                                        <i class="fa fa-user-secret" style="font-size:17px;"></i> View
+                                    </a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => model.AddedBy)
+                                </td>
+                                <td>
+                                    @Convert.ToDateTime(model.DateAdded).ToShortDateString()
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => model.UpdatedBy)
+                                </td>
+                                <td style="width: 17%;">
+                                    <div id="@btnIds">
+                                        <a href="@Url.Action("OpenQuestionaire", "Maintenance", new { examId = model.exam_id })#maintenance_q" id="openID" class="mb-2 btn btn-sm btn-outline-info mr-1">
+                                            <i class="fa fa-pencil-square" style="font-size:17px;"></i>
+                                        </a>
+
+                                        <a href="#" class="mb-2 btn btn-sm btn-outline-danger mr-1" onclick="removeQuestionaire(@id, @number)" style="margin-top:1px;" id="openID">
+                                            @*data-toggle="modal" data-target=".bs-example-modal-new"*@
+                                            <i class="fa fa-trash" style="font-size:17px;"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                <font style="float:left;margin-left:10px;margin-top:2px;">
+                    Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                    out of @Model.PageCount pages
+                </font>
+                <div style="height:40px; position:relative; right: 0; bottom:10px;float:right;margin-right:20px;">
+                    <div style="display:inline-block;">
+                        @Html.PagedListPager(Model, page => Url.Action("Maintenance", new { page }) + "#maintenance_q")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" value="@ViewBag.Employee.Count" id="empCount" />
+<script type="text/javascript">
+    $(document).ready(function () {
+
+             $("#accessID").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                       Type: 'POST',
+                        url: '@Url.Action("GetFCId","Maintenance")',
+                        dataType: "json",
+                        data: { term: request.term },
+                        success: function (data) {
+
+                            if (data != 0   ) {
+
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.emp_id.replace('-', '').trim(), value: item.emp_id.replace('-', '').trim(),
+                                    };
+                                }))
+
+                            } else {
+                                 var result = [
+                                    {
+                                     label: 'No matches found',
+                                     value: response.term
+                                    }
+                                ];
+                             response(result);
+                            }
+                        }
+                    })
+                 },
+                select: function( event , ui ) {
+                         //alert( "You selected: " + ui.item.label );
+                    $("#empIDs").append(ui.item.label + ",");
+                    ui.item.value = "";
+                }
+             });
+
+             $("#titlesID").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                       Type: 'POST',
+                        url: '@Url.Action("GetQuestionnaire","Maintenance")',
+                        dataType: "json",
+                        data: { term: request.term },
+                        success: function (data) {
+
+                            if (data != 0   ) {
+
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.title, value: title,
+                                    };
+                                }))
+
+                            } else {
+                                 var result = [
+                                    {
+                                     label: 'No matches found',
+                                     value: response.term
+                                    }
+                                ];
+                             response(result);
+                            }
+                        }
+                    })
+                 }
+            });
+    })
+</script>

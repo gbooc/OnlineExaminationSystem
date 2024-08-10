@@ -1,0 +1,680 @@
+﻿var mcItem = 1;
+var enuItem = 1;
+var fbItem = 1;
+var essayItem = 1;
+
+var totalCount = 0;
+var title = "";
+
+var category = "1";
+
+var noOfTypeOfExams = 0;
+
+var typesCount = 0;
+
+var addtionalMc = 0;
+var addtionalFb = 0;
+var addtionalEnu = 0;
+var additionalEssay = 0;
+
+var essayCount = 1;
+var enuCount = 1;
+var fbCount = 1;
+var mcCount = 1;
+
+var Btns = "";
+var UsrTxt = "";
+//----------------------------
+
+
+
+// --- All functions were from new questionnaire page ----
+function submitQuestionaire(param) {
+
+    var title = $('#q_titleID').val();
+    var schedule = $('#schedule').val();
+
+    var tmpExaminee = $("#drpdwnExaminee").val();
+    var accessIds = "";
+
+    var tmp_multpleChce = {};
+    var multpleChce = [];
+
+    var tmp_fillDBlnks = {};
+    var fillDBlnks = [];
+
+    var tmp_identification = {};
+    var identification = [];
+
+    var tmp_essay = {};
+    var essay = [];
+
+    var examLimit = "";
+    var tmpHr = "";
+    var tmpMin = "";
+
+    var rate = $("#passingRate").val();
+
+
+    if ($("#hrID").val() == "") {
+        tmpHr = "0";
+    } else {
+        tmpHr = $("#hrID").val();
+    }
+
+    if ($("#minID").val() == "") {
+        tmpMin = "0";
+    } else {
+        tmpMin = $("#minID").val();
+    }
+
+    if (tmpExaminee == "Selected") {
+        accessIds = $("#accessIDs").val();
+    } else {
+        accessIds = tmpExaminee;
+    }
+
+    for (var c = 1; c <= param; c++) {
+
+        if ($('#category' + c).is(":checked")) {
+            category = $('#category' + c).val();
+        }
+    }
+
+    examLimit = tmpHr.replace(/\D/g, '') + ";" + tmpMin.replace(/\D/g, '');
+    $.ajax({ url: '/Maintenance/setExamID', type: 'POST' });
+
+    // ---- Get Values From Multiple Choice ----
+    for (var i = 0; i <= (mcItem + addtionalMc); i++) {
+        for (var a = 0; a <= mcItem; a++) {
+            var tmp = 'p' + i + '_mcItem' + a;
+            var gi = 'giMc' + i;
+
+            if ($("#" + gi).val() !== "" && $("#" + tmp).val() !== "") {
+                if ($("#" + gi).val() !== undefined && $("#" + tmp).val() !== undefined) {
+
+                    var tmpAnswer = $("#" + tmp + '_b').val();
+                    tmpAnswer = tmpAnswer.split(":").pop();
+
+                    tmp_multpleChce = {
+                        'Instruction': romanize(i) + ". " + $("#" + gi).val(),
+                        'Question': $("#" + tmp).val(),
+                        'Choices':  $("#" + tmp + '_a').val(),
+                        'Answer': tmpAnswer.trim(),
+                        'Schedule': schedule,
+                        'AccessIDs': accessIds,
+                        'Limit': examLimit,
+                        'PassingRate': rate.replace(/\D/g, '')
+
+                    };
+                    multpleChce.push(JSON.stringify(tmp_multpleChce));
+                }
+            } else {
+                if (i > 0) {
+                    displayError(gi, tmp);
+                }
+                return;
+            }
+        }
+    }
+
+    //----- E N D -------
+
+    // ---- Get values from Filling the blanks ------
+
+    for (var i = 0; i <= (fbItem + addtionalFb); i++) {
+
+        for (var a = 0; a <= fbItem; a++) {
+            var tmp = 'p' + i + '_fbItem' + a;
+            var gi = 'giFb' + i;
+
+            if ($("#" + gi).val() !== "" && $("#" + tmp).val() !== "") {
+                if ($("#" + gi).val() !== undefined && $("#" + tmp).val() !== undefined) {
+
+                    var tmpAnswer = $("#" + tmp + '_ans').val();
+                    tmpAnswer = tmpAnswer.split(":").pop();
+
+
+                    tmp_fillDBlnks = {
+                        "Instruction": romanize(i) + ". " + $("#" + gi).val(),
+                        "Question": $("#" + tmp).val(),
+                        'Answer': tmpAnswer.trim(),
+                        'Schedule': schedule,
+                        'AccessIDs': accessIds,
+                        'Limit': examLimit,
+                        'PassingRate': rate.replace(/\D/g, '')
+                    };
+                    fillDBlnks.push(JSON.stringify(tmp_fillDBlnks));
+                }
+            } else {
+                if (i > 0) {
+                    displayError(gi, tmp);
+                }
+                return;
+            }
+        }
+    }
+
+    //------ E N D ----
+
+    //----Get values from Identification ------
+
+    for (var i = 0; i <= (enuItem + addtionalEnu); i++) {
+
+        for (var a = 0; a <= enuItem; a++) {
+            var tmp = 'p' + i + '_enuItem' + a;
+            var gi = 'giEnu' + i;
+
+            if ($("#" + gi).val() !== "" && $("#" + tmp).val() !== "") {
+                if ($("#" + gi).val() !== undefined && $("#" + tmp).val() !== undefined) {
+
+                    var tmpAnswer = $("#" + tmp + '_ans').val();
+                    tmpAnswer = tmpAnswer.split(":").pop();
+
+                    tmp_identification = {
+                        "Instruction": romanize(i) + ". " + $("#" + gi).val(),
+                        "Question": $("#" + tmp).val(),
+                        "Answer": tmpAnswer.trim(),
+                        'Schedule': schedule,
+                        'AccessIDs': accessIds,
+                        'Limit': examLimit,
+                        'PassingRate': rate.replace(/\D/g, '')
+                    };
+                    identification.push(JSON.stringify(tmp_identification));
+                }
+            } else {
+                if (i > 0) {
+                    displayError(gi, tmp);
+                }
+                return;
+            }
+        }
+    }
+
+    // --- E N D ----
+
+    // ---- Get Values From Essay ----
+    for (var i = 0; i <= (essayItem + additionalEssay); i++) {
+        for (var a = 0; a <= essayItem; a++) {
+            var tmp = 'p' + i + '_essayItem' + a;
+            var gi = 'giEssay' + i;
+
+            if ($("#" + gi).val() !== "" && $("#" + tmp).val() !== "") {
+                if ($("#" + gi).val() !== undefined && $("#" + tmp).val() !== undefined) {
+
+                    var tmpAnswer = $("#" + tmp + '_ans').val();
+                    tmpAnswer = tmpAnswer.split(":").pop();
+
+                    tmp_essay = {
+                        'Instruction': romanize(i) + ". " + $("#" + gi).val(),
+                        'Question': $("#" + tmp).val(),
+                        'Answer': tmpAnswer.trim(),
+                        'Schedule': schedule,
+                        'AccessIDs': accessIds,
+                        'Limit': examLimit,
+                        'PassingRate': rate.replace(/\D/g, '')
+
+                    };
+                    essay.push(JSON.stringify(tmp_essay));
+                }
+            } else {
+                if (i > 0) {
+                    displayError(gi, tmp);
+                }
+                return;
+            }
+        }
+    }
+    //----- END -------
+
+
+    $.ajax({
+        url: '/Maintenance/saveMC',
+        type: 'POST',
+        data: JSON.stringify({ Title: title, Category: category, multipleChoice: multpleChce }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+        success: function () {
+
+        }
+    });
+
+    $.ajax({
+        url: '/Maintenance/saveIdentification',
+        type: 'POST',
+        data: JSON.stringify({ Title: title, Category: category, identification: identification }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+        success: function () {
+
+        }
+    });
+
+    $.ajax({
+        url: '/Maintenance/saveFb',
+        type: 'POST',
+        data: JSON.stringify({ Title: title, Category: category, fillTheBlanks: fillDBlnks }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+        success: function () {
+
+        }
+    });
+
+    $.ajax({
+        url: '/Maintenance/saveEssay',
+        type: 'POST',
+        data: JSON.stringify({ Title: title, Category: category, Essay: essay }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+        success: function () {
+
+        }
+    });
+
+    $("#teOverlay").fadeIn();
+
+    setTimeout(function () {
+        $("#teOverlay").fadeOut();
+
+    }, 6000);
+
+    setTimeout(function () {
+        location.href = "#open-modal";
+    }, 7000);
+
+    noOfTypeOfExams = 0;
+    // --- END ----
+
+}
+
+function romanize(num) {
+    var lookup = { M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1 }, roman = '', i;
+    for (i in lookup) {
+        while (num >= lookup[i]) {
+            roman += i;
+            num -= lookup[i];
+        }
+    }
+    return roman;
+}
+
+//---- Multiple choice functions----
+
+function multipleChoice(param) {
+
+    var set = '<br /> <label id="mcRomanize' + romanize(param) + '">' + romanize(param) + '</label>. <font style="font-weight:bold;">(Multiple Choice)</font> \
+       <textarea class="form-control" style="width:100%;overflow:hidden;border:none;height:60px;" placeholder="Enter general instruction here.." id="giMc'+ param + '"></textarea> \
+         <div class="invalid-feedback" id="giMc'+ param + 'error"> \
+            <label id = "validMsg" > This field is required </label> \
+        </div>';
+
+    $("#question").append(set);
+
+    $(".enuCounter").hide();
+    $(".fbCounter").hide();
+    $(".essayCounter").hide();
+
+    mcCount = 1;
+    addtionalMc = param
+    addmc(param);
+}
+
+function addmc(param) {
+
+
+    var remove = "'mc" + mcItem + "'";
+    var html = '<div id="mc' + mcItem + '">\
+                    <div style="font-family:Courier New;font-size:13px;">\
+                    <div class="mcCounter" style="display:inline-block;"> \
+                        <div class="counter'+ mcCount + '"> \
+                        <a href = "#" onclick = "removeMC('+ remove + ');return false;" > <i class="fa fa-minus-circle" style="color:red;"></i></a> \
+                        <a href = "#" onclick = "addmc(' + param + ');return false;"> <i class="fa fa-plus-circle"></i></a>\
+                    </div></div> \
+                    <font style="font-size:18px;">' + mcCount++ +
+        '</font>\.<textarea class="form-control" placeholder="Enter your question here.."  style = "width:90%;display:inline-block;overflow:hidden;border-style:none;margin-top:5px;height:50px;" id = "p' + param + '_mcItem' + mcItem++ + '" ></textarea>\
+                        <div class="invalid-feedback" id = "p' + param + '_mcItem' + (mcItem - 1) + 'error"> \
+                            <label id = "validMsg" > This field is required </label> \
+                       </div> \
+                 </div> \
+               <div> &nbsp;  &nbsp; \
+                 <textarea class = "form-control" style="overflow:hidden;border:none;padding-left:55px;height:50px;" id = "p'+ param + '_mcItem' + (mcItem - 1) + '_a">a.  b.  c.  d. </textarea> \
+                </div > \
+                 <div><textarea  class="form-control" style="overflow:hidden;border:none;color:red;margin-top:5px;height:50px;" id = "p'+ param + '_mcItem' + (mcItem - 1) + '_b">answer: </textarea></div>\
+            </div>';
+
+    totalCount++;
+    noOfTypeOfExams++;
+
+    $(".counter" + (mcCount - 2)).remove();
+    $("#question").append(html);
+
+}
+function removeMC(param) {
+    $('#' + param).remove();
+}
+//------------END---------------------
+//---------Identification --------------
+function Identification(param) {
+    var set = '<br />' + romanize(param) + '. <font style="font-weight:bold;">(Identification)</font>\
+              . <textarea  class="form-control" style="overflow:hidden;border:none;margin-top:5px;resize: both;height:60px;" placeholder="Insert general instruction" id="giEnu'+ param + '"></textarea> \
+                             <div class="invalid-feedback" id = "giEnu'+ param + 'error"> \
+                            <label id = "validMsg" > This field is required </label> \
+                    </div> \ ';
+
+    $("#question").append(set);
+
+    $(".mcCounter").hide();
+    $(".fbCounter").hide();
+    $(".essayCounter").hide();
+    enuCount = 1;
+    addtionalEnu = param;
+
+    addIdentification(param);
+}
+
+function addIdentification(param) {
+
+    var remove = "'enu" + enuItem + "'";
+    var html = '<div id="enu' + enuItem + '">\
+                  <div style="font-family:Courier New;font-size:12px;"> \
+                     <div class="enuCounter" style="display:inline-block;"> \
+                       <div class="counter'+ enuCount + '"> \
+                        <a href = "#" onclick = "removeIdentification('+ remove + ');return false;" > <i class="fa fa-minus-circle" style="color:red;"></i></a> \
+                        <a href = "#" onclick = "addIdentification(' + param + ');return false;" > <i class="fa fa-plus-circle"></i></a> \
+                        </div></div> \
+                 ___\<font style="font-size:18px;"> ' + enuCount++ + '.</font> \
+                  <textarea class="form-control" placeholder="Enter question here..."  style = "resize: both;width:86%;display:inline-block;overflow:hidden;border:none;margin-top:5px;height:50px;" id = "p' + param + '_enuItem' + enuItem++ + '"></textarea> \
+                     <div class="invalid-feedback" id="p' + param + '_enuItem' + (enuItem - 1) + 'error"> \
+                            <label id = "validMsg" > This field is required </label> \
+                    </div> \
+                </div> \
+              <textarea class="form-control"  style="resize: both;overflow:hidden;border:none;margin-top:5px;color:red;height:50px;" id = "p'+ param + '_enuItem' + (enuItem - 1) + '_ans">answer: </textarea> \
+            </div>';
+
+    totalCount++;
+    noOfTypeOfExams++;
+
+    $('.counter' + (enuCount - 2)).remove();
+    $("#question").append(html);
+}
+
+function removeIdentification(param) {
+    $('#' + param).remove();
+}
+
+//------ END --------------------
+//------ Fill in the blanks -------
+function fillInTheBlanks(param) {
+    var set = '<br />' + romanize(param) + '. <font style="font-weight:bold;">Filling the blanks</font> \
+              <textarea class="form-control" style="resize: both;overflow:hidden;border:none;margin-top:5px;height:60px;" placeholder="Insert general instruction" id="giFb'+ param + '"></textarea> \
+               <div class="invalid-feedback" id="giFb'+ param + 'error"> \
+                            <label id = "validMsg" > This field is required </label> \
+                    </div> \
+                ';
+
+    $("#question").append(set);
+
+    $(".enuCounter").hide();
+    $(".mcCounter").hide();
+    $(".essayCounter").hide();
+
+    fbCount = 1;
+    addtionalFb = param;
+    addFb(param);
+}
+
+function addFb(param) {
+    var remove = "'fb" + fbItem + "'";
+    var html = '<div id="fb' + fbItem + '"> \
+                 <div style="font-family:Courier New;font-size:12px;"> \
+                    <div class="fbCounter" style="display:inline-block;"> \
+                      <div class="counter'+ fbCount + '">\
+                         <a href = "#" onclick = "removeFb(' + remove + ');return false;" > <i class="fa fa-minus-circle" style="color:red;"></i></a> \
+                         <a href = "#" onclick = "addFb(' + param + ');return false;" > <i class="fa fa-plus-circle"></i></a> \
+                     </div></div> \
+                    <font style = "font-size:18px;" >'+ fbCount++ + '.</font> \
+                <textarea  placeholder="Enter your question here.." class="form-control" style = "width:90%;display:inline-block;overflow:hidden;border:none;margin-top:5px;height:50px;" id = "p' + param + '_fbItem' + fbItem++ + '"></textarea></div> \
+                <div><textarea class="form-control"  style="resize: both;overflow:hidden;border:none;margin-top:5px;color:red; border-color: #E74856;height:50px;" id = "p'+ param + '_fbItem' + (fbItem - 1) + '_ans">answer: </textarea></div>\
+              </div>';
+
+    totalCount++;
+    noOfTypeOfExams++;
+    $('.counter' + (fbCount - 2)).remove();
+    $("#question").append(html);
+}
+function removeFb(param) {
+    $('#' + param).remove();
+}
+//-------- E N D -----------------
+//---------E S S A Y --------------
+function Essay(param) {
+    var set = '<br />' + romanize(param) + '. <font style="font-weight:bold;">(Essay)</font>\
+              . <textarea  class="form-control" style="overflow:hidden;border:none;margin-top:5px;resize: both;height:60px;" placeholder="Insert general instruction" id="giEssay'+ param + '"></textarea> \
+                             <div class="invalid-feedback" id = "giEssay'+ param + 'error"> \
+                            <label id = "validMsg" > This field is required </label> \
+                    </div> \ ';
+
+
+    $("#question").append(set);
+
+    $(".enuCounter").hide();
+    $(".mcCounter").hide();
+    $(".fbCounter").hide();
+
+    essayCount = 1;
+    additionalEssay = param;
+    addEssay(param);
+
+}
+
+function addEssay(param) {
+
+    var remove = "'essay" + essayItem + "'";
+    var html = '<div id="essay' + essayItem + '">\
+                  <div style="font-family:Courier New;font-size:12px;"> \
+                     <div class="essayCounter" style="display:inline-block;"> \
+                       <div class="counter'+ essayCount + '"> \
+                        <a href = "#" onclick = "removeEssay('+ remove + ');return false;" > <i class="fa fa-minus-circle" style="color:red;"></i></a> \
+                        <a href = "#" onclick = "addEssay(' + param + ');return false;" > <i class="fa fa-plus-circle"></i></a> \
+                        </div></div> \
+                 \<font style="font-size:18px;"> ' + essayCount++ + '.</font> \
+                  <textarea class="form-control" placeholder="Enter question here..."  style = "resize: both;width:86%;display:inline-block;overflow:hidden;border:none;margin-top:5px;height:50px;" id = "p' + param + '_essayItem' + essayItem++ + '"></textarea> \
+                 <div><textarea class="form-control"  style="resize: both;overflow:hidden;border:none;margin-top:5px;color:red; border-color: #E74856;height:50px;" id = "p'+ param + '_essayItem' + (essayItem - 1) + '_ans">answer: </textarea></div>\
+                 <div class="invalid-feedback" id = "p' + param + '_essayItem' + (essayItem - 1) + 'error" > \
+                            <label id = "validMsg" > This field is required </label> \
+                    </div> \
+                </div> \
+              </div>';
+
+    totalCount++;
+    noOfTypeOfExams++;
+    $('.counter' + (essayCount - 2)).remove();
+    $("#question").append(html);
+}
+
+function removeEssay(param) {
+    $('#' + param).remove();
+}
+
+
+//------ Category --------
+
+function addNewCategory() {
+    var category = $("#txtCategory").val();
+
+    if (category != "") {
+
+        $.ajax({
+            url: '/Maintenance/addNewCategory',
+            type: 'POST',
+            data: JSON.stringify({ CategoryName: category }),
+            dataType: "json",
+            traditional: true,
+            contentType: 'application/json;',
+            cache: false,
+            success: function (categories) {
+                if (categories !== 0) {
+                    var id = "category" + categories;
+                    var html = '<div class="custom-control custom-checkbox mb-1"> \
+                           <input type = "checkbox" class="custom-control-input" id = '+ id + ' value="' + categories + '" name="test[1][]" onclick="selectOnlyThis(this)"> \
+                           <label class="custom-control-label" for="'+ id + '">' + category + '</label> \
+                       </div>';
+                    $('#txtCategory').val("");
+                    $("#categoryID").append(html);
+                } else {
+                    $("#errorCategory").show()
+
+                    setTimeout(function () {
+                        $("#errorCategory").fadeOut("slow");
+                    }, 5500);
+                }
+
+            },
+            beforeSend: function () {
+            },
+            complete: function () {
+            }
+        });
+    } else {
+        $("#categoryInvalid").show();
+        setTimeout(function () {
+            $("#categoryInvalid").fadeOut("slow");
+        }, 5500);
+
+        $(".form-control").addClass("is-invalid");
+    }
+    //  $("#categoryID").append(html);
+}
+//------ END ---------
+
+
+function checkInputs() {
+
+    if ($("#q_titleID").val() == "") {
+
+        $("#invalidID").show();
+        setTimeout(function () {
+            $("#invalidID").fadeOut("slow");
+        }, 5500);
+
+    } else if ($("#hrID").val() == "" || $("#minID").val() == "" || $("#passingRate").val() == "") {
+        $("#limitError").show();
+        setTimeout(function () {
+            $("#limitError").fadeOut("slow");
+        }, 5500);
+    }else {
+            $('.bs-example-modal-new').modal('show');
+    }
+}
+
+function displayError(gi, tmp) {
+
+
+    $("#nqError").fadeIn("slow");
+    setTimeout(function () {
+        $("#nqError").fadeOut();
+    }, 5500);
+
+
+    if ($("#" + gi).val() == "") {
+        $("#" + gi + "error").show();
+    }
+
+    if ($("#" + tmp).val() == "") {
+        $("#" + tmp + "error").show();
+    }
+
+
+    setTimeout(function () {
+        $("#" + gi + "error").fadeOut("slow");
+        $("#" + tmp + "error").fadeOut("slow");
+    }, 5500);
+}
+// --- End ----
+
+//-- This function is from maintenance page / Removing the questionnaire---
+function removeQuestionaire(id, rowId) {
+    $("#idRemove").val(id);
+    $("#rowRemove").val(rowId);
+    $('.bs-example-modal-new').modal('show');
+}
+
+function proceedRemoval() {
+    var idRemove = $("#rowRemove").val();
+    document.getElementById("ques_table").deleteRow(idRemove);
+    var removeID = $("#idRemove").val();
+    $.ajax({
+        url: '/Maintenance/deleteQuestionaire',
+        type: 'POST',
+        data: JSON.stringify({ id: removeID }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+        success: function () {
+
+        }
+    });
+}
+function selectOnlyThis(element) {
+
+    if (element.checked) {
+        element.classList.add("marked");
+    } else {
+        element.classList.remove("marked");
+    }
+
+    if (document.getElementsByClassName("marked").length > 1) {
+        alert("Please select only one category.");
+        element.checked = false;
+        element.classList.remove("marked");
+    }
+}
+
+function refereshPage() {
+    window.location.href += "#maintenance";
+    location.reload();
+}
+
+
+function giveAccess() {
+
+    $('.bs-example-modal-new1').modal('show');
+
+}
+
+function SubmitAccess() {
+
+    var examID = $("#titlesID").val();
+    var users = $("#empIDs").val();
+
+    console.log(users);
+
+    $.ajax({
+        url: '/Maintenance/GiveUserAccess',
+        type: 'POST',
+        data: JSON.stringify({ usrIds: users, examID: examID }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+        success: function () {
+        }
+    });
+    alert("Added successfully.");
+}
+
+
+
+
+
+// ------ END -------

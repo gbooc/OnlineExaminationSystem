@@ -1,0 +1,88 @@
+﻿@model IEnumerable<webproject.Models.SummaryDetails>
+
+@{
+    ViewBag.Title = "SummaryDetails";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+
+    double passingScore = 0;
+    var title = "";
+}
+
+@foreach (var model in Model)
+{
+    title = model.Title;
+    break;
+}
+<script type="text/javascript">
+    (function ($) {
+        setTimeout(function () {
+            $("#tblverlay").fadeOut("slow");
+        }, 3000);
+
+    }(jQuery));
+
+</script>
+
+
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle" id="secondaryColor">Summary Dashboard</span>
+        <h3 class="page-title" id="titleName">Summary Details</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div id="wrap" style="width:85%;opacity:.9;">
+        <div style="position: absolute;width:70%;height:30px;max-height:30px; background-color:#5a6169;"></div>
+        <div id="fontcon">
+            <font id="font1">| OnlineExamination</font>
+            <font id="font2">System</font>
+        </div>
+        <div class="question">
+            <div style="width:100%;">
+                <div class="card-body">
+                    <div class="card-body p-0 pb-3 text-center" id="tblverlay" style="position:absolute;">
+                        <img src="~/Images/tbl-loader1.gif" style="width:200px;margin-top:100px;" />
+                        <p style="font-family:Cambria, Cochin, Georgia, Times, Times New Roman, serif;">Loading, please wait. . .</p>
+                    </div>
+                    <p style="font-size:25px;font-family:'Times New Roman';">@title results</p>
+                    <table class="table-bordered table-hover" style="width:100%;position:relative;text-align:center;" id="ques_table">
+                        <thead style="font-size:18px;background-color:#E74856;color:white;">
+                            <tr>
+
+                                <th scope="col" class="border-0">Employee Name</th>
+                                <th scope="col" class="border-0">Score</th>
+                                <th scope="col" class="border-0">Passing Score</th>
+                                <th scope="col" class="border-0">Remarks</th>
+                                <th scope="col" class="border-0">Date Answered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var model in Model)
+                            {
+                                passingScore = Convert.ToDouble(model.Total) * Convert.ToDouble(model.PassingRate);
+                                <tr class="w3-hover-pale-red" id="q_row" style="background-color:#5a6169;color:white;">
+                                    <td>@Html.DisplayFor(modelItem => model.EmployeeName)</td>
+                                    <td>@Html.DisplayFor(modelItem => model.Score)</td>
+                                    <td>@Math.Ceiling(passingScore)</td>
+                                    <td>
+                                        @if (Convert.ToDouble(model.Score) >= Convert.ToDouble(model.Total) * Convert.ToDouble(model.PassingRate))
+                                        {
+                                            <font style="color:aqua;font-weight:bolder;">Passed</font>
+                                        }
+                                        else
+                                        {
+                                            <font style="color:#b6ff00;font-weight:bolder;">Failed</font>
+                                        }
+                                    </td>
+                                    <td>@Html.DisplayFor(modelItem => model.DateAnswered)</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

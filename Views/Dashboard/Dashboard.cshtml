@@ -1,0 +1,72 @@
+﻿@model IEnumerable<webproject.Models.DashboardModel>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+}
+
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle" id="secondaryColor">Dashboard</span>
+        <h3 class="page-title" id="titleName">Dashboard Overview</h3>
+    </div>
+</div>
+<div class="w3-center w3-animate-right">
+    <div class="row">
+        <div class="col-lg col-md-6 col-sm-6 mb-4" id="animation">
+            <div class="stats-small stats-small--1 card card-small" style="background-color:coral;">
+                <div class="card-body p-0 d-flex">
+                    <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                        <div class="stats-small__data text-center">
+                            <span class="stats-small__label text-uppercase" style="color:white;">Questionnaires</span>
+                            <h6 class="stats-small__value count my-3" style="color:white;">@ViewBag.Questionnaire</h6>
+                        </div>
+                    </div>
+                    <canvas height="224" class="blog-overview-stats-small-1 chartjs-render-monitor" width="560" style="display: block; width: 280px; height: 112px;"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg col-md-6 col-sm-6 mb-4">
+            <div class="stats-small stats-small--1 card card-small" style="background-color:brown;">
+                <div class="card-body p-0 d-flex">
+                    <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                        <div class="stats-small__data text-center">
+                            <span class="stats-small__label text-uppercase" style="color:white;">Examinee</span>
+                            <h6 class="stats-small__value count my-3" style="color:white;">@ViewBag.Employee</h6>
+                        </div>
+                    </div>
+                    <canvas height="224" class="blog-overview-stats-small-2 chartjs-render-monitor" width="560" style="display: block; width: 280px; height: 112px;"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg col-md-4 col-sm-6 mb-4">
+            <div class="stats-small stats-small--1 card card-small" style="background-color:darkgoldenrod;">
+                <div class="card-body p-0 d-flex">
+                    <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                        <div class="stats-small__data text-center">
+                            <span class="stats-small__label text-uppercase" style="color:white;">Answered Exams</span>
+                            <h6 class="stats-small__value count my-3" style="color:white;">@ViewBag.AnswrdQues</h6>
+                        </div>
+                    </div>
+                    <canvas height="224" class="blog-overview-stats-small-3 chartjs-render-monitor" width="560" style="display: block; width: 280px; height: 112px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="col-lg-12 col-md-12 col-sm-12 mb-4">
+    <div class="card card-small">
+        <div class="card-header border-bottom">
+            <h6 class="m-0"></h6>
+        </div>
+        <div class="card-body pt-0">
+            <div class="row border-bottom py-2 bg-light">
+            </div>
+            <canvas height="242" style="max-width: 100% !important; display: block; width: 559px; height: 242px;" class="blog-overview-users chartjs-render-monitor" width="559"></canvas>
+        </div>
+    </div>
+</div>*@

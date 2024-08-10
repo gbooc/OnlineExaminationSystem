@@ -1,0 +1,807 @@
+﻿@model IEnumerable<webproject.Models.OpenQuestionaire>
+
+@{
+    ViewBag.Title = "OpenAnswerSheet";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+
+    var testTitle = "";
+
+    var tmpCategory = "";
+    var category = "";
+
+    var mcIdNum = 1;
+    var fbIdNum = 1;
+    var enuIdNum = 1;
+    var essayIdNum = 1;
+    var MtIdNum = 1;
+
+    int? examID = 0;
+
+    var mcGenIns = "";
+    var fbGenIns = "";
+    var enuGenIns = "";
+    var essayGenIns = "";
+
+    var mcItem = 0;
+    var fbItem = 0;
+    var enuItem = 0;
+    var essayItem = 0;
+
+    string schehdule = "";
+    string examinee = "";
+
+    var hr = "";
+    var min = "";
+
+    var passingRate = "";
+
+    var allEmp = 0;
+    var rimpEmp = 0;
+    var cgsiEmp = 0;
+    var gjEmp = 0;
+    var visitorEmp = 0;
+
+    string[] examineeOption = { "All Employees", "RIMP Employees", "CGSI Employees", "Good Job Employees", "Visitor" };
+    var isSelected = 0;
+
+    var mtItem = 0;
+    var mtGenIns = "";
+    var enumIdNum = 1;
+    var enumItem = 1;
+    var enumGenIns = "";
+    var enumQuestion = "";
+    var enumQuesItem = 0;
+    var enumAnsItem = 0;
+    var diagramIdNum = 1;
+    var diagramGenIns = "";
+    var diagramItem = 0;
+    var diagramName = "";
+    var main_diagramID = 1;
+}
+
+
+@foreach (var title in Model)
+{
+    testTitle = title.Title;
+    tmpCategory = title.Category;
+    examID = title.ExamID;
+    schehdule = title.Schedule;
+    examinee = title.Examinee;
+    hr = title.Hour;
+    min = title.Min;
+    passingRate = title.PassingRate;
+    break;
+}
+<link rel="stylesheet" href="~/Content/Homepage/css/jquery-ui.css">
+<script src="~/Content/Homepage/js/jquery-ui.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $("#txtSchedule").datepicker();
+    });
+
+    (function ($) {
+
+        setTimeout(function () {
+            $("#tblverlay").fadeOut("slow");
+            //$("#tblContainer").fadeIn("slow");
+        }, 2500);
+
+    }(jQuery));
+
+</script>
+
+<div class="card-body p-0 pb-3 text-center" id="tblverlay" style="position:absolute;">
+    <img src="~/Images/tbl-loader1.gif" style="width:200px;margin-top:100px;" />
+    <p style="font-family:Cambria, Cochin, Georgia, Times, Times New Roman, serif;">Loading, please wait. . .</p>
+</div>
+
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle" id="secondaryColor">Questionaire Dashboard</span>
+        <h3 class="page-title" id="titleName">Open/Modify Questionnaire</h3>
+    </div>
+</div>
+
+<div class="w3 w3-animate-right">
+    <div class="row" style="opacity:.9;">
+        <div class="col-lg-12 col-md-12">
+            <!-- Add New Post Form -->
+            <div class="card card-small h-100">
+                @*style="background-color: #5a6169;"*@
+                <div id="divHeader" class="custom-table" style="height:120px;">
+
+                    <div ondblclick="categoryDblClk()" style="margin-top:20px;margin-left:10px;margin-right:10px;">
+                        <div style="display:inline-block;width:100%;">
+                            <h6 class="m-0" style="display:inline-block; color: white;">Category</h6>
+                            <select class="form-control" style="display:inline-block; width:40%; margin-left:15px;" onchange="categoryOnchange()" id="categoryId" disabled>
+                                @foreach (var mc in ViewBag.categories)
+                                {
+                                    if (mc.category_name == tmpCategory)
+                                    {
+                                        <option value="@mc.category_id.ToString()" selected>@mc.category_name</option>
+                                    }
+                                    <option value="@mc.category_id.ToString()">@mc.category_name</option>
+                                }
+                            </select>
+                            <a href="#" class="btn btn-danger" data-toggle="modal" data-target=".bs-example-modal-new"><i class="fa fa-universal-access"></i> View Examinee</a>
+                            <input type="text" class="form-control" style="display:inline-block;width:75%;margin-top:10px;" value="@testTitle" id="txtTitleID" onfocusout="changeTitle()" readonly />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <form class="add-new-post__editor">
+                        <div class="form-group">
+                            <div id="question" style="font-family:'Courier New';font-size:12px;">
+                                <small style="color:red;font-size:12px;">Sorted all types of exam, for easy editing.</small><br />
+                                <div style="float:right;">
+                                    <font>Exam Schedule:</font>
+                                    <input type="date" class="form-control" ondblclick="categoryDblClk()" style="display:inline-block;width:120px;margin-top:-20px;" value="@schehdule" id="txtSchedule" onchange="changeSchedule(event)" />
+                                </div>
+                                <div style="float:right;margin-right:20px;margin-top:-10px;">
+                                    <font>Time Limit:</font>
+                                    <input type="number" class="form-control" id="hrID" style="display:inline-block;width:50px;" value="@hr" onfocusout="limitDblClk()" ondblclick="categoryDblClk()" readonly />
+                                    <font>Hr</font>
+                                    <input type="number" class="form-control" id="minID" style="display:inline-block;width:50px;" value="@min" onfocusout="limitDblClk()" ondblclick="categoryDblClk()" readonly />
+                                    <font>Min |</font>
+                                </div>
+                                <div style="float:right;margin-right:15px;margin-top:-10px;">
+                                    <font>Passing Rate:</font>
+                                    <input type="number" class="form-control" id="passingRate" style="display:inline-block;width:70px;" value="@passingRate" ondblclick="categoryDblClk()" onfocusout="passingDblClk()" readonly /> |
+                                </div>
+
+                                @foreach (var type in Model.GroupBy(i => i.TestType))
+                                {
+                                    if (type.Key.Equals("Multiple Choice"))
+                                    {
+                                        <font id="testTypeID">@type.Key</font> <br />
+
+                                        foreach (var mc in Model)
+                                        {
+                                            category = mc.Category;
+
+                                            var gi_mcID = "oq_gi_mcID" + mcIdNum;
+                                            var q_mcID = "oq_q_mcID" + mcIdNum;
+                                            var ch_mcID = "oq_ch_mcID" + mcIdNum;
+                                            var ans_mcID = "oq_ans_mcID" + mcIdNum;
+                                            if (mc.TestType.Equals("Multiple Choice"))
+                                            {
+                                                if (mcGenIns.Equals(""))
+                                                {
+                                                    <div id="generalID">
+                                                        <textarea class="form-control w3-input w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_mcID" onfocus="inputEvents('@gi_mcID','@mc.OP_ID')" onfocusout="disableField('@gi_mcID')" style="font-weight:bolder;min-height:100px; overflow:hidden;" readonly>@mc.GeneralInstruction</textarea>
+                                                    </div>
+                                                    mcItem++;
+                                                }
+                                                else
+                                                {
+                                                    if (!(mcGenIns.Equals(mc.GeneralInstruction)))
+                                                    {
+                                                        <div id="generalID">
+                                                            <textarea class="form-control w3-input w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_mcID" onfocus="inputEvents('@gi_mcID','@mc.OP_ID')" onfocusout="disableField('@gi_mcID')" style="font-weight:bolder;min-height:100px; overflow:hidden;" readonly>@mc.GeneralInstruction</textarea>
+                                                        </div>
+                                                        mcItem = 1;
+                                                    }
+                                                    else
+                                                    {
+                                                        mcItem++;
+                                                    }
+                                                }
+                                                <div class="form-group" style="padding-bottom: 5px;">
+                                                    <div id="questionID">
+                                                        <font style="font-size:15px;">@mcItem.</font><textarea style="display:inline-block;width:97%;min-height:120px; overflow:hidden;" class="form-control  w3-input w3-hover-border-red w3-animate-input w3-hover-shadow" id="@q_mcID" onfocus="inputEvents('@q_mcID','@mc.OP_ID')" onfocusout="disableField('@q_mcID')" readonly>@mc.Question</textarea>
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+                                                    </div>
+                                                    <div id="choicesID">
+                                                        <textarea class="form-control w3-input w3-hover-border-red w3-animate-input w3-hover-shadow" id="@ch_mcID" onfocus="inputEvents('@ch_mcID','@mc.OP_ID')" onfocusout="disableField('@ch_mcID')" style="min-height:100px;overflow:hidden;" readonly> @mc.Choices</textarea>
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+                                                    </div>
+                                                    <div id="answerID">
+                                                        <font>Answer:</font>
+                                                        <input type="text" class="form-control w3-hover-border-red w3-animate-input w3-hover-shadow" id="@ans_mcID" onfocus="inputEvents('@ans_mcID','@mc.OP_ID')" onfocusout="disableField('@ans_mcID')" value="@mc.Answer" readonly />
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+
+                                                    </div>
+                                                </div>
+                                                mcIdNum++;
+                                                mcGenIns = mc.GeneralInstruction;
+                                            }
+
+                                        }
+
+                                    }
+                                    else if (type.Key.Equals("Filling the blanks"))
+                                    {
+                                        <font id="testTypeID">@type.Key</font> <br />
+                                        foreach (var mc in Model)
+                                        {
+
+                                            var gi_fbID = "oq_gi_FbID" + fbIdNum;
+                                            var q_fbID = "oq_q_fbID" + fbIdNum;
+                                            var ans_fbID = "oq_ans_fbID" + fbIdNum;
+                                            category = mc.Category;
+
+                                            if (mc.TestType.Equals("Filling the blanks"))
+                                            {
+                                                if (fbGenIns.Equals(""))
+                                                {
+                                                    <div id="generalID">
+                                                        <textarea class="form-control w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_fbID" onfocus="inputEvents('@gi_fbID','@mc.OP_ID')" onfocusout="disableField('@gi_fbID')" style="font-weight:bolder;min-height:100px;overflow:hidden;" readonly>@mc.GeneralInstruction</textarea>
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+                                                    </div>
+                                                    fbItem++;
+                                                }
+                                                else
+                                                {
+                                                    if (!(fbGenIns.Equals(mc.GeneralInstruction)))
+                                                    {
+                                                        <div id="generalID">
+                                                            <textarea class="form-control w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_fbID" onfocus="inputEvents('@gi_fbID','@mc.OP_ID')" onfocusout="disableField('@gi_fbID')" style="font-weight:bolder;min-height:50px;overflow:hidden;" readonly>@mc.GeneralInstruction</textarea>
+                                                            <i class="fa fa-check-square" id="op-check"></i>
+                                                        </div>
+                                                        fbItem = 1;
+                                                    }
+                                                    else
+                                                    {
+                                                        fbItem++;
+                                                    }
+                                                }
+                                                <div class="form-group" style="padding-bottom: 5px;">
+                                                    <div id="questionID">
+                                                        <font style="font-size:15px;">@fbItem.</font>
+                                                        <textarea style="display:inline-block;width:95%;font-weight:bolder;min-height:50px;overflow:hidden;" class="form-control  w3-input w3-hover-border-red w3-animate-input w3-hover-shadow" id="@q_fbID" onfocus="inputEvents('@q_fbID','@mc.OP_ID')" onfocusout="disableField('@q_fbID')" readonly>@mc.Question</textarea>
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+                                                    </div>
+                                                    <div id="answerID">
+                                                        <font>Answer:</font>
+                                                        <input type="text" class="form-control w3-input w3-hover-border-red w3-animate-input w3-hover-shadow" id="@ans_fbID" onfocus="inputEvents('@ans_fbID','@mc.OP_ID')" onfocusout="disableField('@ans_fbID')" value="@mc.Answer" readonly />
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+                                                    </div>
+                                                </div>
+                                            }
+                                            fbIdNum++;
+                                            fbGenIns = mc.GeneralInstruction;
+                                        }
+
+                                    }
+                                    else if (type.Key.Equals("Identification"))
+                                    {
+
+                                        <font id="testTypeID">@type.Key</font> <br />
+                                        foreach (var mc in Model)
+                                        {
+
+                                            var gi_enuID = "oq_gi_EnuID" + enuIdNum;
+                                            var q_enuID = "oq_q_EnuID" + enuIdNum;
+                                            var ans_enuID = "oq_ans_EnuID" + enuIdNum;
+
+                                            category = mc.Category;
+
+                                            if (mc.TestType.Equals("Identification"))
+                                            {
+                                                if (enuGenIns.Equals(""))
+                                                {
+                                                    <div id="generalID">
+                                                        <textarea style="display:inline-block;font-weight:bolder;min-height:100px; overflow:hidden;resize:vertical;overflow:hidden;" class="form-control  w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_enuID" onfocus="inputEvents('@gi_enuID','@mc.OP_ID')" onfocusout="disableField('@gi_enuID')" readonly>@mc.GeneralInstruction</textarea>
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+                                                    </div>
+                                                    enuItem++;
+                                                }
+                                                else
+                                                {
+                                                    if (!(enuGenIns.Equals(mc.GeneralInstruction)))
+                                                    {
+                                                        <div id="generalID">
+                                                            <textarea class="form-control  w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_enuID" onfocus="inputEvents('@gi_enuID','@mc.OP_ID')" onfocusout="disableField('@gi_enuID')" style="font-weight:bolder;min-height:100px; overflow:hidden;" readonly>@mc.GeneralInstruction</textarea>
+                                                            <i class="fa fa-check-square" id="op-check"></i>
+                                                        </div>
+                                                        enuItem = 1;
+                                                    }
+                                                    else
+                                                    {
+                                                        enuItem++;
+                                                    }
+                                                }
+                                                <div class="form-group" style="padding-bottom: 5px;">
+                                                    <div id="questionID">
+                                                        _____ <font style="font-size:15px;">@enuItem.</font>
+                                                        <textarea style="display:inline-block;width:92%;min-height:100px; overflow:hidden;" class="form-control w3-hover-border-red w3-hover-shadow" id="@q_enuID" onfocus="inputEvents('@q_enuID','@mc.OP_ID')" onfocusout="disableField('@q_enuID')" readonly>@mc.Question</textarea>
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+                                                    </div>
+                                                    <div id="answerID">
+                                                        <input type="text" class="form-control w3-input w3-hover-border-red w3-animate-input w3-hover-shadow" id="@ans_enuID" onfocus="inputEvents('@ans_enuID','@mc.OP_ID')" onfocusout="disableField('@ans_enuID')" value="@mc.Answer" readonly />
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+                                                        <font>&nbsp; Answer</font>
+                                                    </div>
+                                                </div>
+                                            }
+                                            enuIdNum++;
+                                            enuGenIns = mc.GeneralInstruction;
+                                        }
+                                    }
+                                    else if (type.Key.Equals("Essay"))
+                                    {
+
+                                        <font id="testTypeID">@type.Key</font> <br />
+                                        foreach (var mc in Model)
+                                        {
+
+                                            var gi_essayID = "oq_gi_EssayID" + essayIdNum;
+                                            var q_essayID = "oq_q_EssayID" + essayIdNum;
+                                            var ans_essayID = "oq_ans_EsssayID" + essayIdNum;
+
+                                            category = mc.Category;
+
+                                            if (mc.TestType.Equals("Essay"))
+                                            {
+                                                if (essayGenIns.Equals(""))
+                                                {
+                                                    <div id="generalID">
+                                                        <textarea style="display:inline-block;font-weight:bolder;min-height:100px; overflow:hidden;resize:vertical;overflow:hidden;" class="form-control  w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_essayID" onfocus="inputEvents('@gi_essayID','@mc.OP_ID')" onfocusout="disableField('@gi_essayID')" readonly>@mc.GeneralInstruction</textarea>
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+                                                    </div>
+                                                    essayItem++;
+                                                }
+                                                else
+                                                {
+                                                    if (!(essayGenIns.Equals(mc.GeneralInstruction)))
+                                                    {
+                                                        <div id="generalID">
+                                                            <textarea class="form-control  w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_essayID" onfocus="inputEvents('@gi_essayID','@mc.OP_ID')" onfocusout="disableField('@gi_essayID')" style="font-weight:bolder;min-height:100px; overflow:hidden;" readonly>@mc.GeneralInstruction</textarea>
+                                                            <i class="fa fa-check-square" id="op-check"></i>
+                                                        </div>
+                                                        essayItem = 1;
+                                                    }
+                                                    else
+                                                    {
+                                                        essayItem++;
+                                                    }
+                                                }
+                                                <div class="form-group" style="padding-bottom: 5px;">
+                                                    <div id="questionID">
+                                                        _____ <font style="font-size:15px;">@essayItem.</font>
+                                                        <textarea style="display:inline-block;width:92%;min-height:100px; overflow:hidden;" class="form-control w3-hover-border-red w3-hover-shadow" id="@q_essayID" onfocus="inputEvents('@q_essayID','@mc.OP_ID')" onfocusout="disableField('@q_essayID')" readonly>@mc.Question</textarea>
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+                                                    </div>
+                                                    <div id="answerID">
+                                                        <input type="text" class="form-control w3-input w3-hover-border-red w3-animate-input w3-hover-shadow" id="@ans_essayID" onfocus="inputEvents('@ans_essayID','@mc.OP_ID')" onfocusout="disableField('@ans_essayID')" value="@mc.Answer" readonly />
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+                                                        <font>&nbsp; Answer</font>
+                                                    </div>
+                                                </div>
+                                            }
+                                            essayIdNum++;
+                                            essayGenIns = mc.GeneralInstruction;
+                                        }
+                                    }
+                                    else if (type.Key.Equals("Enumeration"))
+                                    {
+
+                                        <font id="testTypeID">@type.Key</font> <br />
+                                        foreach (var mc in Model)
+                                        {
+
+                                            var gi_enumID = "oq_gi_enumID" + enumIdNum;
+                                            var q_enumID = "oq_q_enumID" + enumIdNum;
+                                            var ans_enumID = "oq_ans_enumID" + enumIdNum;
+
+                                            category = mc.Category;
+                                            if (mc.TestType.Equals("Enumeration"))
+                                            {
+                                                if (enumGenIns.Equals(""))
+                                                {
+                                                    <div id="generalID">
+                                                        <textarea style="display:inline-block;font-weight:bolder;min-height:100px; overflow:hidden;resize:vertical;overflow:hidden;" class="form-control  w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_enumID" onfocus="inputEvents('@gi_enumID','@mc.OP_ID')" onfocusout="disableField('@gi_enumID')" readonly>@mc.GeneralInstruction</textarea>
+                                                    </div>
+                                                    enumItem++;
+                                                }
+                                                else
+                                                {
+                                                    if (!(enumGenIns.Equals(mc.GeneralInstruction)))
+                                                    {
+                                                        <div id="generalID">
+                                                            <textarea class="form-control  w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_enumID" onfocus="inputEvents('@gi_enumID','@mc.OP_ID')" onfocusout="disableField('@gi_enumID')" style="font-weight:bolder;min-height:100px; overflow:hidden;" readonly>@mc.GeneralInstruction</textarea>
+                                                        </div>
+                                                        enumItem = 1;
+                                                    }
+                                                    else
+                                                    {
+                                                        enumItem++;
+                                                    }
+                                                }
+
+                                                <div class="form-group" style="padding-bottom: 1px;">
+                                                    <div>
+                                                        @if (!(enumQuestion.Equals(mc.Question)))
+                                                        {
+
+                                                            if (!(enumQuestion.Equals(mc.Question)) && enumItem != 1)
+                                                            {
+
+                                                                enumQuesItem++;
+                                                            }
+                                                            else
+                                                            {
+                                                                enumQuesItem = 1;
+                                                            }
+
+                                                            <font style="font-size:15px;">@enumQuesItem.) </font>
+                                                            <textarea style="display:inline-block;width:95%;min-height:100px; overflow:hidden;" class="form-control w3-hover-border-red w3-hover-shadow" id="@q_enumID" onfocus="inputEvents('@q_enumID','@mc.OP_ID')" onfocusout="disableField('@q_enumID')" readonly>@mc.Question</textarea>
+
+                                                            enumAnsItem = 1;
+
+                                                        }
+                                                        <div style="display:inline-block;width:80%;">
+                                                            <font style="font-size:12px;display:inline-block;margin-left:40px;">@enumAnsItem.</font>
+                                                            <input type="text" style="display:inline-block;width:90%;margin-top:5px;" class="form-control w3-hover-shadow" id="@ans_enumID" onfocus="inputEvents('@ans_enumID','@mc.OP_ID')" onfocusout="disableField('@ans_enumID')" value="@mc.Answer" readonly />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                enumAnsItem++;
+                                                enumIdNum++;
+                                                enumQuestion = mc.Question;
+                                                enumGenIns = mc.GeneralInstruction;
+                                            }
+
+                                        }
+                                    }
+                                    else if (type.Key.Equals("Matching Type"))
+                                    {
+
+                                        <font id="testTypeID">@type.Key</font> <br />
+                                        foreach (var mc in Model)
+                                        {
+
+                                            var gi_mtID = "oq_gi_MtID" + MtIdNum;
+                                            var q_mtID = "oq_q_MtID" + MtIdNum;
+                                            var ans_mtID = "oq_ans_MtID" + MtIdNum;
+                                            var ch_mtID = "oq_ch_MtID" + MtIdNum;
+                                            category = mc.Category;
+
+                                            if (mc.TestType.Equals("Matching Type"))
+                                            {
+                                                if (mtGenIns.Equals(""))
+                                                {
+                                                    <div id="generalID">
+                                                        <textarea style="display:inline-block;font-weight:bolder;min-height:100px; overflow:hidden;resize:vertical;overflow:hidden;" class="form-control  w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_mtID" onfocus="inputEvents('@gi_mtID','@mc.OP_ID')" onfocusout="disableField('@gi_mtID')" readonly>@mc.GeneralInstruction</textarea>
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+                                                    </div>
+                                                    mtItem++;
+                                                }
+                                                else
+                                                {
+                                                    if (!(mtGenIns.Equals(mc.GeneralInstruction)))
+                                                    {
+                                                        <div id="generalID">
+                                                            <textarea class="form-control  w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_mtID" onfocus="inputEvents('@gi_mtID','@mc.OP_ID')" onfocusout="disableField('@gi_mtID')" style="font-weight:bolder;min-height:100px; overflow:hidden;" readonly>@mc.GeneralInstruction</textarea>
+                                                            <i class="fa fa-check-square" id="op-check"></i>
+                                                        </div>
+                                                        mtItem = 1;
+                                                    }
+                                                    else
+                                                    {
+                                                        mtItem++;
+                                                    }
+                                                }
+                                                <div style="display:inline-block;width:100%;margin-bottom:10px;">
+                                                    <font style="display:inline-block;font:8px;color:red;">Ans.</font>
+
+                                                    <div style="display:inline-block;width:10%;">
+                                                        <textarea style="display:inline-block; overflow:hidden;" class="form-control" id="@ans_mtID" onfocus="inputEvents('@ans_mtID','@mc.OP_ID')" onfocusout="disableField('@ans_mtID')" readonly> @mc.Answer</textarea>
+                                                    </div>
+                                                    <font style="display:inline-block;font:8px;">@mtItem.</font>
+                                                    <div style="display:inline-block;width:40%;">
+                                                        <textarea style="display:inline-block; overflow:hidden;" class="form-control" id="@q_mtID" onfocus="inputEvents('@q_mtID','@mc.OP_ID')" onfocusout="disableField('@q_mtID')" readonly>@mc.Question</textarea>
+                                                    </div>
+                                                    <div style="display:inline-block;width:40%;">
+                                                        <textarea style="display:inline-block; overflow:hidden;" class="form-control" id="@ch_mtID" onfocus="inputEvents('@ch_mtID','@mc.OP_ID')" onfocusout="disableField('@ch_mtID')" readonly> @mc.Choices</textarea>
+                                                    </div>
+
+                                                </div>
+                                            }
+                                            MtIdNum++;
+                                            mtGenIns = mc.GeneralInstruction;
+                                        }
+                                    }
+                                    else if (type.Key.Equals("Diagram"))
+                                    {
+
+                                        <font id="testTypeID">@type.Key</font> <br />
+                                        foreach (var mc in Model)
+                                        {
+
+                                            var gi_diagramID = "oq_gi_diagramID" + diagramIdNum;
+                                            var q_diagramID = "oq_q_diagramID" + diagramIdNum;
+                                            var ans_diagramID = "oq_ans_diagramID" + diagramIdNum;
+                                            var ch_diagramID = "oq_ch_diagramID" + diagramIdNum;
+
+                                            category = mc.Category;
+                                            if (mc.TestType.Equals("Diagram"))
+                                            {
+                                                if (diagramGenIns.Equals(""))
+                                                {
+                                                    <div id="generalID">
+                                                        <textarea style="display:inline-block;font-weight:bolder;min-height:100px; overflow:hidden;resize:vertical;overflow:hidden;" class="form-control  w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_diagramID" onfocus="inputEvents('@gi_diagramID','@mc.OP_ID')" onfocusout="disableField('@gi_diagramID')" readonly>@mc.GeneralInstruction</textarea>
+                                                        <i class="fa fa-check-square" id="op-check"></i>
+                                                    </div>
+                                                    diagramItem++;
+                                                }
+                                                else
+                                                {
+                                                    if (!(diagramGenIns.Equals(mc.GeneralInstruction)))
+                                                    {
+                                                        <div id="generalID" class="shadow p-3 mb-5 bg-white rounded">
+                                                            <textarea class="form-control  w3-hover-border-red w3-animate-input w3-hover-shadow" id="@gi_diagramID" onfocus="inputEvents('@gi_diagramID','@mc.OP_ID')" onfocusout="disableField('@gi_diagramID')" style="font-weight:bolder;min-height:100px; overflow:hidden;" readonly>@mc.GeneralInstruction</textarea>
+                                                            <i class="fa fa-check-square" id="op-check"></i>
+                                                        </div>
+                                                        diagramItem = 1;
+                                                    }
+                                                    else
+                                                    {
+                                                        diagramItem++;
+                                                    }
+                                                }
+                                                <div class="form-group" style="padding-bottom: 1px;">
+                                                    <div>
+                                                        @if (!(diagramName.Equals(mc.ImageName)))
+                                                        {
+                                                            <div style="border:1px solid gray;margin-bottom:10px; width:80%;max-height:650px; margin-left:85px;overflow-y:scroll;">
+                                                                <input type="file" style="border:none; background: transparent; outline: 0;float:right;margin-bottom:10px;" accept="image/*" onchange="changeDiagram(event, 'main_diagram_@main_diagramID','main_diagramID_@main_diagramID','base64_@main_diagramID','@mc.ImageName')" id="main_diagramID_@main_diagramID" />
+                                                                <img src="~/Diagrams/@mc.ImageName" style="margin-left:60px;" width="700" height="600" class="img-thumbnail" id="main_diagram_@main_diagramID" />
+                                                                <textarea style="display:none;" id="base64_@main_diagramID"></textarea>
+                                                            </div>
+                                                            main_diagramID++;
+                                                        }
+                                                        <div style="width:85%;margin-left:75px;">
+                                                            <font style="display:inline-block;">@diagramItem.</font>
+                                                            <textarea class="form-control" style="display:inline-block;width:90%;" id="@q_diagramID" onfocus="inputEvents('@q_diagramID','@mc.OP_ID')" onfocusout="disableField('@q_diagramID')" readonly>@mc.Question</textarea>
+                                                            <i class="fa fa-folder-o" style="width:40px;float:right;cursor:pointer;"></i>
+                                                            @if (!mc.Choices.Equals(""))
+                                                            {
+                                                                <textarea class="form-control" style="width:90%;margin-left:20px;margin-top:10px;" id="@ch_diagramID" onfocus="inputEvents('@ch_diagramID','@mc.OP_ID')" onfocusout="disableField('@ch_diagramID')" readonly>@mc.Choices</textarea>
+                                                            }
+                                                            else if (!mc.ChoicesImgName.Equals(""))
+                                                            {
+                                                                <input type="file" style="border:none; background: transparent; outline: 0;float:right;margin-bottom:10px;margin-top:10px;" accept="image/*" onchange="changeDiagramCh(event, 'ch_diagram_@main_diagramID','ch_diagramID_@main_diagramID','chBase64_@main_diagramID','@mc.ChoicesImgName')" id="ch_diagramID_@main_diagramID" />
+                                                                <img src="~/Diagrams/@mc.ChoicesImgName" style="margin-left:90px;max-height:550px;" width="660" height="545" class="img-thumbnail" id="ch_diagram_@main_diagramID" />
+                                                                <textarea style="display:none;" id="chBase64_@main_diagramID"></textarea>
+                                                            }
+                                                            <textarea class="form-control" style="margin-left:20px;margin-top:10px;width:90%;" id="@ans_diagramID" onfocus="inputEvents('@ans_diagramID','@mc.OP_ID')" onfocusout="disableField('@ans_diagramID')" readonly>@mc.Answer</textarea>
+                                                            <font style="margin-left:20px;">Answer</font>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                // diagramItem++;
+                                                diagramIdNum++;
+                                                diagramGenIns = mc.GeneralInstruction;
+                                                diagramName = mc.ImageName;
+
+                                            }
+
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- / Add New Post Form -->
+        </div>
+        <!-- / Post Overview -->
+    </div>
+</div>
+
+<input type="hidden" value="@examID" id="txtExamID" />
+
+<div class="modal fade bs-example-modal-new" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <!-- Modal Content: begins -->
+        <div class=" modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="display:inline-block; background-color: #5a6169; color:white; ">
+                &nbsp; <i class="fa fa-warning" style="color: white ;text-align:right;font-size: 20px;margin-right: 10px;"></i> Examinee
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="body-message">
+
+                    <div class="form-row">
+                        <div id="divHeader" style="width:100%;">
+                            <div>
+                                <i class="fa fa-bullhorn" style="display:inline-block; color:white;font-size:20px;"></i>
+                                <font style="display:inline-block;color:white;font-family:Candara;"> All Examinee</font>
+                            </div>
+                        </div>
+                        <table class="table-bordered table-hover" style="width:100%;position:relative;" id="ques_table">
+                            <thead>
+                                <tr>
+                                    <th>..</th>
+                                    <th>Examinee</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var mc in Model)
+                                {
+                                    var tmp = mc.Examinee.Split(',');
+                                    var examinees = tmp.Concat(examineeOption).ToArray();
+                                    for (int e = 0; e < examinees.Length - 1; e++)
+                                    {
+                                        string selection = examinees[e].ToString().Replace(" ", "");
+
+                                        if (examinees[e].Contains("All") && allEmp == 0)
+                                        {
+                                            <tr>
+                                                <td><input type="checkbox" style="margin-left:5px;width:30px;" id="@selection" value="@examinees[e]" checked /></td>
+                                                <td>@examinees[e]</td>
+                                            </tr>
+                                            allEmp = 1;
+                                        }
+                                        else
+                                        {
+                                            if (allEmp == 0 && !(examinees[e].Contains("RIMP") || examinees[e].Contains("CGSI") || examinees[e].Contains("Good Job") || examinees[e].Contains("Visitor")))
+                                            {
+                                                <tr>
+                                                    <td><input type="checkbox" style="margin-left:5px;width:30px;" id="AllEmployees" value="All Employees" /></td>
+                                                    <td>All Employees</td>
+                                                </tr>
+                                                allEmp = 1;
+                                            }
+                                        }
+
+                                        if (examinees[e].Contains("RIMP") && rimpEmp == 0)
+                                        {
+                                            <tr>
+                                                <td><input type="checkbox" style="margin-left:5px;width:30px;" id="@selection" value="@examinees[e]" checked /></td>
+                                                <td>@examinees[e]</td>
+                                            </tr>
+                                            rimpEmp = 1;
+                                        }
+                                        else
+                                        {
+
+                                            if (rimpEmp == 0 && !(examinees[e].Contains("All") || examinees[e].Contains("CGSI") || examinees[e].Contains("Good Job") || examinees[e].Contains("Visitor")))
+                                            {
+                                                <tr>
+                                                    <td><input type="checkbox" style="margin-left:5px;width:30px;" id="RIMPEmployees" value="RIMP Employees" /></td>
+                                                    <td>RIMP Employees</td>
+                                                </tr>
+                                                rimpEmp = 1;
+                                            }
+
+                                        }
+
+                                        if (examinees[e].Contains("CGSI") && cgsiEmp == 0)
+                                        {
+                                            <tr>
+                                                <td><input type="checkbox" style="margin-left:5px;width:30px;" id="@selection" value="@examinees[e]" checked /></td>
+                                                <td>@examinees[e]</td>
+                                            </tr>
+                                            cgsiEmp = 1;
+                                        }
+                                        else
+                                        {
+                                            if (cgsiEmp == 0 && !(examinees[e].Contains("RIMP") || examinees[e].Contains("All") || examinees[e].Contains("Good Job") || examinees[e].Contains("Visitor")))
+
+                                            {
+                                                <tr>
+                                                    <td><input type="checkbox" style="margin-left:5px;width:30px;" id="CGSIEmployees" value="CGSI Employees" /></td>
+                                                    <td>CGSI Employees</td>
+                                                </tr>
+
+                                                cgsiEmp = 1;
+                                            }
+                                        }
+
+                                        if (examinees[e].Contains("Good Job") && gjEmp == 0)
+                                        {
+                                            <tr>
+                                                <td><input type="checkbox" style="margin-left:5px;width:30px;" id="@selection" value="@examinees[e]" checked /></td>
+                                                <td>@examinees[e]</td>
+                                            </tr>
+                                            gjEmp = 1;
+                                        }
+                                        else
+                                        {
+                                            if (gjEmp == 0 && !(examinees[e].Contains("RIMP") || examinees[e].Contains("All") || examinees[e].Contains("CGSI") || examinees[e].Contains("Visitor")))
+                                            {
+                                                <tr>
+                                                    <td><input type="checkbox" style="margin-left:5px;width:30px;" id="GoodJobEmployees" value="Good Job Employees" /></td>
+                                                    <td>Good Job Employees</td>
+                                                </tr>
+                                                gjEmp = 1;
+                                            }
+
+                                        }
+
+                                        if (examinees[e].Contains("Visitor") && visitorEmp == 0)
+                                        {
+                                            <tr>
+                                                <td><input type="checkbox" style="margin-left:5px;width:30px;" id="@selection" value="@examinees[e]" checked /></td>
+                                                <td>@examinees[e]</td>
+                                            </tr>
+                                            visitorEmp = 1;
+                                        }
+                                        else
+                                        {
+                                            if (visitorEmp == 0 && !(examinees[e].Contains("RIMP") || examinees[e].Contains("All") || examinees[e].Contains("Good Job") || examinees[e].Contains("CGSI")))
+                                            {
+                                                <tr>
+                                                    <td><input type="checkbox" style="margin-left:5px;width:30px;" id="Visitor" value="Visitor" /></td>
+                                                    <td>Visitor</td>
+                                                </tr>
+                                                visitorEmp = 1;
+                                            }
+
+                                        }
+
+                                        if (!(examinees[e].Contains("All") || examinees[e].Contains("RIMP") || examinees[e].Contains("CGSI") || examinees[e].Contains("Good Job") || examinees[e].Contains("Visitor")) && isSelected == 0)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    Selected Examinee:
+                                                    <textarea class="form-control" id="listSelected" placeholder="Write the id number [g190000]">@examinees[e]</textarea>
+                                                </td>
+                                            </tr>
+                                            isSelected = 1;
+                                        }
+                                    }
+                                    break;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Modal Content: ends -->
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer" style="background-color:#e9ebec;">
+                <a href="#" onclick="examineeOnchange()" class="btn btn-danger" data-dismiss="modal">Submit</a>
+                <a href="#" class="btn btn-primary" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $("#selectedEmp").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                       Type: 'POST',
+                        url: '@Url.Action("GetEmpID","Maintenance")',
+                        dataType: "json",
+                        data: { term: request.term },
+                        success: function (data) {
+
+                            if (data != 0   ) {
+
+                                response($.map(data, function (item) {
+                                    return {
+                                       label: item.emp_id, value: item.emp_id.trim(),
+                                    };
+                                }))
+
+                            } else {
+                                 var result = [
+                                    {
+                                     label: 'No matches found',
+                                     value: response.term
+                                    }
+                                ];
+                             response(result);
+                            }
+                        }
+                    })
+                },
+                select: function (event, ui) {
+                     ui.item.value = "";
+                    $("#fixSlected").append(ui.item.label.replace('-', '').trim() + ",");
+                }
+            });
+        })
+</script>

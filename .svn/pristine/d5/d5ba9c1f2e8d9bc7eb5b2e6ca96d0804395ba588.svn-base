@@ -1,0 +1,606 @@
+﻿@model IEnumerable<webproject.Models.TakeExamModel>
+
+@* ------------ Razor Declaration and Initialization --------------------*@
+@{
+    ViewBag.Title = "TakeExam";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+
+    var testTitle = "";
+
+    var tmpCategory = "";
+
+
+    int? examID = 0;
+
+    var maxId = ViewBag.examMax;
+    var minId = ViewBag.examMin;
+
+    var mcGenIns = "";
+    var fbGenIns = "";
+    var enuGenIns = "";
+    var essayGenIns = "";
+    var enumGenIns = "";
+    var mtGenIns = "";
+
+    var mcItem = 0;
+    var fbItem = 0;
+    var enuItem = 0;
+    var essayItem = 0;
+    var enumItem = 0;
+    var mtItem = 0;
+    var diagramItem = 0;
+    var diagramItems = 1;
+
+    var empID = Request.Cookies["EmpID"].Value.ToString();
+
+    var today = DateTime.Now.ToString("MMM dd, yyy");
+    var time = "";
+    var limit = "";
+    var lastMin = "";
+
+    int tmp = 0;
+
+    var prvEnumQuestion = "";
+    var enumAnsItem = 1;
+
+    var prvDiagram = "";
+
+}
+
+@* ------------E N D of Razor Declaration and Initialization --------------------*@
+
+@* ------------ Razor Functions ---------------------------*@
+
+@functions{
+
+    //Get letter of the choices.
+    public string getChoices(int length)
+    {
+        string choice = "";
+        switch (length)
+        {
+            case 1: choice = "a"; break;
+            case 2: choice = "b"; break;
+            case 3: choice = "c"; break;
+            case 4: choice = "d"; break;
+            case 5: choice = "e"; break;
+            case 6: choice = "f"; break;
+            case 7: choice = "g"; break;
+            case 8: choice = "j"; break;
+            case 9: choice = "i"; break;
+            case 11: choice = "j"; break;
+            case 12: choice = "k"; break;
+            case 13: choice = "l"; break;
+            case 14: choice = "m"; break;
+            case 15: choice = "n"; break;
+            case 16: choice = "o"; break;
+            case 17: choice = "p"; break;
+            case 18: choice = "q"; break;
+            case 19: choice = "r"; break;
+            case 20: choice = "s"; break;
+            case 21: choice = "t"; break;
+            case 22: choice = "u"; break;
+            case 23: choice = "v"; break;
+            case 24: choice = "w"; break;
+            case 25: choice = "x"; break;
+            case 26: choice = "y"; break;
+            case 27: choice = "z"; break;
+            default: choice = ""; break;
+        }
+
+        return choice;
+    }
+
+}
+
+@* ------------ END of Razor Functions --------------------*@
+
+@foreach (var title in Model)
+{
+
+    testTitle = title.Title;
+    tmpCategory = title.Category;
+    examID = title.ExamID;
+    tmp = Convert.ToInt32(title.minLimit) + Convert.ToInt32(title.hrLimit);
+    break;
+}
+
+@{
+    time = DateTime.Now.AddMinutes(tmp).ToString("HH:mm:ss");
+    lastMin = DateTime.Now.AddMinutes((tmp - 2)).ToString("h:mm:ss");
+    limit = today + " " + time;
+}
+
+<input type="hidden" value="@limit" id="limit" />
+<input type="hidden" value="@lastMin" id="twoMin" />
+<script>
+    // Set the date we're counting down to
+    var limit = $("#limit").val();
+    var twoMin = $("#twoMin").val();
+
+    var countDownDate = new Date(limit).getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function () {
+
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
+
+
+        //var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        var timeNow = new Date().toLocaleTimeString();
+        var realTime = timeNow.split(" ")[0];
+
+        document.getElementById("demo").innerHTML = hours + ":"
+            + minutes + ":" + seconds;
+
+
+        // If the count down is over, write some text
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("demo").innerHTML = "EXPIRED";
+            // SubmitExam(1, 0, 0);
+        }
+
+    }, 1000);
+
+    window.onbeforeunload = function () {
+        return "Are you sure you want to leave? Once you submitted it, it will be recorded.Please make sure to complete the test. ";
+    }
+    window.onunload = function () {
+        SubmitExam(1, 0, 0);
+    }
+
+    window.location.hash = "no-back-button";
+    window.location.hash = "Again-No-back-button";//again because google chrome don't insert first hash into history
+    window.onhashchange = function () { window.location.hash = "no-back-button"; }
+
+</script>
+
+<input type="hidden" value=" @maxId" id="txtMax" />
+<input type="hidden" value=" @minId" id="txtMin" />
+<input type="hidden" id="dateToday" value="@DateTime.Now.ToString("MMM dd, yyy HH:mm:ss")" />
+<input type="hidden" value="@examID" id="TEtxtExamID" />
+<input type="hidden" value="@empID" id="EmpIDSession" />
+
+
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle" id="secondaryColor">OQS Dashboard</span>
+        <h3 class="page-title" id="titleName">Examination</h3>
+    </div>
+</div>
+
+<div id="teOverlay">
+    <div class="center">
+        <img src="~/Images/checking.gif" />
+        <p id="checkingExam">
+            Checking . . .
+        </p>
+
+    </div>
+</div>
+
+
+<div class="row">
+    <div id="wrap" style="width:80%;opacity:.9;">
+        <div style="position: absolute;width:70%;height:30px;max-height:30pc; background-color:#5a6169;"></div>
+        <div id="fontcon">
+            <font id="font1">| OnlineExamination</font>
+            <font id="font2" style="font-size:8px;">System</font>
+        </div>
+
+        <div class="question">
+            <p style="font-size:25px; color:#E74856;font-family:Arial;">@testTitle Questionnaire</p>
+            <form class="add-new-post__editor">
+                @foreach (var mc in Model)
+                {
+                    if (mc.TestType.Equals("Multiple Choice"))
+                    {
+                        var ans_mcID = "ans" + mc.OP_ID;
+                        var ansTxt = "error" + mc.OP_ID;
+                        var choices = mc.Choices.Split('.');
+
+                        if (mcGenIns.Equals(""))
+                        {
+                            <div>
+                                <font style="font-weight:bold; font-size:15px;">Multiple Choice. <br />
+                                 @mc.GeneralInstruction</font>
+                            </div>
+                            mcItem++;
+                        }
+                        else
+                        {
+                            if (!(mcGenIns.Equals(mc.GeneralInstruction)))
+                            {
+                                <div>
+                                    <font style="font-weight:bold; font-size:15px;">Multiple Choice.  <br />
+                                    @mc.GeneralInstruction</font>
+                                </div>
+                                mcItem = 1;
+                            }
+                            else
+                            {
+                                mcItem++;
+                            }
+
+                        }
+                        <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+                            <div>
+                                <font style="font-size:14px;">@mcItem. @mc.Question</font>
+                            </div>
+                            <div id="choicesID">
+                                @for (int length = 0; length < choices.Length; length++)
+                                {
+
+                                    <div>
+                                        @if (getChoices(length) != "")
+                                        {
+                                            <input type="radio" value="@getChoices(length)" name="@mc.OP_ID" id="@ans_mcID" />
+                                            <font>
+                                                @getChoices(length). @choices[length].Substring(0, (@choices[length].Length - 1))
+                                            </font>
+
+                                        }
+                                    </div>
+                                }
+                                <font style="display:none; color:red;" id="@ansTxt">Answer cannot be blank</font>
+                            </div>
+                        </div>
+
+                    }
+
+                    if (mc.TestType.Equals("Filling the blanks"))
+                    {
+                        var ans_fbID = "ans" + mc.OP_ID;
+                        var ansTxt2 = "error" + mc.OP_ID;
+
+                        if (fbGenIns.Equals(""))
+                        {
+                            <div>
+                                <font style="font-weight:bold; font-size:15px;">Filling the blanks. @mc.GeneralInstruction</font>
+                            </div>
+                            fbItem++;
+                        }
+                        else
+                        {
+                            if (!(fbGenIns.Equals(mc.GeneralInstruction)))
+                            {
+                                <div>
+                                    <font style="font-weight:bold; font-size:15px;">Filling the blanks. @mc.GeneralInstruction</font>
+                                </div>
+                                fbItem = 1;
+                            }
+                            else
+                            {
+                                fbItem++;
+                            }
+                        }
+                        <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+                            <div>
+                                <font style="font-size:14px;">@fbItem. @mc.Question</font>
+                            </div>
+                            <div id="choicesID">
+                                <font style="font-size:14px; padding-left:20px;"> @mc.Choices</font>
+                            </div>
+                            <div>
+                                <input type="text" class="w3-input w3-hover-border-red w3-animate-input" style="width:50%;color:blue;font-size:15px;font-family:Calibri;" id="@ans_fbID" placeholder="Enter your answer here.." />
+                                <font style="display:none; color:red;" id="@ansTxt2">Answer cannot be blank</font>
+                            </div>
+                        </div>
+
+                    }
+
+                    if (mc.TestType.Equals("Identification"))
+                    {
+                        var ans_enuID = "ans" + mc.OP_ID;
+                        var ansTxt3 = "error" + mc.OP_ID;
+
+                        if (enuGenIns.Equals(""))
+                        {
+                            <div>
+                                <font style="font-weight:bold; font-size:15px;">Identification.  <br />
+                                @mc.GeneralInstruction</font>
+                            </div>
+                            enuItem++;
+                        }
+                        else
+                        {
+                            if (!(enuGenIns.Equals(mc.GeneralInstruction)))
+                            {
+                                <div>
+                                    <font style="font-weight:bold; font-size:15px;">Identification.  <br />
+                                    @mc.GeneralInstruction</font>
+                                </div>
+                                enuItem = 1;
+                            }
+                            else
+                            {
+                                enuItem++;
+                            }
+                        }
+                        <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+                            <div>
+                                ____<font style="font-size:14px;">@enuItem. @mc.Question</font>
+                            </div>
+                            <div id="choicesID">
+                                <font style="font-size:14px; padding-left:20px;"> @mc.Choices</font>
+                            </div>
+                            <div>
+                                <input type="text" class="w3-input w3-hover-border-red w3-animate-input" style="width:50%;color:blue;font-size:15px;font-family:Calibri;" id="@ans_enuID" placeholder="Enter your answer here.." />
+                                <font style="display:none; color:red;" id="@ansTxt3">Answer cannot be blank</font>
+                            </div>
+                        </div>
+                    }
+                    if (mc.TestType.Equals("Essay"))
+                    {
+                        var ans_essayID = "ans" + mc.OP_ID;
+                        var ansTxt3 = "error" + mc.OP_ID;
+
+                        if (essayGenIns.Equals(""))
+                        {
+                            <div>
+                                <font style="font-weight:bold; font-size:15px;">Essay. @mc.GeneralInstruction</font> <br />
+                                <font style="font-weight:bold; font-size:12px;">@mc.Points Points. </font>
+                            </div>
+                            essayItem++;
+                        }
+                        else
+                        {
+                            if (!(essayGenIns.Equals(mc.GeneralInstruction)))
+                            {
+                                <div>
+                                    <font style="font-weight:bold; font-size:15px;">Essay.  <br />
+                                    @mc.GeneralInstruction</font> <br />
+                                    <font style="font-weight:bold; font-size:12px;">@mc.Points Points.</font>
+                                </div>
+                                essayItem = 1;
+                            }
+                            else
+                            {
+                                essayItem++;
+                            }
+                        }
+                        <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+                            <div>
+                                ____<font style="font-size:14px;">@essayItem. @mc.Question</font>
+                            </div>
+                            <div id="choicesID">
+                                <font style="font-size:14px; padding-left:20px;"> @mc.Choices</font>
+                            </div>
+                            <div>
+                                <input type="text" class="w3-input w3-hover-border-red w3-animate-input" style="width:50%;color:blue;font-size:15px;font-family:Calibri;" id="@ans_essayID" placeholder="Enter your answer here.." />
+                                <font style="display:none; color:red;" id="@ansTxt3">Answer cannot be blank</font>
+                            </div>
+                        </div>
+                    }
+
+                    if (mc.TestType.Equals("Enumeration"))
+                    {
+                        var ans_enumID = "ans" + mc.OP_ID;
+                        var ansTxt3 = "error" + mc.OP_ID;
+
+                        if (enumGenIns.Equals(""))
+                        {
+                            <div>
+                                <font style="font-weight:bold; font-size:15px;">Enumeration.  <br />
+                                @mc.GeneralInstruction</font>
+                            </div>
+                            enumItem++;
+                        }
+                        else
+                        {
+                            if (!(enumGenIns.Equals(mc.GeneralInstruction)))
+                            {
+                                <div>
+                                    <font style="font-weight:bold; font-size:15px;">Enumeration.  <br />
+                                    @mc.GeneralInstruction</font>
+                                </div>
+                                enumItem = 1;
+                            }
+                            else
+                            {
+                                enumItem++;
+                            }
+                        }
+                        <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+                            @if (!(mc.Question.Equals(prvEnumQuestion)))
+                            {
+                                <div>
+                                    <font style="font-size:17px;font-weight:bold;font-family:Calibri;">@enumItem. @mc.Question</font>
+                                </div>
+                                enumAnsItem = 1;
+                            }
+                            @if (enumAnsItem == 1)
+                            {
+                                if (mc.InAnyOrder.Equals("Yes"))
+                                {
+                                    <small style="color:crimson;">* Answer <u style="font-weight:bold;">can</u> be in any order.</small>
+                                }
+                                else
+                                {
+                                    <small style="color:crimson;">* Answer <u style="font-weight:bold;"> cannot</u> be in any order.</small>
+                                }
+                            }
+                            <div style="margin-left:60px;">
+                                <font style="font-size:12px; display:inline-block;">@enumAnsItem.</font>
+                                <input type="text" class="w3-input w3-hover-border-red" style="display:inline-block; width:300px;color:blue;font-size:15px;font-family:Calibri;" id="@ans_enumID" placeholder="Enter your answer here.." />
+                                <font style="display:none; color:red;" id="@ansTxt3">Answer cannot be blank</font>
+                            </div>
+                        </div>
+
+
+                        prvEnumQuestion = mc.Question;
+                        enumAnsItem++;
+                    }
+                    if (mc.TestType.Equals("Matching Type"))
+                    {
+                        var ans_mtID = "ans" + mc.OP_ID;
+                        var ansTxt3 = "error" + mc.OP_ID;
+
+                        if (mtGenIns.Equals(""))
+                        {
+                            <div>
+                                <font style="font-weight:bold; font-size:15px;">Matching Type.  <br />
+                                @mc.GeneralInstruction</font>
+                            </div>
+                            mtItem++;
+                        }
+                        else
+                        {
+                            if (!(mtGenIns.Equals(mc.GeneralInstruction)))
+                            {
+                                <div>
+                                    <font style="font-weight:bold; font-size:15px;">Matching Type.  <br />
+                                    @mc.GeneralInstruction</font>
+                                </div>
+                                mtItem = 1;
+                            }
+                            else
+                            {
+                                mtItem++;
+                            }
+                        }
+                        <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+                            <div style="display:inline-block;width:100%;margin-bottom:10px;">
+                                <div style="display:inline-block;width:10%;">
+                                    <input type="text" class="form-control" style="display:inline-block;color:blue;font-size:15px;font-family:Calibri;" id="@ans_mtID" placeholder="Answer" />
+                                    <font style="display:none; color:red;" id="@ansTxt3">Answer cannot be blank</font>
+                                </div>
+                                <div style="display:inline-block;width:40%;">
+                                    <font style="font-size:17px;font-weight:bold;font-family:Calibri;">@mtItem. @mc.Question</font>
+                                </div>
+                                <div style="display:inline-block;width:40%;">
+                                    <font style="font-size:17px;font-weight:bold;font-family:Calibri;">@mc.Choices</font>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    if (mc.TestType.Equals("Diagram"))
+                    {
+                        var ans_diagramID = "ans" + mc.OP_ID;
+                        var ansTxt3 = "error" + mc.OP_ID;
+
+                        if (enumGenIns.Equals(""))
+                        {
+                            <div>
+                                <font style="font-weight:bold; font-size:15px;">Daigram.  <br />
+                                @mc.GeneralInstruction</font>
+                            </div>
+                            diagramItem++;
+                        }
+                        else
+                        {
+                            if (!(enumGenIns.Equals(mc.GeneralInstruction)))
+                            {
+                                <div>
+                                    <font style="font-weight:bold; font-size:15px;">Daigram.  <br />
+                                    @mc.GeneralInstruction</font>
+                                </div>
+                                diagramItem = 1;
+                            }
+                            else
+                            {
+                                diagramItem++;
+                            }
+                        }
+                        <div class="form-group" style="padding-bottom: 5px;margin-left:10px;" id="@mc.OP_ID">
+                            @if (!(mc.DiagramImgName.Equals(prvDiagram)))
+                            {
+                                <hr />
+                                <div style="margin-bottom:10px; width:100%;max-height:800px; margin-left:30px;overflow-y:scroll;overflow-x:hidden;">
+                                    <img src="~/Diagrams/@mc.DiagramImgName" style="margin-left:10px;" width="700" height="800" class="img-thumbnail" />
+                                </div>
+                                <hr />
+                                diagramItem = 1;
+                            }
+                            <font style="font-size:12px; display:inline-block;">@diagramItems.</font>
+                            <font style="font-weight:bold; font-size:15px;"> @mc.Question</font>
+
+                            <div style="max-height:800px;">
+                                @if (!mc.Choices.Equals(""))
+                                {
+                                    <font style="font-weight:bold; font-size:15px;margin-left:70px;"> @mc.Choices</font>
+                                }
+                                else if (!mc.ChoicesImgName.Equals(""))
+                                {
+                                    <div style="margin-bottom:10px; width:100%;max-height:700px; margin-left:30px;overflow-y:scroll;overflow-x:hidden;">
+                                        <img src="~/Diagrams/@mc.ChoicesImgName"  style="margin-left:10px;" width="700" height="700" class="img-thumbnail" />
+                                    </div>
+
+                                }
+                            </div>
+
+                            <div style="margin-left:10px;">
+                                <input type="text" class="form-control" style="display:inline-block; width:95%;color:blue;font-size:15px;font-family:Calibri;" id="@ans_diagramID" placeholder="Enter your answer here.." />
+                                <font style="display:none; color:red;" id="@ansTxt3">Answer cannot be blank</font>
+                            </div>
+                        </div>
+                        prvDiagram = mc.DiagramImgName;
+                        diagramItems++;
+                    }
+
+                    mcGenIns = mc.GeneralInstruction;
+                    fbGenIns = mc.GeneralInstruction;
+                    enuGenIns = mc.GeneralInstruction;
+                    essayGenIns = mc.GeneralInstruction;
+                    enumGenIns = mc.GeneralInstruction;
+                    mtGenIns = mc.GeneralInstruction;
+
+                    enumItem = 1;
+
+                }
+            </form>
+            <button class="form-control btn-accent" style="width:20%;background-color:#E74856;" id="openID" data-toggle="modal" data-target=".bs-example-modal-new">
+                Submit
+            </button>
+        </div>
+    </div>
+</div> <!-- /wrap -->
+<div style="width:80%; position: fixed;top: 0;">
+    <div id="clockDiv">
+        <img src="~/Images/time.gif" style="float:right;width:100px;" />
+        <font style="font-size:10px;font-family:Arial;letter-spacing:2px;">Remaining Time</font>
+        <p id="demo"></p>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-new" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <!-- Modal Content: begins -->
+        <div class=" modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: maroon; ">
+                <div class="avatar-img" style="margin-top:-45px;bottom:15px;">
+                    <img src="~/Images/save.png" style="width: 100px;height:100px;border-color:white;" />
+                </div>
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="body-message">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            Are you sure you want to submit it now?
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Content: ends -->
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer" style="background-color:#e9ebec;">
+                <input type="submit" value="Yes" class="btn btn-danger btn-lg" data-dismiss="modal" onclick="SubmitExam(0,1,0)">
+                <input type="submit" value="No" class="btn btn-primary btn-lg" data-dismiss="modal">
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" value="@examID" id="TEtxtExamID" />
+<input type="hidden" value="@empID" id="EmpIDSession" />

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<webproject.Models.UserSearch>
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+}
+
+<h4>Search results:</h4>
+<div class="options">
+    <ul>
+        <li>
+            <p class="blue">All</p>
+        </li>
+    </ul>
+</div>
+<div class="stats">
+    <p>Displaying search result of all examinations and examinee history.</p>
+</div>
+
+@foreach (var model in Model)
+{
+    if (model.Rights.Equals("FC"))
+    {
+        if (model.Fullname.Equals(""))
+        {
+            <div class="results">
+                <div class="ind">
+                    <a class="link" href="@Url.Action("TakeExam", "Examinations", new { examId = model.ExamID, empID = model.EmpID })#questionaires">
+                        @Html.DisplayFor(modelItem => model.Title)
+                    </a><br />
+                    <a class="url" href="@Url.Action("TakeExam", "Examinations", new { examId = model.ExamID, empID = model.EmpID })#questionaires">
+                        http//Examinations/TakeExam.com &#9662;
+                    </a>
+                    <p class="desc"><u><strong> Click</strong> to take the exam.</u> </p>
+                </div>
+            </div>
+        }else{
+
+            if (model.IsVisitor.Equals("0"))
+            {
+                <div class="results">
+                    <div class="ind">
+                        <a class="link" href="@Url.Action("OpenExamHistory", "Examinations", new { examId = model.ExamID, empID = model.EmpID })#questionaires">
+                            @Html.DisplayFor(modelItem => model.Title)
+                        </a><br />
+                        <a class="url" href="@Url.Action("OpenExamHistory", "Examinations", new { examId = model.ExamID, empID = model.EmpID })#questionaires">
+                            http//Examinations/OpenExamHistory.com &#9662;
+                        </a>
+                        <p class="desc">Click to open <strong><u>@Html.DisplayFor(modelItem => model.Fullname)'s</u></strong> examination</p>
+                     </div>
+                </div>
+            }else{               
+                <div class="results">
+                    <div class="ind">
+                        <a class="link" href="@Url.Action("OpenVisitorExam", "Examinations", new { examId = model.ExamID, empID = model.EmpID })#questionaires">
+                            @Html.DisplayFor(modelItem => model.Title)
+                        </a><br />
+                        <a class="url" href="@Url.Action("OpenVisitorExam", "Examinations", new { examId = model.ExamID, empID = model.EmpID })#questionaires">
+                            http//Examinations/OpenVisitorExam.com &#9662;
+                        </a>
+                        <p class="desc">Click to open <strong><u>@Html.DisplayFor(modelItem => model.Fullname)'s</u></strong> examination</p>
+                    </div>
+                </div>
+            }
+        }
+    }
+    else
+    {
+        <div class="results">
+            <div class="ind">
+                <a class="link" href="@Url.Action("TakeExam", "Examinations", new { examId = model.ExamID, empID = model.EmpID })#questionaires">
+                    @Html.DisplayFor(modelItem => model.Title)
+                </a><br />
+                <a class="url" href="@Url.Action("TakeExam", "Examinations", new { examId = model.ExamID, empID = model.EmpID })#questionaires">
+                    http//Examinations/TakeExam.com &#9662;
+                </a>
+                <p class="desc"> <strong> @Html.DisplayFor(modelItem => model.Fullname) </strong>exam result.</p>
+            </div>
+        </div>
+    }
+}

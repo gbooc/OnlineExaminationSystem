@@ -1,0 +1,277 @@
+﻿var prev = [];
+var idPrev = [];
+function inputEvents(id, qNum) {
+
+    $('#' + id).attr('readonly', false);
+
+    prev.push(id);
+    prev.push(qNum);
+
+
+}
+
+function disableField(id) {
+    $("#" + id).attr('readonly', true);
+
+    var field = "";
+    var testType = "";
+    var type = prev[0];
+    var prevID = prev[1];
+    var prevContent = $("#" + type).val();
+
+
+    if (id.indexOf("oq_gi") !== -1) {
+        field = "1";
+
+        if (id.indexOf("oq_gi_mcID") !== -1) {
+            testType = "Multiple Choice";
+        }
+        if (id.indexOf("oq_gi_FbID") !== -1) {
+            testType = "Filling the blanks";
+        }
+        if (id.indexOf("oq_gi_EnuID") !== -1) {
+            testType = "Identification";
+        }
+        if (id.indexOf("oq_gi_EssayID") !== -1) {
+            testType = "Essay";
+        }
+    } else if (type.indexOf("oq_q") !== -1) {
+        field = "2";
+    } else if (type.indexOf("oq_ch") !== -1) {
+        field = "3";
+    } else if (type.indexOf("oq_ans") !== -1) {
+        field = "4";
+    }
+    // -- END ---
+
+    $.ajax({
+        url: '/Maintenance/updateQuestionaire',
+        type: 'POST',
+        data: JSON.stringify({ id: prevID, content: prevContent, fieldName: field, TestType: testType }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+        complete: function () {
+            $(".op-imgLoader").hide();
+            $("#op-check").show();
+
+        }
+    });
+
+    prev.shift();
+    prev.shift();
+}
+
+function categoryOnchange() {
+    var newCategory = $("#categoryId").val();
+    var examID = $("#txtExamID").val();
+
+    $.ajax({
+        url: '/Maintenance/updateQuestionaire',
+        type: 'POST',
+        data: JSON.stringify({ id: "-1", content: newCategory, fieldName: examID, TestType: "" }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+        complete: function () {
+            $('#categoryId').attr('disabled', true);
+        }
+    });
+}
+function categoryDblClk() {
+    $('#categoryId').attr('disabled', false);
+    $('#txtTitleID').attr('readonly', false);
+    $('#txtSchedule').attr('readonly', false);
+    $('#examineeID').attr('disabled', false);
+    $('#passingRate').attr('readonly', false);
+    $('#hrID').attr('readonly', false);
+    $('#minID').attr('readonly', false);
+}
+
+function changeTitle() {
+    var newTitle = $("#txtTitleID").val();
+    var examID = $("#txtExamID").val();
+    $.ajax({
+        url: '/Maintenance/updateQuestionaire',
+        type: 'POST',
+        data: JSON.stringify({ id: "-2", content: newTitle, fieldName: examID, TestType: "" }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+        complete: function () {
+            $('#txtTitleID').attr('disabled', true);
+        }
+    });
+}
+
+function changeSchedule(e) {
+    var examID = $("#txtExamID").val();
+    $.ajax({
+        url: '/Maintenance/updateQuestionaire',
+        type: 'POST',
+        data: JSON.stringify({ id: "-3", content: e.target.value, fieldName: examID, TestType: "" }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+
+    });
+
+}
+
+function examineeOnchange() {
+
+    var newExaminee = $("#examineeID").val();
+    var examID = $("#txtExamID").val();
+
+    if (newExaminee != "Selected") {
+        $.ajax({
+            url: '/Maintenance/updateQuestionaire',
+            type: 'POST',
+            data: JSON.stringify({ id: "-4", content: newExaminee, fieldName: examID, TestType: "" }),
+            dataType: "json",
+            traditional: true,
+            contentType: 'application/json;',
+            cache: false,
+            complete: function () {
+                $('#examineeID').attr('disabled', true);
+            }
+        });
+    }
+
+
+}
+
+$(function () {
+    //Examinee
+    $("#examineeID").change(function () {
+        var Examinee = $(this).val();
+        
+        if (Examinee == "Selected") {
+            $("#selectedEmp").show();
+            $("#fixSlected").show();
+        } else {
+            
+            $("#selectedEmp").hide();
+            $("#fixSlectedID").hide();
+            $("#fxSelectedTmp").hide();
+        }
+    });
+});
+
+function updNewExaminee()
+{
+    var examID = $("#txtExamID").val();
+    var newExaminee = $("#fixSlected").val();
+
+    $.ajax({
+        url: '/Maintenance/updateQuestionaire',
+        type: 'POST',
+        data: JSON.stringify({ id: "-4", content: newExaminee, fieldName: examID, TestType: "" }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+        complete: function () {
+            $('#examineeID').attr('disabled', true);
+            $('#selectedEmp').attr('readonly', true);
+        }
+    });
+}
+
+function submitNewExaminee() {
+    var examID = $("#txtExamID").val();
+    var newExaminee = $("#selectedEmp").val();
+    var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?]+/;
+
+    if (event.key === 'Enter') {
+        if (newExaminee.charAt(0) != "g" || newExaminee.match(format)) {
+
+            $("#selectedEmp").addClass("is-invalid");
+            $('#selectedEmp')
+                .attr('data-toggle', 'tooltip')
+                .attr('data-placement', 'top')
+                .tooltip({
+                    trigger: 'manual'
+                })
+                .tooltip('show');
+
+        } else {
+            $.ajax({
+                url: '/Maintenance/updateQuestionaire',
+                type: 'POST',
+                data: JSON.stringify({ id: "-4", content: newExaminee, fieldName: examID, TestType: "" }),
+                dataType: "json",
+                traditional: true,
+                contentType: 'application/json;',
+                cache: false,
+                complete: function () {
+                    $('#examineeID').attr('disabled', true);
+                    $('#selectedEmp').attr('readonly', true);
+                }
+            });
+        }
+    }
+}
+
+function passingDblClk() {
+    var examID = $("#txtExamID").val();
+
+    $.ajax({
+        url: '/Maintenance/updateQuestionaire',
+        type: 'POST',
+        data: JSON.stringify({ id: "-5", content: $("#passingRate").val(), fieldName: examID, TestType: "" }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+        complete: function () {
+            $('#passingRate').attr('readonly', true);
+        }
+    });
+}
+
+function limitDblClk() {
+
+    var examID = $("#txtExamID").val();
+    var hr = $("#hrID").val();
+    var min = $("#minID").val();
+
+    $.ajax({
+        url: '/Maintenance/updateQuestionaire',
+        type: 'POST',
+        data: JSON.stringify({ id: "-6", content: hr + ";" + min, fieldName: examID, TestType: "" }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+        complete: function () {
+            $('#hrID').attr('readonly', true);
+            $('#minID').attr('readonly', true);
+        }
+    });
+}
+
+function addEssayScore(id, essayID,examinee, attempt, q_id, essyCount) {
+
+
+    $.ajax({
+        url: '/Examinations/updateEssayScore',
+        type: 'POST',
+        data: JSON.stringify({ content: essayID, examID: id, empID: examinee, attempt: attempt, QID: q_id }),
+        dataType: "json",
+        traditional: true,
+        contentType: 'application/json;',
+        cache: false,
+        complete: function () {
+            $("#chckBtn_" + essyCount).hide();
+            $("#wrngBtn_" + essyCount).hide();
+
+            $("#gradedID_" + essyCount).show();
+        }
+    });
+
+}

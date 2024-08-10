@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="OESModelStoreContainer" CdmEntityContainer="OESEntities">
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="OESModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_category">
+      <EntityTypeMapping TypeName="OESModel.tbl_category">
+        <MappingFragment StoreEntitySet="tbl_category">
+          <ScalarProperty Name="department" ColumnName="department" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="category_name" ColumnName="category_name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_employee">
+      <EntityTypeMapping TypeName="OESModel.tbl_employee">
+        <MappingFragment StoreEntitySet="tbl_employee">
+          <ScalarProperty Name="e_id" ColumnName="e_id" />
+          <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+          <ScalarProperty Name="fullname" ColumnName="fullname" />
+          <ScalarProperty Name="department" ColumnName="department" />
+          <ScalarProperty Name="user_rights" ColumnName="user_rights" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_examinations">
+      <EntityTypeMapping TypeName="OESModel.tbl_examinations">
+        <MappingFragment StoreEntitySet="tbl_examinations">
+          <ScalarProperty Name="concat_any_order" ColumnName="concat_any_order" />
+          <ScalarProperty Name="essay_flag" ColumnName="essay_flag" />
+          <ScalarProperty Name="total_score" ColumnName="total_score" />
+          <ScalarProperty Name="exam_duration" ColumnName="exam_duration" />
+          <ScalarProperty Name="attempt" ColumnName="attempt" />
+          <ScalarProperty Name="e_id" ColumnName="e_id" />
+          <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+          <ScalarProperty Name="q_id" ColumnName="q_id" />
+          <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+          <ScalarProperty Name="answer" ColumnName="answer" />
+          <ScalarProperty Name="score" ColumnName="score" />
+          <ScalarProperty Name="date_answered" ColumnName="date_answered" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_questionnaire">
+      <EntityTypeMapping TypeName="OESModel.tbl_questionnaire">
+        <MappingFragment StoreEntitySet="tbl_questionnaire">
+          <ScalarProperty Name="essay_points" ColumnName="essay_points" />
+          <ScalarProperty Name="in_any_order" ColumnName="in_any_order" />
+          <ScalarProperty Name="choices_img" ColumnName="choices_img" />
+          <ScalarProperty Name="image_name" ColumnName="image_name" />
+          <ScalarProperty Name="passing_rate" ColumnName="passing_rate" />
+          <ScalarProperty Name="time_limit" ColumnName="time_limit" />
+          <ScalarProperty Name="examinee" ColumnName="examinee" />
+          <ScalarProperty Name="allow_access" ColumnName="allow_access" />
+          <ScalarProperty Name="exam_schedule" ColumnName="exam_schedule" />
+          <ScalarProperty Name="date_added" ColumnName="date_added" />
+          <ScalarProperty Name="updated_by" ColumnName="updated_by" />
+          <ScalarProperty Name="added_by" ColumnName="added_by" />
+          <ScalarProperty Name="department" ColumnName="department" />
+          <ScalarProperty Name="q_id" ColumnName="q_id" />
+          <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="test_type" ColumnName="test_type" />
+          <ScalarProperty Name="general_instruction" ColumnName="general_instruction" />
+          <ScalarProperty Name="question" ColumnName="question" />
+          <ScalarProperty Name="choices" ColumnName="choices" />
+          <ScalarProperty Name="answer" ColumnName="answer" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="OESModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="OESModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="OESModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="OESModel.Store.sp_helpdiagramdefinition">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="OESModel.sp_helpdiagramdefinition_Result">
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="OESModel.Store.sp_helpdiagrams">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="OESModel.sp_helpdiagrams_Result">
+          <ScalarProperty Name="Database" ColumnName="Database" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="OESModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="OESModel.Store.sp_upgraddiagrams" />
+    <EntitySetMapping Name="tbl_unique_codes">
+      <EntityTypeMapping TypeName="OESModel.tbl_unique_codes">
+        <MappingFragment StoreEntitySet="tbl_unique_codes">
+          <ScalarProperty Name="mname" ColumnName="mname" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="isVisitor" ColumnName="isVisitor" />
+          <ScalarProperty Name="department" ColumnName="department" />
+          <ScalarProperty Name="lname" ColumnName="lname" />
+          <ScalarProperty Name="fname" ColumnName="fname" />
+          <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+          <ScalarProperty Name="control_no" ColumnName="control_no" />
+          <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+          <ScalarProperty Name="uc_id" ColumnName="uc_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_summary_result_of_exam" FunctionName="OESModel.Store.sp_summary_result_of_exam">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="OESModel.sp_summary_result_of_exam_Result">
+          <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="fullname" ColumnName="fullname" />
+          <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+          <ScalarProperty Name="score" ColumnName="score" />
+          <ScalarProperty Name="total_score" ColumnName="total_score" />
+          <ScalarProperty Name="passing_rate" ColumnName="passing_rate" />
+          <ScalarProperty Name="date_answered" ColumnName="date_answered" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_exam_result_by_subj" FunctionName="OESModel.Store.sp_exam_result_by_subj">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="OESModel.sp_exam_result_by_subj_Result">
+          <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+          <ScalarProperty Name="category_name" ColumnName="category_name" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="total_percentage" ColumnName="total_percentage" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_employee_exam_list" FunctionName="OESModel.Store.sp_employee_exam_list">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="OESModel.sp_employee_exam_list_Result">
+          <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+          <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+          <ScalarProperty Name="date_answered" ColumnName="date_answered" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="category_name" ColumnName="category_name" />
+          <ScalarProperty Name="fullname" ColumnName="fullname" />
+          <ScalarProperty Name="department" ColumnName="department" />
+          <ScalarProperty Name="score_attempt1" ColumnName="score_attempt1" />
+          <ScalarProperty Name="score_latest_attempt" ColumnName="score_latest_attempt" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_examinee_exam_history" FunctionName="OESModel.Store.sp_examinee_exam_history">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="OESModel.sp_examinee_exam_history_Result">
+          <ScalarProperty Name="q_id" ColumnName="q_id" />
+          <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="test_type" ColumnName="test_type" />
+          <ScalarProperty Name="general_instruction" ColumnName="general_instruction" />
+          <ScalarProperty Name="question" ColumnName="question" />
+          <ScalarProperty Name="choices" ColumnName="choices" />
+          <ScalarProperty Name="answer" ColumnName="answer" />
+          <ScalarProperty Name="user_answer" ColumnName="user_answer" />
+          <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+          <ScalarProperty Name="score" ColumnName="score" />
+          <ScalarProperty Name="attempt" ColumnName="attempt" />
+          <ScalarProperty Name="total_score" ColumnName="total_score" />
+          <ScalarProperty Name="fullname" ColumnName="fullname" />
+          <ScalarProperty Name="passing_rate" ColumnName="passing_rate" />
+          <ScalarProperty Name="essay_flag" ColumnName="essay_flag" />
+          <ScalarProperty Name="user_rights" ColumnName="user_rights" />
+          <ScalarProperty Name="exam_duration" ColumnName="exam_duration" />
+          <ScalarProperty Name="image_name" ColumnName="image_name" />
+          <ScalarProperty Name="choices_img" ColumnName="choices_img" />
+          <ScalarProperty Name="in_any_order" ColumnName="in_any_order" />
+          <ScalarProperty Name="essay_points" ColumnName="essay_points" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_enumrations_answer" FunctionName="OESModel.Store.sp_enumrations_answer">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="OESModel.sp_enumrations_answer_Result">
+          <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+          <ScalarProperty Name="q_id" ColumnName="q_id" />
+          <ScalarProperty Name="question" ColumnName="question" />
+          <ScalarProperty Name="answer" ColumnName="answer" />
+          <ScalarProperty Name="in_any_order" ColumnName="in_any_order" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

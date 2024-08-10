@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OESModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="tbl_category">
+    <Key>
+      <PropertyRef Name="category_id" />
+    </Key>
+    <Property Name="category_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="category_name" Type="varchar" MaxLength="2000" />
+    <Property Name="department" Type="varchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="tbl_employee">
+    <Key>
+      <PropertyRef Name="e_id" />
+    </Key>
+    <Property Name="e_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="emp_id" Type="varchar" MaxLength="1000" />
+    <Property Name="fullname" Type="varchar" MaxLength="3000" />
+    <Property Name="department" Type="varchar" MaxLength="1000" />
+    <Property Name="user_rights" Type="varchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="tbl_examinations">
+    <Key>
+      <PropertyRef Name="e_id" />
+    </Key>
+    <Property Name="e_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="exam_id" Type="int" />
+    <Property Name="q_id" Type="int" />
+    <Property Name="emp_id" Type="varchar" MaxLength="1000" />
+    <Property Name="attempt" Type="int" />
+    <Property Name="answer" Type="varchar(max)" />
+    <Property Name="essay_flag" Type="nchar" MaxLength="10" />
+    <Property Name="score" Type="int" />
+    <Property Name="total_score" Type="int" />
+    <Property Name="date_answered" Type="varchar" MaxLength="50" />
+    <Property Name="exam_duration" Type="varchar" MaxLength="5000" />
+  </EntityType>
+  <EntityType Name="tbl_questionnaire">
+    <Key>
+      <PropertyRef Name="q_id" />
+    </Key>
+    <Property Name="q_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="exam_id" Type="int" />
+    <Property Name="category_id" Type="int" />
+    <Property Name="title" Type="varchar" MaxLength="1000" />
+    <Property Name="test_type" Type="varchar" MaxLength="1000" />
+    <Property Name="general_instruction" Type="varchar(max)" />
+    <Property Name="question" Type="varchar(max)" />
+    <Property Name="choices" Type="varchar(max)" />
+    <Property Name="answer" Type="varchar(max)" />
+    <Property Name="department" Type="varchar" MaxLength="1000" />
+    <Property Name="added_by" Type="varchar" MaxLength="1000" />
+    <Property Name="updated_by" Type="varchar" MaxLength="1000" />
+    <Property Name="date_added" Type="varchar" MaxLength="1000" />
+    <Property Name="exam_schedule" Type="varchar" MaxLength="1000" />
+    <Property Name="allow_access" Type="varchar(max)" />
+    <Property Name="examinee" Type="varchar(max)" />
+    <Property Name="time_limit" Type="varchar" MaxLength="5000" />
+    <Property Name="passing_rate" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="tbl_unique_codes">
+    <Key>
+      <PropertyRef Name="uc_id" />
+    </Key>
+    <Property Name="uc_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="exam_id" Type="int" />
+    <Property Name="category_id" Type="int" />
+    <Property Name="emp_id" Type="varchar" MaxLength="1000" />
+    <Property Name="fname" Type="varchar" MaxLength="1000" />
+    <Property Name="mname" Type="varchar" MaxLength="1000" />
+    <Property Name="lname" Type="varchar" MaxLength="1000" />
+    <Property Name="department" Type="varchar" MaxLength="1000" />
+    <Property Name="control_no" Type="varchar" MaxLength="5000" />
+    <Property Name="isVisitor" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="OESModelStoreContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_category" EntityType="Self.tbl_category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_employee" EntityType="Self.tbl_employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_examinations" EntityType="Self.tbl_examinations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_questionnaire" EntityType="Self.tbl_questionnaire" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_unique_codes" EntityType="Self.tbl_unique_codes" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

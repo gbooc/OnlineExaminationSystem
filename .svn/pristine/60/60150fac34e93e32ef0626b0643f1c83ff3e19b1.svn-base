@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<repositories>
+  <repository path="..\webproject.DAL\packages.config" />
+  <repository path="..\webproject\packages.config" />
+</repositories>

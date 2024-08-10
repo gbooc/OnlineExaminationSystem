@@ -1,0 +1,48 @@
+﻿@model webproject.Models.UserViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+}
+<script type="text/javascript">
+    $(window).on('load', function ()
+    {
+        $('.bs-example-modal-new').modal('show');
+      //  $('.overlay').removeClass();
+    });
+</script>
+
+<div class="modal fade bs-example-modal-new" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+ <div class="modal-dialog">
+        <!-- Modal Content: begins -->
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+               <h5 class="modal-title" id="gridSystemModalLabel">Oooppss!</h5>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="body-message">
+                    <h4>Kindly Enter Your ID Number</h4>
+                   
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <input type="text" class="form-control is-invalid" id="validationServer01" placeholder="Employee ID" required>
+                                    <div class="invalid-feedback">Sample Validation</div>
+                                </div>
+                            </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+        <!-- Modal Content: ends -->
+          </div>
+      </div>
+   </div>
+</div>
+
+

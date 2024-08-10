@@ -1,0 +1,73 @@
+﻿@model webproject.Models.UserDetails
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+}
+<script type="text/javascript">
+    $(window).on('load', function ()
+    {
+        $('.bs-example-modal-new').modal('show');
+      //  $('.overlay').removeClass();
+    });
+
+    function OnSuccess()
+    {
+
+    }
+    function OnBegin(){
+        $('#img-loader').show();
+    }
+    function onComplete()
+    {
+        $('#img-loader').show();
+    }
+
+</script>
+
+@using (Ajax.BeginForm("Index", "Home", new AjaxOptions
+{
+    HttpMethod = "POST",
+  //  UpdateTargetId = "LoginId",
+    OnSuccess = "OnSuccess",
+    //OnFailure = "OnFailure",
+    OnBegin = "OnBegin",
+    //OnComplete = "OnComplete"
+}))
+{
+    <div class="modal fade bs-example-modal-new" id="LoginId"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <!-- Modal Content: begins -->
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header" style="background-color: #3f91c0; ">
+                    <h5 style="color:white;" class="modal-title" id="gridSystemModalLabel">Oooppss!</h5>
+                    <div class="avatar-img">
+                        <img src="~/Images/img_avatar.png" style="width: 88px;height:88px;border-color:white;" />
+                    </div>
+                </div>
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <div class="body-message">
+                        <h4>Kindly Enter Your ID Number</h4>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                @Html.TextBoxFor(model => model.EmpID, new { @autofocus = "autofocus", @class = "form-control is-valid", @id = "validationServer01", @placeholder = "Employee ID" })
+                                <div class="valid-feedback"> This field is required </div>
+                            </div>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <img src="~/Images/loader.gif" style="display:none; width: 75px;height:75px;" id="img-loader" />  
+                          <input type="submit" value="Proceed" class="btn btn-primary">
+                        </div>
+
+                    </div>
+                    <!-- Modal Content: ends -->
+                </div>
+            </div>
+        </div>
+    </div>
+}

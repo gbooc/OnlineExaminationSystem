@@ -1,0 +1,717 @@
+﻿@model IEnumerable<webproject.Models.ExamHistory>
+
+
+@{
+    ViewBag.Title = "ExamHistory";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+
+    var testTitle = "";
+    var examinee = "";
+    var empID = "";
+    var attempt = "";
+
+    var prevCount = 0;
+
+    int? examID = 0;
+
+    var isScoreDisplay = 0;
+
+    var enuTotal = 1;
+    var enuIns = 0;
+
+    var fbTotal = 1;
+    var fbIns = 0;
+
+    var mcTotal = 1;
+
+    var mcGenIns = "";
+    var fbGenIns = "";
+    var enuGenIns = "";
+    var essayGenIns = "";
+    var enumGenIns = "";
+    var diagramGenIns = "";
+    var diagramImg = "";
+    var mtGenIns = "";
+
+    var essayTotal = 0;
+    var enumTotal = 0;
+    var diagramTotal = 0;
+
+
+    var mcItem = 0;
+    var fbItem = 0;
+    var enuItem = 0;
+    var essayItem = 0;
+    var enumItem = 0;
+    var enumQuesItem = 0;
+    var diagramItem = 0;
+    var mtgenItem = 0;
+
+    var isPass = "";
+
+    var essyID = "essayID";
+    var essyCnt = 0;
+
+    var essayFlag = 0;
+
+    var q_id = "";
+    var userRights = Request.Cookies["UserRights"].Value.ToString();
+
+    var enumQuestion = "";
+    var enumAns = 1;
+    var diagramItems = 1;
+    var mtItem = 1;
+}
+
+@foreach (var title in Model)
+{
+    testTitle = title.Title;
+    examinee = title.Examinee;
+    empID = title.EmpID;
+    break;
+}
+
+@foreach (var essay in Model)
+{
+    if (essay.EssayFlag.Equals("not graded"))
+    {
+        essayFlag = 1;
+        break;
+    }
+}
+
+
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle" id="secondaryColor">OES Dashboard</span>
+        <h3 class="page-title" id="titleName">Examination Attempts</h3>
+    </div>
+</div>
+
+<div class="w3 w3-animate-right">
+    <div class="row" style="opacity:.9;">
+        <div class="col-lg-12 col-md-12">
+            <!-- Add New Post Form -->
+            <div class="card card-small h-100">
+                @*style="background-color: #5a6169;"*@
+                <div id="divHeader" class="custom-table">
+                    <div>
+                        &nbsp;
+                        <i class="fa fa-paperclip" style="display:inline-block; color:white;font-size:30px;"></i>
+                        <font style="display:inline-block;color:white;font-family:Candara;"> Title: @testTitle</font>
+                    </div>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <form class="add-new-post__editor">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="form-group">
+                                <div id="question" style="font-family:'Courier New';font-size:12px;" data-toggle="tooltip" data-placement="top" title="Click to view result">
+                                    <font style="font-size:16px;">Examinee: @examinee</font>
+                                    <hr />
+                                    @for (int count = 1; count <= ViewBag.examHistory; count++)
+                                    {
+                                        var collapse = "collapse" + count;
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="headingOne">
+                                                <h4 class="panel-title">
+                                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#@collapse" aria-expanded="false" aria-controls="collapse" class="collapsed">
+                                                        @foreach (var mc in Model)
+                                                        {
+
+                                                            if (count == Convert.ToInt32(mc.Attempt) && isScoreDisplay == 0)
+                                                            {
+                                                                isScoreDisplay = 1;
+
+                                                                if (Convert.ToDouble(mc.Score) >= (Convert.ToDouble(mc.TotalScore) * Convert.ToDouble(mc.PassingRate)))
+                                                                {
+                                                                    isPass = "Passed";
+                                                                }
+                                                                else
+                                                                {
+                                                                    isPass = "Failed";
+                                                                }
+                                                                @*<font> Attempt @count | <u>Score: @mc.Score / @mc.TotalScore | Remarks: @isPass</u></font>*@
+                                                                <font>Attempt: @count |</font>
+                                                                <font style="color:#ffd800;font-weight:700;"><u>Score: @mc.Score / @mc.TotalScore </u></font>
+                                                                <font style=""><u>Duration: @mc.Duration</u></font>
+                                                                <font>| Remarks:</font>
+                                                                if (isPass.Equals("Passed"))
+                                                                {
+                                                                    <font style="color:aqua;font-weight:600;">@isPass</font>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <font style="color:#ff6a00;font-weight:600;">@isPass</font>
+                                                                }
+
+                                                                if (essayFlag == 1)
+                                                                {
+                                                                    <font style="color:#00d8ff;font-size:12px;">| <i class="fa fa-warning"></i> Please grade essay exam.</font>
+                                                                }
+                                                            }
+                                                        }
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="@collapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                                <div class="card-body">
+                                                    @foreach (var mc in Model)
+                                                    {
+
+                                                        if (mc.TestType.Equals("Multiple Choice") && count == Convert.ToInt32(mc.Attempt))
+                                                        {
+                                                            if (mcGenIns.Equals("") && mcTotal == 1)
+                                                            {
+                                                                <p style="font-size:15px; font-weight:bold;">Multiple Choice:<br /> @mc.GeneralInstruction</p>
+                                                                mcItem++;
+                                                            }
+                                                            else
+                                                            {
+                                                                if (!(mcGenIns.Equals(mc.GeneralInstruction)))
+                                                                {
+                                                                    <div>
+                                                                        <font style="font-weight:bold; font-size:15px;">Multiple Choice.<br />  @mc.GeneralInstruction</font>
+                                                                    </div>
+                                                                    mcItem = 1;
+                                                                }
+                                                                else
+                                                                {
+                                                                    mcItem++;
+                                                                }
+
+                                                            }
+
+                                                            <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+                                                                <div>
+                                                                    <font style="font-size:14px;">@mcItem. @mc.Question</font>
+                                                                </div>
+                                                                <div id="choicesID">
+                                                                    <font style="font-size:14px; padding-left:20px;"> @mc.Choices</font>
+                                                                </div>
+                                                                <div>
+
+                                                                    @if (mc.UserAnswer.Trim().ToLower().Equals(mc.CorrectAnswer.Trim().ToLower()))
+                                                                    {
+                                                                        <i class="fa fa-check" style="color:blue;"></i>
+                                                                        <textarea type="text" class="form-control" id="correctAns" disabled>@mc.UserAnswer</textarea>
+                                                                        <textarea type="text" class="form-control" id="correctAns" disabled>@mc.CorrectAnswer</textarea>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="fa fa-times" style="color:red;"></i>
+                                                                        <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.UserAnswer</textarea>
+                                                                        <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.CorrectAnswer</textarea>
+
+                                                                    }
+
+                                                                </div>
+                                                                <div>
+                                                                    <font style="display:inline-block;width:45%;color:black;">Answer</font>
+                                                                    <font style="display:inline-block;width:45%;color:black;">Correct Answer</font>
+                                                                </div>
+                                                            </div>
+                                                            mcTotal++;
+                                                            mcGenIns = mc.GeneralInstruction;
+                                                        }
+                                                        if (mc.TestType.Equals("Identification") && count == Convert.ToInt32(mc.Attempt))
+                                                        {
+                                                            var splitAns = mc.CorrectAnswer.Split(new[] { "or" }, StringSplitOptions.None);
+
+                                                            if (enuGenIns.Equals("") && enuTotal == 1)
+                                                            {
+                                                                <p style="font-size:15px; font-weight:bold;">Identification:<br />  @mc.GeneralInstruction</p>
+                                                                enuItem++;
+                                                            }
+                                                            else
+                                                            {
+                                                                if (!(enuGenIns.Equals(mc.GeneralInstruction)))
+                                                                {
+                                                                    <div>
+                                                                        <font style="font-weight:bold; font-size:15px;">Identification.<br />  @mc.GeneralInstruction</font>
+                                                                    </div>
+                                                                    enuItem = 1;
+                                                                }
+                                                                else
+                                                                {
+                                                                    enuItem++;
+                                                                }
+                                                            }
+                                                            <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+                                                                <div>
+                                                                    ____<font style="font-size:14px;">@enuItem. @mc.Question</font>
+                                                                </div>
+                                                                <div>
+                                                                    @if (mc.CorrectAnswer.Contains("or"))
+                                                                    {
+
+                                                                        string SplitAnsFirst = mc.CorrectAnswer.Split(new string[] { "or" }, StringSplitOptions.None).First();
+                                                                        string SplitAnsSecond = mc.CorrectAnswer.Split(new string[] { "or" }, StringSplitOptions.None).Last();
+
+
+                                                                        if (mc.UserAnswer.Trim().ToLower() == SplitAnsFirst.Trim().ToLower() ||
+                                                                            mc.UserAnswer.Trim().ToLower() == SplitAnsSecond.Trim().ToLower())
+                                                                        {
+                                                                            <i class="fa fa-check" style="color:blue;"></i>
+                                                                            <textarea type="text" class="form-control" id="correctAns" disabled>@mc.UserAnswer</textarea>
+                                                                            <textarea type="text" class="form-control" id="correctAns" disabled>@mc.CorrectAnswer</textarea>
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <i class="fa fa-times" style="color:red;"></i>
+                                                                            <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.UserAnswer</textarea>
+                                                                            <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.CorrectAnswer</textarea>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (mc.UserAnswer.Trim().ToLower().Equals(mc.CorrectAnswer.Trim().ToLower()))
+                                                                        {
+                                                                            <i class="fa fa-check" style="color:blue;"></i>
+                                                                            <textarea type="text" class="form-control" id="correctAns" disabled>@mc.UserAnswer</textarea>
+                                                                            <textarea type="text" class="form-control" id="correctAns" disabled>@mc.CorrectAnswer</textarea>
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <i class="fa fa-times" style="color:red;"></i>
+                                                                            <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.UserAnswer</textarea>
+                                                                            <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.CorrectAnswer</textarea>
+
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                                <div>
+                                                                    <font style="display:inline-block;width:45%;color:black;">Answer</font>
+                                                                    <font style="display:inline-block;width:45%;color:black;">Correct Answer</font>
+                                                                </div>
+                                                            </div>
+                                                            enuTotal++;
+                                                            enuGenIns = mc.GeneralInstruction;
+                                                        }
+
+                                                        if (mc.TestType.Equals("Filling the blanks") && count == Convert.ToInt32(mc.Attempt))
+                                                        {
+                                                            if (fbGenIns.Equals("") && fbTotal == 1)
+                                                            {
+                                                                <p style="font-size:15px; font-weight:bold;">Filling the blanks:<br />  @mc.GeneralInstruction</p>
+                                                                fbItem++;
+                                                            }
+                                                            else
+                                                            {
+                                                                if (!(fbGenIns.Equals(mc.GeneralInstruction)))
+                                                                {
+                                                                    <div>
+                                                                        <font style="font-weight:bold; font-size:15px;">Filling the blanks.<br />  @mc.GeneralInstruction</font>
+                                                                    </div>
+                                                                    fbItem = 1;
+                                                                }
+                                                                else
+                                                                {
+                                                                    fbItem++;
+                                                                }
+                                                            }
+
+                                                            <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+                                                                <div>
+                                                                    <font style="font-size:14px;">@fbItem. @mc.Question</font>
+                                                                </div>
+                                                                <div>
+                                                                    @if (mc.CorrectAnswer.Contains("or"))
+                                                                    {
+                                                                        if (mc.CorrectAnswer.Trim().ToLower().Contains(mc.UserAnswer.ToLower()))
+                                                                        {
+                                                                            <i class="fa fa-check" style="color:blue;"></i>
+                                                                            <textarea type="text" class="form-control" id="correctAns" disabled>@mc.UserAnswer</textarea>
+                                                                            <textarea type="text" class="form-control" id="correctAns" disabled>@mc.CorrectAnswer</textarea>
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <i class="fa fa-times" style="color:red;"></i>
+                                                                            <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.UserAnswer</textarea>
+                                                                            <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.CorrectAnswer</textarea>
+                                                                            <p>else</p>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (mc.UserAnswer.Trim().ToLower().Equals(mc.CorrectAnswer.Trim().ToLower()))
+                                                                        {
+                                                                            <i class="fa fa-check" style="color:blue;"></i>
+                                                                            <textarea type="text" class="form-control" id="correctAns" disabled>@mc.UserAnswer</textarea>
+                                                                            <textarea type="text" class="form-control" id="correctAns" disabled>@mc.CorrectAnswer</textarea>
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <i class="fa fa-times" style="color:red;"></i>
+                                                                            <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.UserAnswer</textarea>
+                                                                            <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.CorrectAnswer</textarea>
+
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                                <div>
+                                                                    <font style="display:inline-block;width:45%;color:black;">Answer</font>
+                                                                    <font style="display:inline-block;width:45%;color:black;">Correct Answer</font>
+                                                                </div>
+                                                            </div>
+                                                            fbTotal++;
+                                                            fbGenIns = mc.GeneralInstruction;
+                                                        }
+                                                        if (mc.TestType.Equals("Essay") && count == Convert.ToInt32(mc.Attempt))
+                                                        {
+                                                            attempt = mc.Attempt;
+                                                            examID = mc.ExamID;
+                                                            q_id = mc.OP_ID.ToString();
+
+                                                            if (essayGenIns.Equals("") && essayTotal == 1)
+                                                            {
+                                                                <font style="font-weight:bold; font-size:15px;">
+                                                                    Essay - @mc.Points Points.<br />
+                                                                    @mc.GeneralInstruction
+                                                                </font>
+                                                                essayItem++;
+                                                            }
+                                                            else
+                                                            {
+                                                                if (!(essayGenIns.Equals(mc.GeneralInstruction)))
+                                                                {
+                                                                    <div>
+                                                                        <font style="font-weight:bold; font-size:15px;">
+                                                                            Essay - @mc.Points Points.<br />
+                                                                            @mc.GeneralInstruction
+                                                                        </font>
+
+                                                                    </div>
+                                                                    essayItem = 1;
+                                                                }
+                                                                else
+                                                                {
+                                                                    essayItem++;
+                                                                }
+                                                            }
+
+                                                            <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+                                                                <div>
+                                                                    <font style="font-size:14px;">@essayItem. @mc.Question</font>
+                                                                </div>
+                                                                <div id="choicesID">
+                                                                    <font style="font-size:14px; padding-left:20px;"> @mc.Choices</font>
+                                                                </div>
+                                                                <div style="width:100%">
+
+                                                                    @if (mc.EssayFlag.Equals("graded"))
+                                                                    {
+                                                                        <textarea type="text" style="width:40%;" class="form-control" id="correctAns" disabled>@mc.UserAnswer</textarea>
+                                                                        <textarea type="text" style="width:40%;" class="form-control" id="correctAns" disabled>@mc.CorrectAnswer</textarea>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <textarea type="text" style="width:40%;" class="form-control" id="notGraded" disabled>[/] Answer:@mc.UserAnswer</textarea>
+                                                                        <textarea type="text" style="width:40%;" class="form-control" id="notGraded" disabled>Correrct Answer: @mc.CorrectAnswer</textarea>
+
+                                                                        if (userRights.Equals("Fullcontrol"))
+                                                                        {
+                                                                            <input type="text" style="display:inline-block;width:10%; overflow:hidden;" id="essayScore_@q_id" class="form-control" onfocusout="addEssayScore('@examID','@empID','@attempt','@q_id','@mc.Points','0')" placeholder="Score">
+                                                                            <br />
+                                                                            <small style="color:red;display:none;" id="exceed_@q_id">Input exceeded the maximum points.</small>
+                                                                        }
+
+                                                                    }
+                                                                    <label style="font-size:10px;color:red;" id="lblGivenScore_@q_id"></label>
+                                                                </div>
+                                                                <div style="width:100%;">
+                                                                    <font style="display:inline-block;width:45%;color:black;">Answer</font>
+                                                                    <font style="display:inline-block;width:45%;color:black;">Correct Answer</font>
+                                                                </div>
+                                                            </div>
+                                                            essayTotal++;
+                                                            essayGenIns = mc.GeneralInstruction;
+                                                            essyCnt++;
+                                                        }
+                                                        if (mc.TestType.Equals("Enumeration") && count == Convert.ToInt32(mc.Attempt))
+                                                        {
+
+                                                            if (enumGenIns.Equals("") && enumTotal == 1)
+                                                            {
+                                                                <p style="font-size:15px; font-weight:bold;">Enumeration:<br />  @mc.GeneralInstruction</p>
+                                                                enumItem++;
+                                                            }
+                                                            else
+                                                            {
+                                                                if (!(enumGenIns.Equals(mc.GeneralInstruction)))
+                                                                {
+                                                                    <div>
+                                                                        <font style="font-weight:bold; font-size:15px;">Enumeration.<br />  @mc.GeneralInstruction</font>
+                                                                    </div>
+                                                                    enumItem = 1;
+                                                                }
+                                                                else
+                                                                {
+                                                                    enumItem++;
+                                                                }
+                                                            }
+
+                                                            <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+
+                                                                @if (!(enumQuestion.Equals(mc.Question)))
+                                                                {
+
+                                                                    if (!(enumQuestion.Equals(mc.Question)) && enumItem != 1)
+                                                                    {
+
+                                                                        enumQuesItem++;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        enumQuesItem = 1;
+
+                                                                    }
+                                                                    <div>
+                                                                        <font style="font-size:15px;">@enumQuesItem. @mc.Question</font>
+                                                                        <small style="display:block;">In Any Order? @mc.InAnyOrder</small>
+                                                                    </div>
+                                                                    enumAns = 1;
+                                                                }
+                                                                <div>
+                                                                    @if (mc.InAnyOrder.Equals("Yes"))
+                                                                    {
+                                                                        var Counter = 1;
+                                                                        var TotalAns = ViewBag.EnumrationAnsCount;
+                                                                        foreach (var Answer in ViewBag.EnumrationAns)
+                                                                        {
+
+                                                                            if (Answer == mc.UserAnswer.ToLower().Trim())
+                                                                            {
+                                                                                <i class="fa fa-check" style="color:blue;"></i>
+                                                                                <textarea type="text" class="form-control" id="correctAns" disabled>@mc.UserAnswer</textarea>
+                                                                                <textarea type="text" class="form-control" id="correctAns" disabled>@Answer</textarea>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                if (count == TotalAns)
+                                                                                {
+                                                                                    <i class="fa fa-times" style="color:red;"></i>
+                                                                                    <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.UserAnswer</textarea>
+                                                                                    <textarea type="text" class="form-control" id="incorrectAns" disabled>@Answer</textarea>
+                                                                                    Counter = 1;
+                                                                                }
+                                                                            }
+                                                                            Counter++;
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (mc.UserAnswer.Trim().ToLower().Equals(mc.CorrectAnswer.Trim().ToLower()))
+                                                                        {
+                                                                            <i class="fa fa-check" style="color:blue;"></i>
+                                                                            <textarea type="text" class="form-control" id="correctAns" disabled>@mc.UserAnswer</textarea>
+                                                                            <textarea type="text" class="form-control" id="correctAns" disabled>@mc.CorrectAnswer</textarea>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <i class="fa fa-times" style="color:red;"></i>
+                                                                            <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.UserAnswer</textarea>
+                                                                            <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.CorrectAnswer</textarea>
+
+                                                                        }
+                                                                    }
+
+                                                                </div>
+                                                                <div style="width:100%;margin-left:40px;">
+                                                                    <font style="display:inline-block;width:45%;color:black;">Answer</font>
+                                                                    <font style="display:inline-block;width:45%;color:black;">Correct Answer</font>
+                                                                </div>
+                                                            </div>
+                                                            enumGenIns = mc.GeneralInstruction;
+                                                            enumQuestion = mc.Question;
+                                                            enumAns++;
+                                                        }
+                                                        if (mc.TestType.Equals("Diagram") && count == Convert.ToInt32(mc.Attempt))
+                                                        {
+
+                                                            if (diagramGenIns.Equals("") && diagramTotal == 1)
+                                                            {
+                                                                <p style="font-size:15px; font-weight:bold;">Enumeration:<br />  @mc.GeneralInstruction</p>
+                                                                diagramItem++;
+                                                            }
+                                                            else
+                                                            {
+                                                                if (!(diagramGenIns.Equals(mc.GeneralInstruction)))
+                                                                {
+                                                                    <div>
+                                                                        <font style="font-weight:bold; font-size:15px;">Enumeration.<br />  @mc.GeneralInstruction</font>
+                                                                    </div>
+                                                                    diagramItem = 1;
+                                                                }
+                                                                else
+                                                                {
+                                                                    diagramItem++;
+                                                                }
+                                                            }
+
+                                                            <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+
+                                                                @if (!(diagramImg.Equals(mc.ImgName)))
+                                                                {
+                                                                    <hr />
+                                                                    <div style="margin-bottom:10px; width:100%;max-height:800px; margin-left:50px;overflow-y:scroll;overflow-x:hidden;">
+                                                                        <img src="~/Diagrams/@mc.ImgName" style="margin-left:10px;" width="700" height="800" class="img-thumbnail" />
+                                                                    </div>
+
+                                                                }
+                                                                <font style="font-size:12px; display:inline-block;">@diagramItems.</font>
+                                                                <font style="font-weight:bold; font-size:15px;"> @mc.Question</font>
+                                                                <div style="max-height:700px;">
+                                                                    @if (!mc.Choices.Equals(""))
+                                                                    {
+                                                                        <font style="font-weight:bold; font-size:15px;margin-left:70px;"> @mc.Choices</font>
+                                                                    }
+                                                                    else if (!mc.ChoicesImgName.Equals(""))
+                                                                    {
+                                                                        <div style="margin-bottom:10px; width:100%;max-height:700px; margin-left:50px;overflow-y:scroll;overflow-x:hidden;">
+                                                                            <img src="~/Diagrams/@mc.ChoicesImgName" style="margin-left:10px;" width="700" height="700" class="img-thumbnail" />
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                                <div>
+                                                                    @if (mc.UserAnswer.Trim().ToLower().Equals(mc.CorrectAnswer.Trim().ToLower()))
+                                                                    {
+                                                                        <i class="fa fa-check" style="color:blue;"></i>
+                                                                        <textarea type="text" class="form-control" id="correctAns" disabled>@mc.UserAnswer</textarea>
+                                                                        <textarea type="text" class="form-control" id="correctAns" disabled>@mc.CorrectAnswer</textarea>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="fa fa-times" style="color:red;"></i>
+                                                                        <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.UserAnswer</textarea>
+                                                                        <textarea type="text" class="form-control" id="incorrectAns" disabled>@mc.CorrectAnswer</textarea>
+
+                                                                    }
+
+                                                                </div>
+                                                                <div style="width:100%;margin-left:40px;">
+                                                                    <font style="display:inline-block;width:45%;color:black;">Answer</font>
+                                                                    <font style="display:inline-block;width:45%;color:black;">Correct Answer</font>
+                                                                </div>
+                                                            </div>
+                                                            diagramGenIns = mc.GeneralInstruction;
+                                                            diagramImg = mc.ImgName;
+                                                            enumAns++;
+                                                            diagramItems++;
+                                                        }
+                                                        if (mc.TestType.Equals("Matching Type") && count == Convert.ToInt32(mc.Attempt))
+                                                        {
+
+                                                            if (mtGenIns.Equals("") && enumTotal == 1)
+                                                            {
+                                                                <p style="font-size:15px; font-weight:bold;">Matching Type. <br />  @mc.GeneralInstruction</p>
+                                                                mtgenItem++;
+                                                            }
+                                                            else
+                                                            {
+                                                                if (!(mtGenIns.Equals(mc.GeneralInstruction)))
+                                                                {
+                                                                    <div>
+                                                                        <font style="font-weight:bold; font-size:15px;">Matching Type.<br />  @mc.GeneralInstruction</font>
+                                                                    </div>
+                                                                    mtgenItem = 1;
+                                                                }
+                                                                else
+                                                                {
+                                                                    mtgenItem++;
+                                                                }
+                                                            }
+
+                                                            <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+                                                                <div class="form-group" style="padding-bottom: 5px;" id="@mc.OP_ID">
+                                                                    <div style="display:inline-block;width:100%;margin-bottom:10px;">
+                                                                        <div style="display:inline-block;width:40%;">
+                                                                            <font style="font-size:17px;font-weight:bold;font-family:Calibri;">@mtItem. @mc.Question</font>
+                                                                        </div>
+                                                                        <div style="display:inline-block;width:40%;">
+                                                                            <font style="font-size:17px;font-weight:bold;font-family:Calibri;">@mc.Choices</font>
+                                                                        </div>
+
+                                                                        <div style="display:inline-block;width:17%;">
+                                                                            @if (mc.UserAnswer.Trim().ToLower().Equals(mc.CorrectAnswer.Trim().ToLower()))
+                                                                            {
+                                                                                <i class="fa fa-check" style="color:blue;"></i>
+                                                                                <input type="text" class="form-control" style="display:inline-block; width:50px;border-color:blue;" value="@mc.UserAnswer" disabled>
+                                                                                <input type="text" class="form-control" style="display:inline-block; width:50px;border-color:blue;" value="@mc.CorrectAnswer" disabled>
+
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <i class="fa fa-times" style="color:red;"></i>
+                                                                                <input type="text" class="form-control" style="display:inline-block; width:50px;border-color:red;" value="@mc.UserAnswer" disabled>
+                                                                                <input type="text" class="form-control" style="display:inline-block; width:50px;border-color:red;" value="@mc.CorrectAnswer" disabled>
+                                                                            }
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            mtGenIns = mc.GeneralInstruction;
+                                                            mtItem++;
+
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        diagramItems = 1;
+                                        enuTotal = 1;
+                                        enuIns = 0;
+
+                                        fbTotal = 1;
+                                        fbIns = 0;
+
+                                        mcTotal = 1;
+
+                                        essayTotal = 0;
+
+                                        enumTotal = 0;
+                                        diagramTotal = 0;
+
+                                        prevCount = count;
+                                        isScoreDisplay = 0;
+
+                                        mcItem = 0;
+                                        enuItem = 0;
+                                        fbItem = 0;
+                                        essayItem = 0;
+
+                                        mcGenIns = "";
+                                        fbGenIns = "";
+                                        enuGenIns = "";
+                                        essayGenIns = "";
+                                        enumGenIns = "";
+                                        diagramGenIns = "";
+                                        mtGenIns = "";
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- / Add New Post Form -->
+        </div>
+        <!-- / Post Overview -->
+    </div>
+</div>
+
+<script>
+    function submitResult(examID, empID, content, attempt) {
+        addEssayScore(examID, content, empID, attempt)
+    }
+
+</script>

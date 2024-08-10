@@ -1,0 +1,88 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Web;
+using System.Web.Mvc;
+
+namespace webproject.Controllers
+{
+    public class MaintenanceController : Controller
+    {
+        //
+        // GET: /Maintenance/
+        public ActionResult Maintenance()
+        {
+            return View();
+        }
+
+        public ActionResult NewQuestionaire()
+        {
+            return View();
+        }
+        public ActionResult OpenQuestionaire()
+        {
+            return View();
+        }
+
+        public ActionResult OpenAnswerSheet() 
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [ValidateInput(false)]
+        public ActionResult saveToTxt(string Content, string Title)
+        {
+            List<string> content = new List<string>();
+            content.Add(Content);
+            int count = 0;
+
+            foreach(string _s in content)
+            {
+                if(_s.Contains("__")){
+                    string input = "<input type="+"'text' id="+"'Item'"+count++ +">";
+                    _s.Replace("__","input");
+                }
+            }
+                        
+            
+            string fileName = @"C:\Users\G192123\Desktop\Grace Booc\New Projects\On going development\OQS\webproject\Files\"+Title+".txt";
+
+            try
+            {
+                // Check if file already exists. If yes, delete it.     
+                if (System.IO.File.Exists(fileName))
+                {
+                    System.IO.File.Delete(fileName);
+                }
+
+                // Create a new file     
+                using (FileStream fs = System.IO.File.Create(fileName))
+                {
+                    // Add some text to file    
+                    Byte[] title = new UTF8Encoding(true).GetBytes(Content);
+                    fs.Write(title, 0, title.Length);
+                    //byte[] author = new UTF8Encoding(true).GetBytes("Mahesh Chand");
+                    //fs.Write(author, 0, author.Length);
+                }
+
+                // Open the stream and read it back.    
+                using (StreamReader sr = System.IO.File.OpenText(fileName))
+                {
+                    string s = "";
+                    while ((s = sr.ReadLine()) != null)
+                    {
+                        Console.WriteLine(s);
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                Console.WriteLine(Ex.ToString());
+            }
+            return RedirectToAction("NewQuestionaire");
+        }
+	}
+}

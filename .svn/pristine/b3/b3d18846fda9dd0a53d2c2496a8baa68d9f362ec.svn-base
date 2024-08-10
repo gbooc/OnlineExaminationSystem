@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="dbPBQIPModelStoreContainer" CdmEntityContainer="QIPDbContext">
+    <EntitySetMapping Name="tbl_Author">
+      <EntityTypeMapping TypeName="dbPBQIPModel.tbl_Author">
+        <MappingFragment StoreEntitySet="tbl_Author">
+          <ScalarProperty Name="AUT_ID" ColumnName="AUT_ID" />
+          <ScalarProperty Name="AUT_QRE_ID" ColumnName="AUT_QRE_ID" />
+          <ScalarProperty Name="AUT_EMP_No" ColumnName="AUT_EMP_No" />
+          <ScalarProperty Name="AUT_Types" ColumnName="AUT_Types" />
+          <ScalarProperty Name="AUT_Status" ColumnName="AUT_Status" />
+          <ScalarProperty Name="ActionBy" ColumnName="ActionBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="UserLog" ColumnName="UserLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_Department">
+      <EntityTypeMapping TypeName="dbPBQIPModel.tbl_Department">
+        <MappingFragment StoreEntitySet="tbl_Department">
+          <ScalarProperty Name="DEP_ID" ColumnName="DEP_ID" />
+          <ScalarProperty Name="DEP_DepartmentName" ColumnName="DEP_DepartmentName" />
+          <ScalarProperty Name="DEP_ShortName" ColumnName="DEP_ShortName" />
+          <ScalarProperty Name="DEP_DEPID" ColumnName="DEP_DEPID" />
+          <ScalarProperty Name="DEP_Status" ColumnName="DEP_Status" />
+          <ScalarProperty Name="ActionBy" ColumnName="ActionBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="UserLog" ColumnName="UserLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_Employee">
+      <EntityTypeMapping TypeName="dbPBQIPModel.tbl_Employee">
+        <MappingFragment StoreEntitySet="tbl_Employee">
+          <ScalarProperty Name="EMP_No" ColumnName="EMP_No" />
+          <ScalarProperty Name="EMP_ID" ColumnName="EMP_ID" />
+          <ScalarProperty Name="EMP_DEP_ID" ColumnName="EMP_DEP_ID" />
+          <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
+          <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
+          <ScalarProperty Name="EMP_Status" ColumnName="EMP_Status" />
+          <ScalarProperty Name="ActionBy" ColumnName="ActionBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="UserLog" ColumnName="UserLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_Evaluator">
+      <EntityTypeMapping TypeName="dbPBQIPModel.tbl_Evaluator">
+        <MappingFragment StoreEntitySet="tbl_Evaluator">
+          <ScalarProperty Name="EVA_ID" ColumnName="EVA_ID" />
+          <ScalarProperty Name="EVA_EMP_No" ColumnName="EVA_EMP_No" />
+          <ScalarProperty Name="EVA_Email" ColumnName="EVA_Email" />
+          <ScalarProperty Name="EVA_Status" ColumnName="EVA_Status" />
+          <ScalarProperty Name="ActionBy" ColumnName="ActionBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="UserLog" ColumnName="UserLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_FiscalYear">
+      <EntityTypeMapping TypeName="dbPBQIPModel.tbl_FiscalYear">
+        <MappingFragment StoreEntitySet="tbl_FiscalYear">
+          <ScalarProperty Name="FYE_ID" ColumnName="FYE_ID" />
+          <ScalarProperty Name="FYE_Year" ColumnName="FYE_Year" />
+          <ScalarProperty Name="FYE_DateTo" ColumnName="FYE_DateTo" />
+          <ScalarProperty Name="FYE_DateFrom" ColumnName="FYE_DateFrom" />
+          <ScalarProperty Name="FYE_Status" ColumnName="FYE_Status" />
+          <ScalarProperty Name="ActionBy" ColumnName="ActionBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="UserLog" ColumnName="UserLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_GroupMember">
+      <EntityTypeMapping TypeName="dbPBQIPModel.tbl_GroupMember">
+        <MappingFragment StoreEntitySet="tbl_GroupMember">
+          <ScalarProperty Name="GME_ID" ColumnName="GME_ID" />
+          <ScalarProperty Name="GME_GNA_ID" ColumnName="GME_GNA_ID" />
+          <ScalarProperty Name="GME_EMP_No" ColumnName="GME_EMP_No" />
+          <ScalarProperty Name="GME_Status" ColumnName="GME_Status" />
+          <ScalarProperty Name="ActionBy" ColumnName="ActionBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="UserLog" ColumnName="UserLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_GroupName">
+      <EntityTypeMapping TypeName="dbPBQIPModel.tbl_GroupName">
+        <MappingFragment StoreEntitySet="tbl_GroupName">
+          <ScalarProperty Name="GNA_ID" ColumnName="GNA_ID" />
+          <ScalarProperty Name="GNA_DEP_ID" ColumnName="GNA_DEP_ID" />
+          <ScalarProperty Name="GNA_Name" ColumnName="GNA_Name" />
+          <ScalarProperty Name="GNA_Status" ColumnName="GNA_Status" />
+          <ScalarProperty Name="ActionBy" ColumnName="ActionBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="UserLog" ColumnName="UserLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_QIPDepartment">
+      <EntityTypeMapping TypeName="dbPBQIPModel.tbl_QIPDepartment">
+        <MappingFragment StoreEntitySet="tbl_QIPDepartment">
+          <ScalarProperty Name="QDE_ID" ColumnName="QDE_ID" />
+          <ScalarProperty Name="QDE_QRE_ID" ColumnName="QDE_QRE_ID" />
+          <ScalarProperty Name="QDE_DEP_ID" ColumnName="QDE_DEP_ID" />
+          <ScalarProperty Name="QDE_Status" ColumnName="QDE_Status" />
+          <ScalarProperty Name="ActionBy" ColumnName="ActionBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="UserLog" ColumnName="UserLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_QIPGrade">
+      <EntityTypeMapping TypeName="dbPBQIPModel.tbl_QIPGrade">
+        <MappingFragment StoreEntitySet="tbl_QIPGrade">
+          <ScalarProperty Name="QGR_ID" ColumnName="QGR_ID" />
+          <ScalarProperty Name="QGR_QRE_ID" ColumnName="QGR_QRE_ID" />
+          <ScalarProperty Name="QGR_InitialCostReduction" ColumnName="QGR_InitialCostReduction" />
+          <ScalarProperty Name="QGR_InitialQualityImprovement" ColumnName="QGR_InitialQualityImprovement" />
+          <ScalarProperty Name="QGR_InitialProductivity" ColumnName="QGR_InitialProductivity" />
+          <ScalarProperty Name="QGR_InitialSafety" ColumnName="QGR_InitialSafety" />
+          <ScalarProperty Name="QGR_InitialPP3" ColumnName="QGR_InitialPP3" />
+          <ScalarProperty Name="QGR_InitialIdea" ColumnName="QGR_InitialIdea" />
+          <ScalarProperty Name="QGR_InitialEffort" ColumnName="QGR_InitialEffort" />
+          <ScalarProperty Name="QGR_InitialClass" ColumnName="QGR_InitialClass" />
+          <ScalarProperty Name="QGR_InitialCashPrize" ColumnName="QGR_InitialCashPrize" />
+          <ScalarProperty Name="QGR_FinalCostReduction" ColumnName="QGR_FinalCostReduction" />
+          <ScalarProperty Name="QGR_FinalQualityImprovement" ColumnName="QGR_FinalQualityImprovement" />
+          <ScalarProperty Name="QGR_FinalProductivity" ColumnName="QGR_FinalProductivity" />
+          <ScalarProperty Name="QGR_FinalSafety" ColumnName="QGR_FinalSafety" />
+          <ScalarProperty Name="QGR_FinalPP3" ColumnName="QGR_FinalPP3" />
+          <ScalarProperty Name="QGR_FinalIdea" ColumnName="QGR_FinalIdea" />
+          <ScalarProperty Name="QGR_FinalEffort" ColumnName="QGR_FinalEffort" />
+          <ScalarProperty Name="QGR_FinalClass" ColumnName="QGR_FinalClass" />
+          <ScalarProperty Name="QGR_FinalCashPrize" ColumnName="QGR_FinalCashPrize" />
+          <ScalarProperty Name="QGR_Status" ColumnName="QGR_Status" />
+          <ScalarProperty Name="ActionBy" ColumnName="ActionBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="UserLog" ColumnName="UserLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_QIPGroup">
+      <EntityTypeMapping TypeName="dbPBQIPModel.tbl_QIPGroup">
+        <MappingFragment StoreEntitySet="tbl_QIPGroup">
+          <ScalarProperty Name="QGR_ID" ColumnName="QGR_ID" />
+          <ScalarProperty Name="QGR_QRE_ID" ColumnName="QGR_QRE_ID" />
+          <ScalarProperty Name="QGR_GNA_ID" ColumnName="QGR_GNA_ID" />
+          <ScalarProperty Name="QGR_Status" ColumnName="QGR_Status" />
+          <ScalarProperty Name="ActionBy" ColumnName="ActionBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="UserLog" ColumnName="UserLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_QIPRegistration">
+      <EntityTypeMapping TypeName="dbPBQIPModel.tbl_QIPRegistration">
+        <MappingFragment StoreEntitySet="tbl_QIPRegistration">
+          <ScalarProperty Name="QRE_ID" ColumnName="QRE_ID" />
+          <ScalarProperty Name="QRE_ReceiptNo" ColumnName="QRE_ReceiptNo" />
+          <ScalarProperty Name="QRE_IsCFT" ColumnName="QRE_IsCFT" />
+          <ScalarProperty Name="QRE_Title" ColumnName="QRE_Title" />
+          <ScalarProperty Name="QRE_DateImplemented" ColumnName="QRE_DateImplemented" />
+          <ScalarProperty Name="QRE_IPDateFinish" ColumnName="QRE_IPDateFinish" />
+          <ScalarProperty Name="QRE_IPDatePrepared" ColumnName="QRE_IPDatePrepared" />
+          <ScalarProperty Name="QRE_Objective" ColumnName="QRE_Objective" />
+          <ScalarProperty Name="QRE_DateSubmiited" ColumnName="QRE_DateSubmiited" />
+          <ScalarProperty Name="QRE_Category" ColumnName="QRE_Category" />
+          <ScalarProperty Name="QRE_MonthlySavings" ColumnName="QRE_MonthlySavings" />
+          <ScalarProperty Name="QRE_YearlySavings" ColumnName="QRE_YearlySavings" />
+          <ScalarProperty Name="QRE_Status" ColumnName="QRE_Status" />
+          <ScalarProperty Name="QRE_EVA_ID" ColumnName="QRE_EVA_ID" />
+          <ScalarProperty Name="QRE_Deadline" ColumnName="QRE_Deadline" />
+          <ScalarProperty Name="QRE_DateReturnedByEvaluator" ColumnName="QRE_DateReturnedByEvaluator" />
+          <ScalarProperty Name="QRE_Schedule" ColumnName="QRE_Schedule" />
+          <ScalarProperty Name="ActionBy" ColumnName="ActionBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="UserLog" ColumnName="UserLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_UserDetail">
+      <EntityTypeMapping TypeName="dbPBQIPModel.tbl_UserDetail">
+        <MappingFragment StoreEntitySet="tbl_UserDetail">
+          <ScalarProperty Name="USD_ID" ColumnName="USD_ID" />
+          <ScalarProperty Name="USD_EMP_No" ColumnName="USD_EMP_No" />
+          <ScalarProperty Name="USD_LoginName" ColumnName="USD_LoginName" />
+          <ScalarProperty Name="USD_Password" ColumnName="USD_Password" />
+          <ScalarProperty Name="USD_Status" ColumnName="USD_Status" />
+          <ScalarProperty Name="ActionBy" ColumnName="ActionBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="UserLog" ColumnName="UserLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_YearTargetSubmission">
+      <EntityTypeMapping TypeName="dbPBQIPModel.tbl_YearTargetSubmission">
+        <MappingFragment StoreEntitySet="tbl_YearTargetSubmission">
+          <ScalarProperty Name="YTS_ID" ColumnName="YTS_ID" />
+          <ScalarProperty Name="YTS_DEP_ID" ColumnName="YTS_DEP_ID" />
+          <ScalarProperty Name="YTS_Name" ColumnName="YTS_Name" />
+          <ScalarProperty Name="YTS_FYE_ID" ColumnName="YTS_FYE_ID" />
+          <ScalarProperty Name="YTS_January" ColumnName="YTS_January" />
+          <ScalarProperty Name="YTS_February" ColumnName="YTS_February" />
+          <ScalarProperty Name="YTS_March" ColumnName="YTS_March" />
+          <ScalarProperty Name="YTS_April" ColumnName="YTS_April" />
+          <ScalarProperty Name="YTS_May" ColumnName="YTS_May" />
+          <ScalarProperty Name="YTS_June" ColumnName="YTS_June" />
+          <ScalarProperty Name="YTS_July" ColumnName="YTS_July" />
+          <ScalarProperty Name="YTS_August" ColumnName="YTS_August" />
+          <ScalarProperty Name="YTS_September" ColumnName="YTS_September" />
+          <ScalarProperty Name="YTS_October" ColumnName="YTS_October" />
+          <ScalarProperty Name="YTS_November" ColumnName="YTS_November" />
+          <ScalarProperty Name="YTS_December" ColumnName="YTS_December" />
+          <ScalarProperty Name="YTS_Status" ColumnName="YTS_Status" />
+          <ScalarProperty Name="ActionBy" ColumnName="ActionBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="UserLog" ColumnName="UserLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

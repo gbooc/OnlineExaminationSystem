@@ -1,0 +1,78 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<webproject.Models.ResultsViewModel>
+
+@{
+    ViewBag.Title = "Questionaire";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+    var number = 0;
+}
+
+
+
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <h3 class="page-title" id="titleName">Visitor Results</h3>
+    </div>
+</div>
+<div class="w3-center w3-animate-right">
+    <div class="row" style="opacity:.9;" id="test">
+        <div class="col">
+            <div class="card card-small mb-4">
+                <div id="divHeader" class="custom-table">
+                    <div style="float:left;">
+                        &nbsp;
+                        <i class="fa fa-bullhorn" style="display:inline-block; color:white;font-size:30px;"></i>
+                        <font style="display:inline-block;color:white;font-family:Candara;">
+                            Displaying all examination results of all questionnaires from your department
+                        </font>
+
+                    </div>
+                </div>
+
+                <div class="card-body p-0 pb-3 text-center" style="font-family:'Californian FB', Times, serif;font-size:15px;">
+                    <table class="table-bordered table-hover" style="width:100%;position:relative;" id="ques_table">
+
+                        <thead style="color:red;font-size:18px;">
+                            <tr>
+                                <th scope="col" class="border-0">#</th>
+                                <th scope="col" class="border-0">Visitor Name</th>
+                                <th scope="col" class="border-0">Category</th>
+                                <th scope="col" class="border-0">Date Answered</th>
+                                <th scope="col" class="border-0">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var model in Model)
+                            {
+                                var ctgry = @model.Category;
+                                number++;
+                                <tr class="w3-hover-pale-red" id="q_row">
+                                    <td> @number</td>
+                                    <td>@Html.DisplayFor(modelItem => model.FullName)</td>
+                                    <td>@Html.DisplayFor(modelItem => model.Category)</td>
+                                    <td>@Html.DisplayFor(modelItem => model.DateAnswered)</td>
+                                    <td>
+                                        <div style="margin-top:3px;">
+                                            <a href="@Url.Action("OpenVisitorExam", "Examinations", new { examId = model.ExamID, empID=model.EmpID})#vstrResults" id="openID" class="mb-2 btn btn-sm btn-dark mr-1">
+                                                <i class="fa fa-folder-open" style="font-size:17px;"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <font style="float:left;margin-left:10px;margin-top:2px;">
+                        Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                        out of @Model.PageCount pages
+                    </font>
+                    <div style="height:40px; position:relative; right: 0; bottom:10px;float:right;margin-right:20px;">
+                        <div style="display:inline-block;">
+                            @Html.PagedListPager(Model, page => Url.Action("VisitorResults", new { page }) + "#questionanires")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

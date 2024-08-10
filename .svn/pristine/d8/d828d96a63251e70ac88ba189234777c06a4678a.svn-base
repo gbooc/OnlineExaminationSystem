@@ -1,0 +1,126 @@
+﻿@*@model webproject.Models.MaintenanceViewModel*@
+
+@model IEnumerable<webproject.Models.MaintenanceViewModel>
+
+@{
+    ViewBag.Title = "Maintenance";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+}
+
+@*----------------Modal For Questionaires Begin ----------------*@
+
+<script type="text/javascript">
+    function OnSuccess() {
+    }
+    function OnBegin() {
+        $('#img-loader').show();
+    }
+    function OnComplete() {
+        $('#img-loader').hide();
+        var url = '@Url.Action("Dashboard", "Dashboard")';
+        //$('.overlay').removeClass();
+        window.location.href = url;
+    }
+
+</script>
+
+@using (Ajax.BeginForm("Index", "Home", new AjaxOptions
+{
+    HttpMethod = "POST",
+    //  UpdateTargetId = "LoginId",
+    OnSuccess = "OnSuccess",
+    //OnFailure = "OnFailure",
+    OnBegin = "OnBegin",
+    OnComplete = "OnComplete"
+}))
+{
+
+foreach(var model in Model) {
+
+    <div class="modal fade bs-example-modal-new" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <!-- Modal Content: begins -->
+            <div class=" modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header" style="background-color: maroon; ">
+                    <div class="avatar-img" style="margin-top:-45px;bottom:15px;">
+                        <img src="~/Images/delete.gif" style="width: 100px;height:100px;border-color:white;" />
+                    </div>
+                </div>
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <div class="body-message">
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                This will be deleted permanently. Do you want to proceed?
+                            </div>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <input type="submit" value="Yes" class="btn btn-danger btn-lg">
+                            <input type="submit" value="No" class="btn btn-primary btn-lg" data-dismiss="modal">
+                        </div>
+
+                    </div>
+                    <!-- Modal Content: ends -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="page-header row no-gutters py-4">
+        <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+            <span class="text-uppercase page-subtitle">Maintenance Dashboard</span>
+            <h3 class="page-title">Maintenance</h3>
+        </div>
+    </div>
+    <div class="w3 w3-animate-right">
+        <div class="row">
+            <div class="col">
+                <div class="card card-small mb-4">
+                    <div class="card-header border-bottom">
+                        <h6 class="m-0">All Questionaires From $department</h6>
+                    </div>
+                    <div style="position:relative; width:150px;padding:10px 10px 10px 10px;float:right;">
+                     <a href="@Url.Action("NewQuestionaire", "Maintenance")#maintenance" type="submit" class="btn btn-info">
+                         <i class="fa fa-pencil-square"></i> New Questionaire
+                     </a>
+                    </div>
+                    <div class="card-body p-0 pb-3 text-center">
+                        <table class="table mb-0 table-hover">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th scope="col" class="border-0">#</th>
+                                    <th scope="col" class="border-0">Category</th>
+                                    <th scope="col" class="border-0">Title</th>
+                                    <th scope="col" class="border-0">Questionaire</th>
+                                    <th scope="col" class="border-0">Answer Sheet</th>
+                                    <th scope="col" class="border-0">....</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>@Html.DisplayFor(modelItem => model.Category)</td>
+                                    <td>@Html.DisplayFor(modelItem => model.AnsSheetTitle)</td>
+                                    <td data-toggle="tooltip" data-placement="right" title="Click to open"><a href="@Url.Action("OpenQuestionaire","Maintenance")#maintenance">@Html.DisplayFor(modelItem => model.QuestionaireTitle)</a></td>
+                                    <td data-toggle="tooltip" data-placement="top" title="Click to open"><a href="@Url.Action("OpenAnswerSheet","Maintenance")#maintenance">@Html.DisplayFor(modelItem => model.AnsSheetTitle)</a></td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn" data-toggle="modal" data-target=".bs-example-modal-new">
+                                            <span class="fa fa-trash"></span> Remove
+                                        </button>
+                                    </td>
+                                </tr>
+                               }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

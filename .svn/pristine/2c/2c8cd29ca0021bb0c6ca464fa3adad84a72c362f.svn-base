@@ -1,0 +1,44 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Web;
+using System.Web.Mvc;
+
+namespace webproject.Controllers
+{
+    public class MaintenanceController : Controller
+    {
+        //
+        // GET: /Maintenance/
+        public ActionResult Maintenance()
+        {
+            return View();
+        }
+
+        public ActionResult NewQuestionaire()
+        {
+            return View();
+        }
+        public ActionResult OpenQuestionaire()
+        {
+            return View();
+        }
+
+        public ActionResult OpenAnswerSheet() 
+        {
+            return View();
+        }
+        public ActionResult CreateFile()
+        {   
+            //todo: add some data from your database into that string:
+            var string_with_your_data = "fdsffdfs";
+
+            var byteArray = Encoding.ASCII.GetBytes(string_with_your_data);
+            var stream = new MemoryStream(byteArray);
+
+            return File(stream, "worksheet/Tab 1", "your_file_name.xlsx");
+        }
+	}
+}

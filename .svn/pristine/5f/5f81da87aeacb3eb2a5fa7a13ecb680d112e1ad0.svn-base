@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "NewQuestionaire";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+}
+
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle">Questionaire Dashboard</span>
+        <h3 class="page-title">New Questionaire</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-9 col-md-12">
+        <!-- Add New Post Form -->
+        <div class="card card-small mb-3 card card-small h-100">
+            <div class="card-header border-bottom">
+                <h6 class="m-0">New Draft</h6>
+            </div>
+            <div class="card-body d-flex flex-column">
+                <form class="quick-post-form">
+                    <input class="form-control form-control-lg mb-3" type="text" placeholder="Your Post Title">
+                    <div id="editor-container" class="add-new-post__editor mb-1 ql-container ql-snow">
+                        <textarea class="form-control" placeholder="Words can be like X-rays if you use them properly..."></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- / Add New Post Form -->
+    </div>
+    <!-- Post Overview -->
+    <div class="col-lg-3 col-md-12">
+        <!-- Post Overview -->
+        <div class="card card-small mb-3">
+            <div class="card-header border-bottom">
+                <h6 class="m-0">Actions</h6>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item p-3">
+                        <span class="d-flex mb-2"><input type="text" class="form-control" placeholder="Enter title" /></span>
+                    </li>
+                    <li class="list-group-item d-flex px-5">
+                        <div class="input-group">
+                            <input type="submit" class="btn btn-warning" value="Add Answer Sheet">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- / Post Overview -->
+        <!-- Post Overview -->
+        <div class="card card-small mb-3">
+            <div class="card-header border-bottom">
+                <h6 class="m-0">Categories</h6>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item px-3 pb-2">
+                        <div class="custom-control custom-checkbox mb-1">
+                            <input type="checkbox" class="custom-control-input" id="category1" checked="">
+                            <label class="custom-control-label" for="category1">RWP</label>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex px-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="New category" aria-label="Add new category" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-black px-2" type="button"><i class="fa fa-plus-circle"></i> Add</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- / Post Overview -->
+    </div>
+
+    <!-- / Post Overview -->
+</div>
+
+

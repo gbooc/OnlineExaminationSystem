@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OQSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="tbl_answerSheet">
+    <Key>
+      <PropertyRef Name="as_id" />
+    </Key>
+    <Property Name="as_id" Type="int" Nullable="false" />
+    <Property Name="q_id" Type="int" />
+    <Property Name="title" Type="varchar(max)" />
+    <Property Name="answer" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="tbl_category">
+    <Key>
+      <PropertyRef Name="c_id" />
+    </Key>
+    <Property Name="c_id" Type="int" Nullable="false" />
+    <Property Name="q_id" Type="int" />
+    <Property Name="category_name" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="tbl_choices">
+    <Key>
+      <PropertyRef Name="ch_id" />
+    </Key>
+    <Property Name="ch_id" Type="int" Nullable="false" />
+    <Property Name="as_id" Type="int" />
+    <Property Name="choice" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="tbl_Employee">
+    <Key>
+      <PropertyRef Name="e_id" />
+    </Key>
+    <Property Name="e_id" Type="int" Nullable="false" />
+    <Property Name="exam_id" Type="int" />
+    <Property Name="emp_id" Type="varchar(max)" />
+    <Property Name="fullname" Type="varchar(max)" />
+    <Property Name="department" Type="varchar" MaxLength="50" />
+    <Property Name="user_rights" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="tbl_examinations">
+    <Key>
+      <PropertyRef Name="exam_id" />
+    </Key>
+    <Property Name="exam_id" Type="int" Nullable="false" />
+    <Property Name="emp_id" Type="varchar(max)" />
+    <Property Name="q_id" Type="int" />
+    <Property Name="answer2" Type="varchar(max)" />
+    <Property Name="score" Type="varchar(max)" />
+    <Property Name="date_answered" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="tbl_questionaire">
+    <Key>
+      <PropertyRef Name="q_id" />
+    </Key>
+    <Property Name="q_id" Type="int" Nullable="false" />
+    <Property Name="as_id" Type="int" />
+    <Property Name="category_id" Type="int" />
+    <Property Name="title" Type="varchar(max)" />
+    <Property Name="test_type" Type="varchar(max)" />
+    <Property Name="general_instruction" Type="varchar(max)" />
+    <Property Name="question" Type="varchar(max)" />
+  </EntityType>
+  <Association Name="FK_tbl_answerSheet_tbl_questionaire">
+    <End Role="tbl_questionaire" Type="Self.tbl_questionaire" Multiplicity="0..1" />
+    <End Role="tbl_answerSheet" Type="Self.tbl_answerSheet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_questionaire">
+        <PropertyRef Name="q_id" />
+      </Principal>
+      <Dependent Role="tbl_answerSheet">
+        <PropertyRef Name="q_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_category_tbl_questionaire">
+    <End Role="tbl_questionaire" Type="Self.tbl_questionaire" Multiplicity="0..1" />
+    <End Role="tbl_category" Type="Self.tbl_category" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_questionaire">
+        <PropertyRef Name="q_id" />
+      </Principal>
+      <Dependent Role="tbl_category">
+        <PropertyRef Name="q_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_choices_tbl_answerSheet">
+    <End Role="tbl_answerSheet" Type="Self.tbl_answerSheet" Multiplicity="0..1" />
+    <End Role="tbl_choices" Type="Self.tbl_choices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_answerSheet">
+        <PropertyRef Name="as_id" />
+      </Principal>
+      <Dependent Role="tbl_choices">
+        <PropertyRef Name="as_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_Employee_tbl_examinations">
+    <End Role="tbl_examinations" Type="Self.tbl_examinations" Multiplicity="0..1" />
+    <End Role="tbl_Employee" Type="Self.tbl_Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_examinations">
+        <PropertyRef Name="exam_id" />
+      </Principal>
+      <Dependent Role="tbl_Employee">
+        <PropertyRef Name="exam_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_examinations_tbl_questionaire">
+    <End Role="tbl_questionaire" Type="Self.tbl_questionaire" Multiplicity="0..1" />
+    <End Role="tbl_examinations" Type="Self.tbl_examinations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_questionaire">
+        <PropertyRef Name="q_id" />
+      </Principal>
+      <Dependent Role="tbl_examinations">
+        <PropertyRef Name="q_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OQSModelStoreContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_answerSheet" EntityType="Self.tbl_answerSheet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_category" EntityType="Self.tbl_category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_choices" EntityType="Self.tbl_choices" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Employee" EntityType="Self.tbl_Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_examinations" EntityType="Self.tbl_examinations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_questionaire" EntityType="Self.tbl_questionaire" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_tbl_answerSheet_tbl_questionaire" Association="Self.FK_tbl_answerSheet_tbl_questionaire">
+      <End Role="tbl_questionaire" EntitySet="tbl_questionaire" />
+      <End Role="tbl_answerSheet" EntitySet="tbl_answerSheet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_category_tbl_questionaire" Association="Self.FK_tbl_category_tbl_questionaire">
+      <End Role="tbl_questionaire" EntitySet="tbl_questionaire" />
+      <End Role="tbl_category" EntitySet="tbl_category" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_choices_tbl_answerSheet" Association="Self.FK_tbl_choices_tbl_answerSheet">
+      <End Role="tbl_answerSheet" EntitySet="tbl_answerSheet" />
+      <End Role="tbl_choices" EntitySet="tbl_choices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_Employee_tbl_examinations" Association="Self.FK_tbl_Employee_tbl_examinations">
+      <End Role="tbl_examinations" EntitySet="tbl_examinations" />
+      <End Role="tbl_Employee" EntitySet="tbl_Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_examinations_tbl_questionaire" Association="Self.FK_tbl_examinations_tbl_questionaire">
+      <End Role="tbl_questionaire" EntitySet="tbl_questionaire" />
+      <End Role="tbl_examinations" EntitySet="tbl_examinations" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

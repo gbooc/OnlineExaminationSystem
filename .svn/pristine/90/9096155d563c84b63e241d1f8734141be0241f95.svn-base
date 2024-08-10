@@ -1,0 +1,247 @@
+﻿@*@model webproject.Models.UserRegistration*@
+
+@using PagedList.Mvc;
+@model PagedList.IPagedList<webproject.Models.UserRegistration>
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+    var count = 0;
+}
+
+<style>
+    #visitorBtn {
+        display: none;
+        background-color: #5a6169;
+        width: 80%;
+        margin-left: 30px;
+        color: white;
+        box-shadow: #E74856 1px 1px 1px;
+    }
+
+    #empBtn {
+        display: none;
+        background-color: #5a6169;
+        width: 80%;
+        margin-left: 30px;
+        color: white;
+        box-shadow: #E74856 1px 1px 1px;
+    }
+</style>
+
+<link rel="stylesheet" href="~/Content/Homepage/css/jquery-ui.css">
+<script src="~/Content/Homepage/js/jquery-ui.js"></script>
+
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle" id="secondaryColor">Registration Dashboard</span>
+        <h3 class="page-title" id="titleName">Examination Registration</h3>
+    </div>
+</div>
+
+<div class="row" style="opacity:.9;">
+    <!-- Users Stats -->
+    <div class="col-lg-7 col-md-12 col-sm-12 mb-12">
+        <div class="card card-small">
+            <div id="divHeader" class="custom-table">
+                <i class="fa fa-bullhorn" style="display:inline-block; color:white;font-size:30px;"></i>
+                <font style="display:inline-block;color:white;font-family:Candara;"> All Generated Codes</font>
+            </div>
+            <div class="card-body pt-0">
+                <div style="display:none;" id="loaderDiv">
+                    <div class="card-body p-0 pb-3 text-center" id="tblverlay" style="position:absolute;">
+                        <img src="~/Images/tbl-loader1.gif" style="width:200px;margin-top:100px;" />
+                        <p style="font-family:Cambria, Cochin, Georgia, Times, Times New Roman, serif;">Loading, please wait. . .</p>
+                    </div>
+                </div>
+                <table class="table-bordered table-hover" style="width:100%;position:relative;text-align:center;" id="ques_table">
+                    <thead style="color:red;font-size:15px;">
+                        <tr>
+                            <th scope="col" class="border-0">#</th>
+                            <th scope="col" class="border-0">Full Name</th>
+                            <th scope="col" class="border-0">Category</th>
+                            <th scope="col" class="border-0">Control No.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var model in Model)
+                        {
+                            count++;
+                    <tr>
+                        <td>@count</td>
+                        <td>@Html.DisplayFor(modelItem => model.Fullname)</td>
+                        <td>@Html.DisplayFor(modelItem => model.Category)</td>
+                        <td>@Html.DisplayFor(modelItem => model.ControlNo)</td>
+                    </tr>
+
+                }
+                    </tbody>
+                </table>
+                <font style="float:left;margin-left:10px;margin-top:2px;">
+                    Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                    out of @Model.PageCount pages
+                </font>
+                <div style="height:40px; position:relative; right: 0; bottom:10px;float:right;margin-right:20px;">
+                    <div style="display:inline-block;">
+                        @Html.PagedListPager(Model, page => Url.Action("Register", new { page }) + "#maintenance_r")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Users Stats -->
+    <!-- Users By Device Stats -->
+    <div class="col-lg-5 col-md-6 col-sm-12 mb-4">
+        <div class="card card-small h-100">
+            <div id="divHeader" class="custom-table" style="width:93%;">
+                <i class="fa fa-bullhorn" style="display:inline-block; color:white;font-size:30px;"></i>
+                <font style="display:inline-block;color:white;font-family:Candara;"> Registration</font>
+            </div>
+            <div class="card-bod">
+                <div class="form-row" style="margin-left:2px;margin-top:10px;">
+                        <h6 class="m-0" style="padding-left:15px;">Employee Registration</h6>
+                    <div style="width:98%; margin-left:3px;margin-bottom:10px;margin-top:20px;">
+                        <input type="text" class="form-control" id="e_empIDtxt" placeholder="Employee ID">
+                        <small id="empIDError" style="display:none;color:red;">This field is required</small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" id="e_fullname" placeholder="Full Name" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" id="e_deptTxt" placeholder="Department" readonly />
+                        <small id="deptError" style="display:none;color:red;">This field is required</small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <select id="drpdwnCategories" class="form-control" style="border-color: black;">
+                            <option value="">Choose category</option>
+                            @foreach (var model in ViewBag.Categories)
+                            {
+                                var category = model.category_name;
+                                var categoryID = model.category_id;
+                                <option value="@categoryID">@category</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" id="e_empCode" placeholder="Code" style="color:red;" disabled />
+                    </div>
+                    <div id="titlesTxt" class="card">
+                        <table class="table-bordered table-hover" style="width:100%;position:relative;">
+                            <thead style="background-color:#E74856;color:white;">
+                                <tr>
+                                    <th>..</th>
+                                    <th>Title</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblTitles" style="background-color:#5a6169;color:white;">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <button class="btn btn-white" id="empGenBtn" style="box-shadow: #E74856 3px 3px 3px;" type="submit" onclick="GenerateCode(1)">Generate Code →</button>
+                    </div>
+                </div>
+                <button class="btn btn-white" id="empBtn" type="submit" onclick="registrationSubmit(1)">Submit →</button>
+                <div class="card-header border-bottom">
+                    <h6 class="m-0">Visitor Registration</h6>
+                </div>
+                <div class="form-row" style="margin-left:2px;margin-top:10px;">
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" id="v_fnameTxt" placeholder="First name">
+                        <small id="v_fnameError" style="display:none;color:red;">This field is required</small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" id="v_mnameTxt" placeholder="Middle name">
+                        <small id="v_mnameError" style="display:none;color:red;">This field is required</small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" id="v_lnameTxt" placeholder="Last name">
+                        <small id="v_lnameError" style="display:none;color:red;">This field is required</small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <select id="v_drpdwnCategories" class="form-control" style="border-color: black;">
+                            <option value="">Choose category</option>
+                            @foreach (var model in ViewBag.Categories)
+                            {
+                                var category = model.category_name;
+                                var categoryID = model.category_id;
+                                <option value="@categoryID">@category</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" id="v_vsitrCode" placeholder="Code" disabled />
+                    </div>
+                    <div id="v_titlesTxt" class="card">
+                        <table class="table-bordered table-hover" style="width:100%;position:relative;">
+                            <thead style="background-color:#E74856;color:white;">
+                                <tr>
+                                    <th>..</th>
+                                    <th>Title</th>
+                                </tr>
+                            </thead>
+                            <tbody id="v_tblTitles" style="background-color:#5a6169;color:white;">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <button class="btn btn-white" id="vsitorGenBtn" style="box-shadow: #E74856 3px 3px 3px;" type="submit" onclick="GenerateCode(2)">Generate Code →</button>
+                    </div>
+                </div>
+                <button class="btn btn-white" id="visitorBtn" type="submit" onclick="registrationSubmit(2)">Submit →</button>
+                <p></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Users By Device Stats -->
+
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $("#e_empIDtxt").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                       Type: 'POST',
+                        url: '@Url.Action("GetEmpID","Maintenance")',
+                        dataType: "json",
+                        data: { term: request.term },
+                        success: function (data) {
+
+                            if (data != 0   ) {
+
+                                response($.map(data, function (item) {
+                                    return {
+                                       label: item.emp_id, value: item.emp_id.trim(),
+                                    };
+                                }))
+
+                            } else {
+                                 var result = [
+                                    {
+                                     label: 'No matches found',
+                                     value: response.term
+                                    }
+                                ];
+                             response(result);
+                            }
+                        }
+                    })
+                },
+                select: function( event , ui ) {
+                         //alert( "You selected: " + ui.item.label );
+                     $.ajax({
+                       Type: 'POST',
+                        url: '@Url.Action("GetEmpDetails","Maintenance")',
+                        dataType: "json",
+                        data: { id: ui.item.label },
+                        success: function (data) {
+                            $("#e_fullname").val(data[0].fullname);
+                            $("#e_deptTxt").val(data[0].department);                        
+                        }
+                     })
+                }
+            });
+        })
+</script>
+

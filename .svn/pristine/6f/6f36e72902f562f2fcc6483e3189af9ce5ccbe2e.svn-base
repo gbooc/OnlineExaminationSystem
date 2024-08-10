@@ -1,0 +1,501 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbPBQIPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tbl_Author">
+    <Key>
+      <PropertyRef Name="AUT_ID" />
+    </Key>
+    <Property Name="AUT_ID" Type="int" Nullable="false" />
+    <Property Name="AUT_QRE_ID" Type="int" Nullable="false" />
+    <Property Name="AUT_EMP_No" Type="int" Nullable="false" />
+    <Property Name="AUT_Types" Type="int" Nullable="false" />
+    <Property Name="AUT_Status" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ActionBy" Type="varchar" MaxLength="2000" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="UserLog" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="tbl_Department">
+    <Key>
+      <PropertyRef Name="DEP_ID" />
+    </Key>
+    <Property Name="DEP_ID" Type="int" Nullable="false" />
+    <Property Name="DEP_DepartmentName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="DEP_ShortName" Type="varchar" MaxLength="50" />
+    <Property Name="DEP_DEPID" Type="varchar" MaxLength="2" />
+    <Property Name="DEP_Status" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ActionBy" Type="varchar" MaxLength="2000" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="UserLog" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="tbl_Employee">
+    <Key>
+      <PropertyRef Name="EMP_No" />
+    </Key>
+    <Property Name="EMP_No" Type="int" Nullable="false" />
+    <Property Name="EMP_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="EMP_DEP_ID" Type="int" Nullable="false" />
+    <Property Name="EMP_FirstName" Type="varchar" MaxLength="5000" Nullable="false" />
+    <Property Name="EMP_LastName" Type="varchar" MaxLength="5000" Nullable="false" />
+    <Property Name="EMP_Status" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ActionBy" Type="varchar" MaxLength="2000" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="UserLog" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="tbl_Evaluator">
+    <Key>
+      <PropertyRef Name="EVA_ID" />
+    </Key>
+    <Property Name="EVA_ID" Type="int" Nullable="false" />
+    <Property Name="EVA_EMP_No" Type="int" Nullable="false" />
+    <Property Name="EVA_Email" Type="varchar" MaxLength="500" />
+    <Property Name="EVA_Status" Type="varchar" MaxLength="50" />
+    <Property Name="ActionBy" Type="varchar" MaxLength="2000" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="UserLog" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="tbl_FiscalYear">
+    <Key>
+      <PropertyRef Name="FYE_ID" />
+    </Key>
+    <Property Name="FYE_ID" Type="int" Nullable="false" />
+    <Property Name="FYE_Year" Type="int" Nullable="false" />
+    <Property Name="FYE_DateTo" Type="datetime" Nullable="false" />
+    <Property Name="FYE_DateFrom" Type="datetime" Nullable="false" />
+    <Property Name="FYE_Status" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ActionBy" Type="varchar" MaxLength="2000" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="UserLog" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="tbl_GroupMember">
+    <Key>
+      <PropertyRef Name="GME_ID" />
+    </Key>
+    <Property Name="GME_ID" Type="int" Nullable="false" />
+    <Property Name="GME_GNA_ID" Type="int" Nullable="false" />
+    <Property Name="GME_EMP_No" Type="int" Nullable="false" />
+    <Property Name="GME_Status" Type="varchar" MaxLength="50" />
+    <Property Name="ActionBy" Type="varchar" MaxLength="2000" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="UserLog" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="tbl_GroupName">
+    <Key>
+      <PropertyRef Name="GNA_ID" />
+    </Key>
+    <Property Name="GNA_ID" Type="int" Nullable="false" />
+    <Property Name="GNA_DEP_ID" Type="int" Nullable="false" />
+    <Property Name="GNA_Name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="GNA_Status" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="ActionBy" Type="varchar" MaxLength="2000" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="UserLog" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="tbl_QIPDepartment">
+    <Key>
+      <PropertyRef Name="QDE_ID" />
+    </Key>
+    <Property Name="QDE_ID" Type="int" Nullable="false" />
+    <Property Name="QDE_QRE_ID" Type="int" Nullable="false" />
+    <Property Name="QDE_DEP_ID" Type="int" Nullable="false" />
+    <Property Name="QDE_Status" Type="varchar" MaxLength="50" />
+    <Property Name="ActionBy" Type="varchar" MaxLength="2000" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="UserLog" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="tbl_QIPGrade">
+    <Key>
+      <PropertyRef Name="QGR_ID" />
+    </Key>
+    <Property Name="QGR_ID" Type="int" Nullable="false" />
+    <Property Name="QGR_QRE_ID" Type="int" Nullable="false" />
+    <Property Name="QGR_InitialCostReduction" Type="int" />
+    <Property Name="QGR_InitialQualityImprovement" Type="int" />
+    <Property Name="QGR_InitialProductivity" Type="int" />
+    <Property Name="QGR_InitialSafety" Type="int" />
+    <Property Name="QGR_InitialPP3" Type="int" />
+    <Property Name="QGR_InitialIdea" Type="int" Nullable="false" />
+    <Property Name="QGR_InitialEffort" Type="int" Nullable="false" />
+    <Property Name="QGR_InitialClass" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="QGR_InitialCashPrize" Type="decimal" Precision="16" Scale="4" Nullable="false" />
+    <Property Name="QGR_FinalCostReduction" Type="int" />
+    <Property Name="QGR_FinalQualityImprovement" Type="int" />
+    <Property Name="QGR_FinalProductivity" Type="int" />
+    <Property Name="QGR_FinalSafety" Type="int" />
+    <Property Name="QGR_FinalPP3" Type="int" />
+    <Property Name="QGR_FinalIdea" Type="int" />
+    <Property Name="QGR_FinalEffort" Type="int" />
+    <Property Name="QGR_FinalClass" Type="varchar" MaxLength="200" />
+    <Property Name="QGR_FinalCashPrize" Type="decimal" Precision="16" Scale="4" />
+    <Property Name="QGR_Status" Type="varchar" MaxLength="50" />
+    <Property Name="ActionBy" Type="varchar" MaxLength="2000" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="UserLog" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="tbl_QIPGroup">
+    <Key>
+      <PropertyRef Name="QGR_ID" />
+    </Key>
+    <Property Name="QGR_ID" Type="int" Nullable="false" />
+    <Property Name="QGR_QRE_ID" Type="int" Nullable="false" />
+    <Property Name="QGR_GNA_ID" Type="int" Nullable="false" />
+    <Property Name="QGR_Status" Type="varchar" MaxLength="50" />
+    <Property Name="ActionBy" Type="varchar" MaxLength="2000" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="UserLog" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="tbl_QIPRegistration">
+    <Key>
+      <PropertyRef Name="QRE_ID" />
+    </Key>
+    <Property Name="QRE_ID" Type="int" Nullable="false" />
+    <Property Name="QRE_ReceiptNo" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="QRE_IsCFT" Type="bit" />
+    <Property Name="QRE_Title" Type="varchar" MaxLength="4000" Nullable="false" />
+    <Property Name="QRE_DateImplemented" Type="datetime" Nullable="false" />
+    <Property Name="QRE_IPDateFinish" Type="datetime" Nullable="false" />
+    <Property Name="QRE_IPDatePrepared" Type="datetime" />
+    <Property Name="QRE_Objective" Type="varchar" MaxLength="6000" Nullable="false" />
+    <Property Name="QRE_DateSubmiited" Type="datetime" Nullable="false" />
+    <Property Name="QRE_Category" Type="varchar" MaxLength="300" Nullable="false" />
+    <Property Name="QRE_MonthlySavings" Type="decimal" Precision="16" Scale="4" />
+    <Property Name="QRE_YearlySavings" Type="decimal" Precision="16" Scale="4" />
+    <Property Name="QRE_Status" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="QRE_EVA_ID" Type="int" />
+    <Property Name="QRE_Deadline" Type="datetime" />
+    <Property Name="QRE_DateReturnedByEvaluator" Type="datetime" />
+    <Property Name="QRE_Schedule" Type="datetime" />
+    <Property Name="ActionBy" Type="varchar" MaxLength="2000" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="UserLog" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="tbl_UserDetail">
+    <Key>
+      <PropertyRef Name="USD_ID" />
+    </Key>
+    <Property Name="USD_ID" Type="int" Nullable="false" />
+    <Property Name="USD_EMP_No" Type="int" Nullable="false" />
+    <Property Name="USD_LoginName" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="USD_Password" Type="varchar" MaxLength="2000" />
+    <Property Name="USD_Status" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ActionBy" Type="varchar" MaxLength="2000" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="UserLog" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'dbPBQIP.dbo.tbl_WorkTableFiscalYearReport' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="tbl_WorkTableFiscalYearReport">
+          <Property Name="Month" Type="varchar" MaxLength="200" />
+          <Property Name="TargetCFTSubmissionQty" Type="int" />
+          <Property Name="TargetSubmissionforRegularEmployeeQty" Type="int" />
+          <Property Name="SubmittedRegularQIP" Type="int" />
+          <Property Name="SubmittedCFTQIP" Type="int" />
+        </EntityType>-->
+  <EntityType Name="tbl_YearTargetSubmission">
+    <Key>
+      <PropertyRef Name="YTS_ID" />
+    </Key>
+    <Property Name="YTS_ID" Type="int" Nullable="false" />
+    <Property Name="YTS_DEP_ID" Type="int" Nullable="false" />
+    <Property Name="YTS_Name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="YTS_FYE_ID" Type="int" Nullable="false" />
+    <Property Name="YTS_January" Type="int" />
+    <Property Name="YTS_February" Type="int" />
+    <Property Name="YTS_March" Type="int" />
+    <Property Name="YTS_April" Type="int" />
+    <Property Name="YTS_May" Type="int" />
+    <Property Name="YTS_June" Type="int" />
+    <Property Name="YTS_July" Type="int" />
+    <Property Name="YTS_August" Type="int" />
+    <Property Name="YTS_September" Type="int" />
+    <Property Name="YTS_October" Type="int" />
+    <Property Name="YTS_November" Type="int" />
+    <Property Name="YTS_December" Type="int" />
+    <Property Name="YTS_Status" Type="varchar" MaxLength="200" />
+    <Property Name="ActionBy" Type="varchar" MaxLength="2000" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="UserLog" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <Association Name="FK_tbl_Author_tbl_Employee1">
+    <End Role="tbl_Employee" Type="Self.tbl_Employee" Multiplicity="1" />
+    <End Role="tbl_Author" Type="Self.tbl_Author" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Employee">
+        <PropertyRef Name="EMP_No" />
+      </Principal>
+      <Dependent Role="tbl_Author">
+        <PropertyRef Name="AUT_EMP_No" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_Author_tbl_QIPRegistration">
+    <End Role="tbl_QIPRegistration" Type="Self.tbl_QIPRegistration" Multiplicity="1" />
+    <End Role="tbl_Author" Type="Self.tbl_Author" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_QIPRegistration">
+        <PropertyRef Name="QRE_ID" />
+      </Principal>
+      <Dependent Role="tbl_Author">
+        <PropertyRef Name="AUT_QRE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_Employee_tbl_Department">
+    <End Role="tbl_Department" Type="Self.tbl_Department" Multiplicity="1" />
+    <End Role="tbl_Employee" Type="Self.tbl_Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Department">
+        <PropertyRef Name="DEP_ID" />
+      </Principal>
+      <Dependent Role="tbl_Employee">
+        <PropertyRef Name="EMP_DEP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_Evaluator_tbl_Employee">
+    <End Role="tbl_Employee" Type="Self.tbl_Employee" Multiplicity="1" />
+    <End Role="tbl_Evaluator" Type="Self.tbl_Evaluator" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Employee">
+        <PropertyRef Name="EMP_No" />
+      </Principal>
+      <Dependent Role="tbl_Evaluator">
+        <PropertyRef Name="EVA_EMP_No" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_GroupMember_tbl_Employee1">
+    <End Role="tbl_Employee" Type="Self.tbl_Employee" Multiplicity="1" />
+    <End Role="tbl_GroupMember" Type="Self.tbl_GroupMember" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Employee">
+        <PropertyRef Name="EMP_No" />
+      </Principal>
+      <Dependent Role="tbl_GroupMember">
+        <PropertyRef Name="GME_EMP_No" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_GroupMember_tbl_GroupName1">
+    <End Role="tbl_GroupName" Type="Self.tbl_GroupName" Multiplicity="1" />
+    <End Role="tbl_GroupMember" Type="Self.tbl_GroupMember" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_GroupName">
+        <PropertyRef Name="GNA_ID" />
+      </Principal>
+      <Dependent Role="tbl_GroupMember">
+        <PropertyRef Name="GME_GNA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_GroupName_tbl_Department">
+    <End Role="tbl_Department" Type="Self.tbl_Department" Multiplicity="1" />
+    <End Role="tbl_GroupName" Type="Self.tbl_GroupName" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Department">
+        <PropertyRef Name="DEP_ID" />
+      </Principal>
+      <Dependent Role="tbl_GroupName">
+        <PropertyRef Name="GNA_DEP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_QIPDepartment_tbl_Department">
+    <End Role="tbl_Department" Type="Self.tbl_Department" Multiplicity="1" />
+    <End Role="tbl_QIPDepartment" Type="Self.tbl_QIPDepartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Department">
+        <PropertyRef Name="DEP_ID" />
+      </Principal>
+      <Dependent Role="tbl_QIPDepartment">
+        <PropertyRef Name="QDE_DEP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_QIPDepartment_tbl_QIPRegistration">
+    <End Role="tbl_QIPRegistration" Type="Self.tbl_QIPRegistration" Multiplicity="1" />
+    <End Role="tbl_QIPDepartment" Type="Self.tbl_QIPDepartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_QIPRegistration">
+        <PropertyRef Name="QRE_ID" />
+      </Principal>
+      <Dependent Role="tbl_QIPDepartment">
+        <PropertyRef Name="QDE_QRE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_QIPGrade_tbl_QIPRegistration1">
+    <End Role="tbl_QIPRegistration" Type="Self.tbl_QIPRegistration" Multiplicity="1" />
+    <End Role="tbl_QIPGrade" Type="Self.tbl_QIPGrade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_QIPRegistration">
+        <PropertyRef Name="QRE_ID" />
+      </Principal>
+      <Dependent Role="tbl_QIPGrade">
+        <PropertyRef Name="QGR_QRE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_QIPGroup_tbl_GroupName">
+    <End Role="tbl_GroupName" Type="Self.tbl_GroupName" Multiplicity="1" />
+    <End Role="tbl_QIPGroup" Type="Self.tbl_QIPGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_GroupName">
+        <PropertyRef Name="GNA_ID" />
+      </Principal>
+      <Dependent Role="tbl_QIPGroup">
+        <PropertyRef Name="QGR_GNA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_QIPGroup_tbl_QIPRegistration">
+    <End Role="tbl_QIPRegistration" Type="Self.tbl_QIPRegistration" Multiplicity="1" />
+    <End Role="tbl_QIPGroup" Type="Self.tbl_QIPGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_QIPRegistration">
+        <PropertyRef Name="QRE_ID" />
+      </Principal>
+      <Dependent Role="tbl_QIPGroup">
+        <PropertyRef Name="QGR_QRE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_QIPRegistration_tbl_Evaluator">
+    <End Role="tbl_Evaluator" Type="Self.tbl_Evaluator" Multiplicity="0..1" />
+    <End Role="tbl_QIPRegistration" Type="Self.tbl_QIPRegistration" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Evaluator">
+        <PropertyRef Name="EVA_ID" />
+      </Principal>
+      <Dependent Role="tbl_QIPRegistration">
+        <PropertyRef Name="QRE_EVA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_UserDetail_tbl_Employee">
+    <End Role="tbl_Employee" Type="Self.tbl_Employee" Multiplicity="1" />
+    <End Role="tbl_UserDetail" Type="Self.tbl_UserDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Employee">
+        <PropertyRef Name="EMP_No" />
+      </Principal>
+      <Dependent Role="tbl_UserDetail">
+        <PropertyRef Name="USD_EMP_No" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_YearTargetSubmission_tbl_Department">
+    <End Role="tbl_Department" Type="Self.tbl_Department" Multiplicity="1" />
+    <End Role="tbl_YearTargetSubmission" Type="Self.tbl_YearTargetSubmission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Department">
+        <PropertyRef Name="DEP_ID" />
+      </Principal>
+      <Dependent Role="tbl_YearTargetSubmission">
+        <PropertyRef Name="YTS_DEP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_YearTargetSubmission_tbl_FiscalYear">
+    <End Role="tbl_FiscalYear" Type="Self.tbl_FiscalYear" Multiplicity="1" />
+    <End Role="tbl_YearTargetSubmission" Type="Self.tbl_YearTargetSubmission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_FiscalYear">
+        <PropertyRef Name="FYE_ID" />
+      </Principal>
+      <Dependent Role="tbl_YearTargetSubmission">
+        <PropertyRef Name="YTS_FYE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dbPBQIPModelStoreContainer">
+    <EntitySet Name="tbl_Author" EntityType="Self.tbl_Author" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Department" EntityType="Self.tbl_Department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Employee" EntityType="Self.tbl_Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Evaluator" EntityType="Self.tbl_Evaluator" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_FiscalYear" EntityType="Self.tbl_FiscalYear" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_GroupMember" EntityType="Self.tbl_GroupMember" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_GroupName" EntityType="Self.tbl_GroupName" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_QIPDepartment" EntityType="Self.tbl_QIPDepartment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_QIPGrade" EntityType="Self.tbl_QIPGrade" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_QIPGroup" EntityType="Self.tbl_QIPGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_QIPRegistration" EntityType="Self.tbl_QIPRegistration" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_UserDetail" EntityType="Self.tbl_UserDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_YearTargetSubmission" EntityType="Self.tbl_YearTargetSubmission" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_tbl_Author_tbl_Employee1" Association="Self.FK_tbl_Author_tbl_Employee1">
+      <End Role="tbl_Employee" EntitySet="tbl_Employee" />
+      <End Role="tbl_Author" EntitySet="tbl_Author" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_Author_tbl_QIPRegistration" Association="Self.FK_tbl_Author_tbl_QIPRegistration">
+      <End Role="tbl_QIPRegistration" EntitySet="tbl_QIPRegistration" />
+      <End Role="tbl_Author" EntitySet="tbl_Author" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_Employee_tbl_Department" Association="Self.FK_tbl_Employee_tbl_Department">
+      <End Role="tbl_Department" EntitySet="tbl_Department" />
+      <End Role="tbl_Employee" EntitySet="tbl_Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_Evaluator_tbl_Employee" Association="Self.FK_tbl_Evaluator_tbl_Employee">
+      <End Role="tbl_Employee" EntitySet="tbl_Employee" />
+      <End Role="tbl_Evaluator" EntitySet="tbl_Evaluator" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_GroupMember_tbl_Employee1" Association="Self.FK_tbl_GroupMember_tbl_Employee1">
+      <End Role="tbl_Employee" EntitySet="tbl_Employee" />
+      <End Role="tbl_GroupMember" EntitySet="tbl_GroupMember" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_GroupMember_tbl_GroupName1" Association="Self.FK_tbl_GroupMember_tbl_GroupName1">
+      <End Role="tbl_GroupName" EntitySet="tbl_GroupName" />
+      <End Role="tbl_GroupMember" EntitySet="tbl_GroupMember" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_GroupName_tbl_Department" Association="Self.FK_tbl_GroupName_tbl_Department">
+      <End Role="tbl_Department" EntitySet="tbl_Department" />
+      <End Role="tbl_GroupName" EntitySet="tbl_GroupName" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_QIPDepartment_tbl_Department" Association="Self.FK_tbl_QIPDepartment_tbl_Department">
+      <End Role="tbl_Department" EntitySet="tbl_Department" />
+      <End Role="tbl_QIPDepartment" EntitySet="tbl_QIPDepartment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_QIPDepartment_tbl_QIPRegistration" Association="Self.FK_tbl_QIPDepartment_tbl_QIPRegistration">
+      <End Role="tbl_QIPRegistration" EntitySet="tbl_QIPRegistration" />
+      <End Role="tbl_QIPDepartment" EntitySet="tbl_QIPDepartment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_QIPGrade_tbl_QIPRegistration1" Association="Self.FK_tbl_QIPGrade_tbl_QIPRegistration1">
+      <End Role="tbl_QIPRegistration" EntitySet="tbl_QIPRegistration" />
+      <End Role="tbl_QIPGrade" EntitySet="tbl_QIPGrade" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_QIPGroup_tbl_GroupName" Association="Self.FK_tbl_QIPGroup_tbl_GroupName">
+      <End Role="tbl_GroupName" EntitySet="tbl_GroupName" />
+      <End Role="tbl_QIPGroup" EntitySet="tbl_QIPGroup" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_QIPGroup_tbl_QIPRegistration" Association="Self.FK_tbl_QIPGroup_tbl_QIPRegistration">
+      <End Role="tbl_QIPRegistration" EntitySet="tbl_QIPRegistration" />
+      <End Role="tbl_QIPGroup" EntitySet="tbl_QIPGroup" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_QIPRegistration_tbl_Evaluator" Association="Self.FK_tbl_QIPRegistration_tbl_Evaluator">
+      <End Role="tbl_Evaluator" EntitySet="tbl_Evaluator" />
+      <End Role="tbl_QIPRegistration" EntitySet="tbl_QIPRegistration" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_UserDetail_tbl_Employee" Association="Self.FK_tbl_UserDetail_tbl_Employee">
+      <End Role="tbl_Employee" EntitySet="tbl_Employee" />
+      <End Role="tbl_UserDetail" EntitySet="tbl_UserDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_YearTargetSubmission_tbl_Department" Association="Self.FK_tbl_YearTargetSubmission_tbl_Department">
+      <End Role="tbl_Department" EntitySet="tbl_Department" />
+      <End Role="tbl_YearTargetSubmission" EntitySet="tbl_YearTargetSubmission" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_YearTargetSubmission_tbl_FiscalYear" Association="Self.FK_tbl_YearTargetSubmission_tbl_FiscalYear">
+      <End Role="tbl_FiscalYear" EntitySet="tbl_FiscalYear" />
+      <End Role="tbl_YearTargetSubmission" EntitySet="tbl_YearTargetSubmission" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

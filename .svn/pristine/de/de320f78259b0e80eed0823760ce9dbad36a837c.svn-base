@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewBag.Title = "Maintenance";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+}
+
+@*----------------Modal For Questionaires Begin ----------------*@
+
+<script type="text/javascript">
+    function OnSuccess()
+    {
+    }
+    function OnBegin(){
+        $('#img-loader').show();
+    }
+    function OnComplete()
+    {
+        $('#img-loader').hide();
+       var url = '@Url.Action("Dashboard", "Dashboard")';
+       //$('.overlay').removeClass();
+       window.location.href = url;
+    }
+
+</script>
+
+@using (Ajax.BeginForm("Index", "Home", new AjaxOptions
+{
+    HttpMethod = "POST",
+    //  UpdateTargetId = "LoginId",
+    OnSuccess = "OnSuccess",
+    //OnFailure = "OnFailure",
+    OnBegin = "OnBegin",
+    OnComplete = "OnComplete"
+}))
+{
+
+     <div class="modal fade bs-example-modal-new" id="LoginId"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <!-- Modal Content: begins -->
+            <div class=" modal-content">
+
+    <!-- Modal Header -->
+    <div class="modal-header" style="background-color: #3f91c0; ">
+        <div class="avatar-img" style="margin-top:-45px;bottom:15px;">
+            <img src="~/Images/img_avatar.png" style="width: 88px;height:88px;border-color:white;" />
+        </div>
+            </div>
+                <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="body-message">
+                    <h4>Kindly Enter Your ID Number</h4>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <p>This will be removed permanently. Do you want to proceed?</p>
+                        </div>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <img src="~/Images/loader.gif" style="display:none; width: 75px;height:75px;" id="img-loader" />
+                        <input type="submit" value="Proceed" class="btn btn-primary">
+                    </div>
+
+                </div>
+                <!-- Modal Content: ends -->
+            </div>
+        </div>
+        </div>
+    </div>   
+ 
+       
+    
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle">Maintenance Dashboard</span>
+        <h3 class="page-title">Maintenance</h3>
+    </div>
+</div>
+<div class="w3 w3-animate-right">
+    <div class="row">
+        <div class="col">
+            <div class="card card-small mb-4">
+                <div class="card-header border-bottom">
+                    <h6 class="m-0">All Questionaires From $department</h6>
+                </div>
+                <div style="position:relative; width:150px;padding:10px 10px 10px 10px;float:right;">
+                   <a href="@Url.Action("NewQuestionaire", "Questionaire")" type="submit"  class="btn btn-info">New Questionaire</a></div>
+                <div class="card-body p-0 pb-3 text-center">
+                    <table class="table mb-0 table-hover">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col" class="border-0">#</th>
+                                <th scope="col" class="border-0">Category</th>
+                                <th scope="col" class="border-0">Title</th>
+                                <th scope="col" class="border-0">Questionaire</th>
+                                <th scope="col" class="border-0">Answer Sheet</th>
+                                <th scope="col" class="border-0">....</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>RWP</td>
+                                <td>RWP Booklet For PC</td>
+                                <td data-toggle="tooltip" data-placement="right" title="Click to open"><a href="@Url.Action("OpenQuestionaire","Maintenance")">RWP Booklet For Pc-Answer</a></td>
+                                <td data-toggle="tooltip" data-placement="top" title="Click to open"><a href="@Url.Action("OpenAnswerSheet","Maintenance")">RWP Booklet For Pc-Answer</a></td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn" data-toggle="modal" data-target=".modal fade bs-example-modal-new">
+                                     <span class="fa fa-trash"></span> Remove
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Clark</td>
+                                <td>Angela</td>
+                                <td>Estonia</td>
+                                <td>Borghetto di Vara</td>
+                                <td>1-660-850-1647</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Jerry</td>
+                                <td>Nathan</td>
+                                <td>Cyprus</td>
+                                <td>Braunau am Inn</td>
+                                <td>214-4225</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Colt</td>
+                                <td>Angela</td>
+                                <td>Liberia</td>
+                                <td>Bad Hersfeld</td>
+                                <td>1-848-473-7416</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="w3-center w3-animate-right">
+    <div class="row">
+        <div class="col-lg col-md-4 col-sm-12 mb-4">
+            <div class="stats-small stats-small--1 card card-small">
+                <div class="card-body p-0 d-flex">
+                    ambot ambot unsa ako ibutang....
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}

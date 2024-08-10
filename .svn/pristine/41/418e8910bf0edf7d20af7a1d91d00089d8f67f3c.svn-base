@@ -1,0 +1,369 @@
+﻿@model IEnumerable<webproject.Models.NewQuestionaire>
+@{
+    ViewBag.Title = "NewQuestionaire";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+
+    var num = 1;
+    var category = 1;
+}
+<link rel="stylesheet" href="~/Content/Homepage/css/jquery-ui.css">
+<script src="~/Content/Homepage/js/jquery-ui.js"></script>
+
+<script src="jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="~/Content/Homepage/js/xlsx.core.min.js"></script>
+<script src="~/Content/Homepage/js/xls.core.min.js"></script>
+<script src="~/Content/Homepage/js/ImportExcel.js"></script>
+<script type="text/javascript">
+    (function ($) {
+
+        $(function () {
+            var setOfQuestion = 1;
+
+            //Category
+            $("#questionType").change(function () {
+                var type = $(this).val();
+
+                if (type == "1") {
+                    diagramExam(setOfQuestion++);
+                }
+                if (type == "2") {
+                    Enumeration(setOfQuestion++);
+                }
+                if (type == "3") {
+                    Essay(setOfQuestion++);
+                }
+                if (type == "4") {
+                    fillInTheBlanks(setOfQuestion++);
+                }
+                if (type == "5") {
+                    Identification(setOfQuestion++);
+                }
+                if (type == "6") {
+                    matchingType(setOfQuestion++);
+                }
+                if (type == "7") {
+                    multipleChoice(setOfQuestion++);
+                }
+                $("#btnQ").show()
+            });
+        });
+
+        $(function () {
+            var setOfQuestion = 1;
+            //Examinee
+            $("#drpdwnExaminee").change(function () {
+                var Examinee = $(this).val();
+
+                if (Examinee == "Selected") {
+                    $("#slctedEmployee").show();
+                } else {
+                    $("#slctedEmployee").hide();
+                }
+            });
+        });
+
+        $(function () {
+            $("#schedule").datepicker();
+        });
+
+    }(jQuery));
+
+    function showExportTable() {
+        $("#viewfile").show();
+        $("#excelfile").show();
+        $("#questionType").hide();
+        $("#q_titleID").hide();
+    }
+    window.onbeforeunload = function () {
+        return "Are you sure you want to leave? Please make sure to click submit questionnaire button.";
+    }
+</script>
+
+<style>
+    .custom-file-upload {
+        padding: 6px 12px;
+        cursor: pointer;
+        background-color: transparent;
+        color: white;
+        border-radius: 3px 3px 3px 3px;
+        margin-top: 1px;
+        font-family: Candara;
+        border: 1px solid white;
+        margin-right: 5px;
+    }
+
+
+        .custom-file-upload:hover {
+            background-color: white;
+            color: black;
+        }
+
+    #excelfile {
+        display: none;
+    }
+</style>
+<div id="teOverlay">
+    <div class="center">
+        <div id="waitLoader">
+            <img src="~/Images/checking.gif" />
+            <p id="checkingExam">
+                Please wait . . .
+            </p>
+        </div>
+        <div id="successLoader" style="display:none;">
+            <img src="~/Images/success1.gif" />
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-danger alert-dismissible fade show mb-0" role="alert" id="nqError" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button> <i class="fa fa-warning mx-2"></i>
+    <strong>Something went wrong.</strong> Make sure to select category and fill in all fields.
+</div>
+
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <div class="form-group"></div>
+        <span class="text-uppercase page-subtitle" id="secondaryColor">Questionnaire Dashboard</span>
+        <h3 class="page-title" id="titleName">New Questionnaire</h3>
+    </div>
+</div>
+
+<div class="w3 w3-animate-right">
+    <div class="row" style="opacity:.9;">
+        <div class="col-lg-9 col-md-12">
+            <!-- Add New Post Form -->
+            <div class="card card-small h-100">
+                @*style="background-color: #5a6169;"*@
+                <div id="divHeader" class="custom-table" style="height:80px;">
+                    <div>
+                        &nbsp;
+                        <i class="fa fa-file-archive-o" style="display:inline-block; color:white;font-size:30px;"></i>
+                        <font style="display:inline-block;color:white;font-family:Candara;"> Create new questionnaire</font>
+                        <div style="display:inline-block;float:right;margin-top:5px;">
+                            <label class="custom-file-upload" onclick="showExportTable()">
+                                <input type="file" id="excelfile" />
+                                <i class="fa fa-file-excel-o"></i> Import Excel
+                            </label>
+                            <a href="#" type="button" class="mb-2 btn btn-sm btn-outline-white mr-1" onclick="ExportToTable()" style="display:none;" id="viewfile">
+                                <i class="fa fa-table"></i> Show excel content
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <form class="add-new-post__editor">
+                        <div class="form-group">
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Your Questionaire Title" id="q_titleID">
+                            <div class="invalid-feedback" id="invalidID">
+                                <label id="validMsg">This field is required </label>
+                            </div>
+                            <div>
+                                <input type="date" class="input-sm form-control" name="start" placeholder="Exam Schedule" id="schedule" style="width:150px;float:right;margin-left:10px;">
+                            </div>
+                            <div style="float:right;">
+                                <font>Time Limit</font>
+                                <input type="number" class="form-control" id="hrID" style="display:inline-block;width:50px;" placeholder="hrs" />
+                                <input type="number" class="form-control" id="minID" style="display:inline-block;width:50px;" placeholder="mins" />
+                            </div>
+                            <div style="float:right;">
+                                <font>Passing Rate:</font>
+                                <input type="number" class="form-control" id="passingRate" style="display:inline-block;width:70px;" placeholder="ex: 70%" />
+                                &nbsp;
+                            </div>
+                            <div>
+                                <small style="display:none; color:red;" id="limitError">* Time limit and passing rate field is reqired. </small> <br />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div id="question" style="font-family:'Courier New';font-size:14px;">
+                                <table id="exceltable">
+                                </table>
+                                <img src="~/Images/loadexcel.gif" id="importLoader" />
+                            </div>
+
+                            <br /> <br />
+                            <hr />
+                            <div>
+                                <select id="questionType" class="form-control" style="border-color: black;">
+                                    <option value="">Choose type of test</option>
+                                    <option value="1">Diagram Exam</option>
+                                    <option value="2">Enumeration</option>
+                                    <option value="3">Essay</option>
+                                    <option value="4">Filling the blanks</option>
+                                    <option value="5">Identification</option>
+                                    <option value="6">Matching Type</option>
+                                    <option value="7">Multiple Choice</option>
+                                </select>
+                            </div><br /><br />
+
+                            <div class="form-group mb-0" id="btnQ" style="display:none;position:absolute; right: 0; bottom:5px;margin-right:20px;">
+                                <a href="#" class="btn btn-white btn-xs" type="submit" onclick="checkInputs()" id="btn-main">
+                                    @*data-toggle="modal" data-target=".bs-example-modal-new"*@
+                                    <i class="fa fa-save"></i>  Create Questioanire
+                                </a>
+                            </div>
+                            <div class="form-group mb-0" id="excelBtn" style="display:none;position:absolute; right: 0; bottom:10px;margin-right:20px;">
+                                <a href="#" class="btn btn-white btn-xs" type="submit" onclick="checkImport()" id="btn-main">
+                                    @*data-toggle="modal" data-target=".bs-example-modal-new"*@
+                                    <i class="fa fa-save"></i>  Create Questioanire
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- / Add New Post Form -->
+        </div>
+        <!-- Post Overview -->
+        <div class="col-lg-3 col-md-12">
+            <!-- Post Overview -->
+            <div class="card card-small mb-3">
+                <div id="divHeader" class="custom-table" style="width:90%;">
+                    <div>
+                        &nbsp;
+                        <i class="fa fa-archive" style="display:inline-block; color:white;font-size:30px;"></i>
+                        <font style="display:inline-block;color:white;font-family:Candara;"> Category</font>
+
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item px-3 pb-2">
+                            <div id="categoryID" style="overflow:hidden;">
+
+                                @foreach (var model in Model)
+                                {
+                                    var id = "category" + model.category_id;
+                                    num = model.category_id;
+
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input type="checkbox" class="custom-control-input" id="@id" value="@num" name="test[1][]" onclick="selectOnlyThis(this)">
+                                        <label class="custom-control-label" for="@id">@Html.DisplayFor(modelItem => model.Category)</label>
+                                    </div>
+                                    category++;
+                                }
+                            </div>
+                            <div class="invalid-feedback" id="errorCategory">
+                                <label id="validMsg">Category name already exist. </label>
+                            </div>
+                            <small id="blankCategory" style="display:none; color:red;">Please select category </small>
+                        </li>
+                        <li class="list-group-item d-flex px-3">
+                            <div class="input-group">
+                                <div class="invalid-feedback" id="categoryInvalid">
+                                    <label id="validMsg">This field is required. </label>
+                                </div>
+                                <input type="text" class="form-control" placeholder="New category" aria-label="Add new category" aria-describedby="basic-addon2" id="txtCategory">
+                                <div class="input-group-append">
+                                    <a href="#" type="submit" class="btn btn-white" onclick="addNewCategory()" id="btn-main"><i class="fa fa-plus-circle"></i> Add</a>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card card-small mb-3">
+                <div id="divHeader" class="custom-table" style="width:90%;">
+                    <div>
+                        &nbsp;
+                        <i class="fa fa-lock" style="display:inline-block; color:white;font-size:30px;"></i>
+                        <font style="display:inline-block;color:white;font-family:Candara;"> Access</font>
+
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item px-3 pb-2">
+                            <div style="overflow:hidden;">
+                                <font>Please choose examinee:</font>
+                                <div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input type="checkbox" class="custom-control-input" id="AllEmployee" value="All Employees">
+                                        <label class="custom-control-label" for="AllEmployee">All Employees</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input type="checkbox" class="custom-control-input" id="RIMP" value="RIMP Employees">
+                                        <label class="custom-control-label" for="RIMP">RIMP Employees</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input type="checkbox" class="custom-control-input" id="CGSI" value="CGSI Employees">
+                                        <label class="custom-control-label" for="CGSI">CGSI Employees</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input type="checkbox" class="custom-control-input" id="GoodJob" value="Good Job Employees">
+                                        <label class="custom-control-label" for="GoodJob">Good Job Employees</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input type="checkbox" class="custom-control-input" id="Visitor" value="Visitor">
+                                        <label class="custom-control-label" for="Visitor">Visitor</label>
+                                    </div>
+                                    <div id="slctedEmployee">
+                                        <font>Selected Employee:</font>
+                                        <input type="text" class="form-control" placeholder="ex. g190000, g191111" id="selected" />
+                                    </div>
+                                    <small id="blankCategory" style="display:none; color:red;">Please add examinee. </small>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- / Post Overview -->
+    </div>
+</div>
+
+
+<div class="modal fade bs-example-modal-new" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <!-- Modal Content: begins -->
+        <div class=" modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="display:inline-block; background-color: #5a6169; color:white; ">
+                &nbsp; <i class="fa fa-warning" style="color: white ;text-align:right;font-size: 20px;margin-right: 10px;"></i> Submit questions
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="body-message">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            Are you sure to submit it now <i class="fa fa-question-circle" style="color: maroon;text-align:right;font-size: 20px;"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Content: ends -->
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer" style="background-color:#e9ebec;">
+                <a href="#" onclick="submitQuestionaire()" class="btn btn-danger" data-dismiss="modal">Yes</a>
+                <a href="#" value="No" class="btn btn-primary" data-dismiss="modal">No</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div id="open-modal" class="modal-window">
+        <div style="color:white;">
+            <a href="#" title="Close" class="modal-close">Close</a>
+            <font style="color:white;font-size:20px;font-family:'Arial Rounded MT';">New Questionnaire added. <br /></font>
+            <h7>Do you want to create new one?</h7>
+            <br />
+            <div style="margin-top:18px;float:right;">
+                <a href="@Url.Action("NewQuestionaire","Maintenance")#maintenance_q" class="btn btn-danger" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Just click stay this page">Yes</a>
+                <a href="@Url.Action("Maintenance","Maintenance")#maintenance_q" value="No" class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="Just click leave this page">No</a>
+            </div>
+        </div>
+    </div>*@
+
+@*Hidden fields*@
+<input type="hidden" value="@category" id="categoryTotalCnt" />
